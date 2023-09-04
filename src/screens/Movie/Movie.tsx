@@ -3,6 +3,7 @@ import MovieData from "@/services/movieApi";
 import { Gallery } from "./styles";
 import { ContainerPages } from "@/styles/globals";
 import {
+  CarouselMovieImage,
   CineCarousel,
   Footer,
   Header,
@@ -14,31 +15,50 @@ import { Recommendations } from "./Recommendations";
 import { MovieDetails } from "@/models";
 
 export type MovieProps = {
-  id: string;
+  id: number;
 };
 
-export const Movie = (props: any) => {
+export const MovieScreen = (props: MovieProps) => {
   const [movie, setMovie] = useState<MovieDetails | null>(null);
+  const [movieImages, setMovieImages] = useState([] as CarouselMovieImage[]);
   const [director, setDirector] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const idMovie = props.match.params.id;
+  const [windowWidth, setWindowWidth] = useState(0);
+  const idMovie = props.id;
 
   useEffect(() => {
     (async () => {
-      // everytimes the movie is changed , will scroll to the top,fetch the data from the new movie and render the
-      // loading component
-      window.addEventListener("resize", handleResize);
       setIsLoading(true);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      await MovieData.getMovie(idMovie).then((response) => {
-        setMovie(response);
+      try {
+        const [movie, images] = await Promise.all([
+          MovieData.getMovie(idMovie),
+          MovieData.getMovieImages(idMovie),
+        ]);
+        setMovie(movie);
+        const formattedImages: CarouselMovieImage[] = images.backdrops.map(
+          (image) => ({
+            src: `https://image.tmdb.org/t/p/original/${image.file_path}`,
+            alt: image.file_path,
+          })
+        );
+        setMovieImages(formattedImages);
+      } catch {
         setIsLoading(false);
-      });
+      }
+      setIsLoading(false);
     })();
-
-    return () => window.removeEventListener("resize", handleResize);
   }, [idMovie]);
+
+  useEffect(() => {
+    if (typeof window !== undefined) {
+      setWindowWidth(window.innerWidth);
+      window.addEventListener("resize", handleResize);
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      return () => window.removeEventListener("resize", handleResize);
+    }
+  }, [idMovie, setWindowWidth]);
 
   function handleResize() {
     setWindowWidth(window.innerWidth);
@@ -49,16 +69,17 @@ export const Movie = (props: any) => {
       <Header />
       <ContainerPages>
         {!isLoading ? (
-          movie ? (
+          movie && (
             <>
               <MovieDetail {...{ director, ...movie }} />
               <Cast putDirector={setDirector} idMovie={idMovie} />
-              {windowWidth >= 768 ? (
+              {windowWidth >= 768 && movieImages.length > 0 && (
                 <Gallery>
-                  <CineCarousel idMovie={idMovie} />
+                  <CineCarousel
+                    images={movieImages}
+                    defaultNumberOfSlides={1}
+                  />
                 </Gallery>
-              ) : (
-                ""
               )}
 
               <Recommendations
@@ -66,8 +87,6 @@ export const Movie = (props: any) => {
                 movieTitle={movie.original_title}
               />
             </>
-          ) : (
-            ""
           )
         ) : (
           <Loading />

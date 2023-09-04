@@ -1,6 +1,7 @@
 import React from "react";
 import movieApiLogo from "../../assets/movieDBlogo.svg";
 import { FooterContainer } from "./styles";
+import Image from "next/image";
 
 export const Footer = () => {
   return (
@@ -15,7 +16,12 @@ export const Footer = () => {
           edimario
         </a>
       </p>
-      <img src={movieApiLogo} alt="Movie Db Api Logo" />
+      <Image
+        src={movieApiLogo}
+        width={30}
+        height={30}
+        alt="Movie Db Api Logo"
+      />
     </FooterContainer>
   );
 };

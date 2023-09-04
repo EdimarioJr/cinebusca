@@ -30,7 +30,8 @@ export const BackgroundFilter = styled.div<{ back: string }>`
   background-image: url(${({ back }) => back});
   background-size: cover;
   position: absolute;
-  filter: blur(15px);
+  filter: blur(70px);
+  opacity: 0.8;
   top: 0;
   left: 0;
 `;
@@ -40,6 +41,9 @@ export const MovieInfo = styled.div`
   width: 100%;
   color: white;
   background-color: black;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 
   h2 {
     margin-bottom: 20px;
@@ -61,7 +65,7 @@ export const MovieInfo = styled.div`
     height: 465px;
     text-shadow: 1px 1px rgba(0, 0, 0, 0.5), -1px 1px rgba(0, 0, 0, 0.5),
       1px -1px rgba(0, 0, 0, 0.5), -1px -1px rgba(0, 0, 0, 0.5);
-
+    flex: 1;
     .description {
       height: 240px;
       line-height: 30px;

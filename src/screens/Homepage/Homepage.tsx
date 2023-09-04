@@ -4,64 +4,98 @@ import { Container, opacityAnimation, LoadMore } from "@/styles/globals";
 import MovieData from "@/services/movieApi";
 
 import { motion } from "framer-motion";
-import { CineCarousel, Footer, Header, MovieCard } from "@/components";
+import {
+  CarouselMovieImage,
+  CineCarousel,
+  Footer,
+  Header,
+  Loading,
+  MovieCard,
+} from "@/components";
 import { Movie } from "@/models";
+
+const GRID_BEGIN_PAGE = 2;
 
 export function Homepage() {
   const [movies, setMovies] = useState([] as Movie[]);
-  const [page, setPage] = useState(2);
+  const [movieImages, setMovieImages] = useState([] as CarouselMovieImage[]);
+  const [page, setPage] = useState(GRID_BEGIN_PAGE);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    // begins in page 2 because the carousel queries the page 1 of popular movies
     (async () => {
       await MovieData.getPopularMovies(page).then((response) => {
-        if (page === 2) setMovies(response);
-        // if page> 2, the movies will be pushed to the movies state, instead of be replaced after each query
-        else {
-          setMovies((oldMovies) => [...oldMovies, ...response]);
-        }
+        setMovies((oldMovies) => [...oldMovies, ...response]);
       });
     })();
   }, [page]);
 
+  useEffect(() => {
+    (async () => {
+      await MovieData.getPopularMovies().then((response) => {
+        console.log("e", response);
+        const formattedImages: CarouselMovieImage[] = response.map((movie) => ({
+          src: `https://image.tmdb.org/t/p/w342/${
+            movie.poster_path ? movie.poster_path : movie.backdrop_path
+          }`,
+          alt: movie.original_title,
+          link: `/movie/${movie.id}`,
+        }));
+        setMovieImages(formattedImages);
+        setIsLoading(false);
+      });
+    })();
+  }, []);
+
   return (
     <>
       <Header />
-      <motion.div animate="final" initial="initial" variants={opacityAnimation}>
-        <CineCarousel />
-      </motion.div>
-      <Container>
-        <Main>
-          <h1>Popular Movies</h1>
-          <section className="grid-movies">
-            {movies.map((movie, index) => {
-              return (
-                <motion.div
-                  animate="final"
-                  initial="initial"
-                  variants={opacityAnimation}
-                  key={index}
-                >
-                  <MovieCard
-                    idMovie={movie.id}
-                    title={movie.original_title}
-                    score={movie.vote_average}
-                    poster={movie.poster_path}
-                  />
-                </motion.div>
-              );
-            })}
-          </section>
-          <LoadMore
-            onClick={() => {
-              let newPage = page + 1;
-              setPage(newPage);
-            }}
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <>
+          <motion.div
+            animate="final"
+            initial="initial"
+            variants={opacityAnimation}
           >
-            LOAD MORE!
-          </LoadMore>
-        </Main>
-      </Container>
+            <CineCarousel images={movieImages} />
+          </motion.div>
+          <Container>
+            <Main>
+              <h1>Popular Movies</h1>
+              <section className="grid-movies">
+                {movies.map((movie, index) => {
+                  return (
+                    <motion.div
+                      animate="final"
+                      initial="initial"
+                      variants={opacityAnimation}
+                      key={index}
+                    >
+                      <MovieCard
+                        idMovie={movie.id}
+                        title={movie.original_title}
+                        score={movie.vote_average}
+                        poster={movie.poster_path}
+                      />
+                    </motion.div>
+                  );
+                })}
+              </section>
+              <LoadMore
+                onClick={() => {
+                  let newPage = page + 1;
+                  setPage(newPage);
+                }}
+              >
+                LOAD MORE!
+              </LoadMore>
+            </Main>
+          </Container>
+        </>
+      )}
+
       <Footer />
     </>
   );

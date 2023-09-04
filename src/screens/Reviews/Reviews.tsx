@@ -1,45 +1,51 @@
 import React, { useState, useEffect } from "react";
 import { ContainerPages, opacityAnimation } from "@/styles/globals";
-import dbAPI from "@/services/dbApi";
-import auth from "@/services/auth";
 
-import { ReviewsContainer } from "./styles";
-import { useRouter } from "next/router";
 import { Footer, Header, Loading, ReviewCard } from "@/components";
+import { useUser } from "@supabase/auth-helpers-react";
+import { reviewService } from "@/services";
+import { toast } from "react-toastify";
+import { ReviewsContainer } from "./styles";
 
-export const Reviews = () => {
+export const ReviewsScreen = () => {
   const [reviews, setReviews] = useState([] as any[]);
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
+
+  const user = useUser();
 
   useEffect(() => {
-    let isMounted = true;
     (async () => {
-      if (auth.isAuthenticated()) {
-        setIsLoading(true);
-        await dbAPI.get("/reviews").then((response) => {
-          const { reviews, message } = response.data;
+      getUserReviews();
+    })();
+  }, []);
+
+  async function getUserReviews() {
+    if (user) {
+      setIsLoading(true);
+      await reviewService
+        .getUserReviews({ userId: user.id })
+        .then((response) => {
+          const reviews = response;
           if (reviews) {
-            if (isMounted) {
-              setReviews(reviews);
-              setIsLoading(false);
-            }
-          } else {
-            auth.logout();
-            alert(message);
-            router.push("/");
+            setReviews(reviews);
+            setIsLoading(false);
           }
         });
-      }
-    })();
-  }, [router]);
+    }
+  }
 
-  // updating the reviews state after a delete
-  function handleDeleteReview(id: number) {
-    const newReviews = reviews.filter((current) => {
-      return current.idMovie !== id;
-    });
-    setReviews(newReviews);
+  async function handleDeleteReview(id: string) {
+    if (user) {
+      try {
+        await reviewService.deleteReview({ id });
+        getUserReviews();
+        toast.success("Review deleted!");
+      } catch (err) {
+        toast.error("Error deleting the review");
+      }
+    }
+
+    getUserReviews();
   }
 
   return (
@@ -53,15 +59,15 @@ export const Reviews = () => {
         >
           {!isLoading ? (
             reviews.length !== 0 ? (
-              reviews.map((review, index) => {
+              reviews.map((review) => {
                 return (
                   <ReviewCard
-                    exit={{ opacity: 0 }}
-                    idMovie={review.idMovie}
+                    id={review.id}
+                    idMovie={review.movieId}
                     review={review.review}
                     date={String(review.date)}
                     deleteReview={handleDeleteReview}
-                    key={index}
+                    key={review.id}
                   />
                 );
               })

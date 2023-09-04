@@ -12,6 +12,11 @@ export const DivCarousel = styled.div`
     height: 600px;
   }
 
+  .slide {
+    display: grid;
+    place-content: center;
+  }
+
   @media (max-width: 475px) {
     height: 400px;
 

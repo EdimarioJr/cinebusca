@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useState, useEffect } from "react";
 import { DivCarousel } from "./styles";
 import Carousel from "nuka-carousel";
@@ -5,15 +6,19 @@ import Link from "next/link";
 import MovieData from "../../services/movieApi";
 import { Loading } from "..";
 import { Movie, MovieImage } from "@/models";
+import { ImageResponse } from "next/server";
+
+export type CarouselMovieImage = { alt: string; src: string; link?: string };
 
 export type CineCarouselProps = {
-  idMovie?: string;
+  images: CarouselMovieImage[];
+  defaultNumberOfSlides?: number;
 };
 
-export const CineCarousel = ({ idMovie = "" }: CineCarouselProps) => {
-  const [movies, setMovies] = useState([] as Movie[]);
-  const [movieImages, setMovieImages] = useState([] as MovieImage[]);
-  const [isLoading, setIsLoading] = useState(false);
+export const CineCarousel = ({
+  images,
+  defaultNumberOfSlides = 0,
+}: CineCarouselProps) => {
   const [windowWidth, setWindowWidth] = useState(
     typeof window !== "undefined" ? window.innerWidth : 0
   );
@@ -22,90 +27,57 @@ export const CineCarousel = ({ idMovie = "" }: CineCarouselProps) => {
     let isMounted = true;
 
     window.addEventListener("resize", handleResize);
-    setIsLoading(true);
-    async function fetchData() {
-      idMovie && isMounted
-        ? await MovieData.getMovieImages(idMovie).then((response) => {
-            setMovieImages(response.backdrops);
-            setIsLoading(false);
-          })
-        : await MovieData.getPopularMovies().then((response) => {
-            setMovies(response);
-            setIsLoading(false);
-          });
-    }
-    fetchData();
 
     return () => {
       isMounted = false;
       window.removeEventListener("resize", handleResize);
     };
-  }, [idMovie]);
+  }, []);
 
   function handleResize() {
     setWindowWidth(window.innerWidth);
   }
 
   function numberOfSlides() {
-    if (idMovie) {
-      return 1;
+    if (defaultNumberOfSlides) {
+      return defaultNumberOfSlides;
     } else {
       if (windowWidth <= 768) {
-        return 2;
-      }
-      if (windowWidth > 768 && windowWidth <= 1152) {
         return 3;
       }
-      return 4;
+      if (windowWidth > 768 && windowWidth <= 1152) {
+        return 4;
+      }
+      return 5;
     }
   }
 
   return (
-    <>
-      <DivCarousel>
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <Carousel
-            slidesToShow={numberOfSlides()}
-            swiping={true}
-            defaultControlsConfig={{
-              pagingDotsStyle: {
-                fill: "white",
-              },
-            }}
-          >
-            {idMovie
-              ? movieImages.map((movie, index) => {
-                  return (
-                    <img
-                      src={`https://image.tmdb.org/t/p/original/${movie.file_path}`}
-                      alt={"gallery"}
-                      key={index}
-                    />
-                  );
-                })
-              : movies.map((movie, index) => {
-                  return (
-                    <Link
-                      href={`/Movie/${movie.id}`}
-                      key={index}
-                      style={{ textDecoration: "none" }}
-                    >
-                      <img
-                        src={`https://image.tmdb.org/t/p/w342/${
-                          movie.poster_path
-                            ? movie.poster_path
-                            : movie.backdrop_path
-                        }`}
-                        alt={movie.original_title}
-                      />
-                    </Link>
-                  );
-                })}
-          </Carousel>
-        )}
-      </DivCarousel>
-    </>
+    <DivCarousel>
+      <Carousel
+        vertical={true}
+        slidesToShow={numberOfSlides()}
+        swiping={true}
+        defaultControlsConfig={{
+          pagingDotsStyle: {
+            fill: "white",
+          },
+        }}
+      >
+        {images.map((image, index) => {
+          return image.link ? (
+            <Link
+              href={image.link}
+              key={index}
+              style={{ textDecoration: "none" }}
+            >
+              <img src={image.src} alt={image.alt} key={index} />
+            </Link>
+          ) : (
+            <img src={image.src} alt={image.alt} key={index} />
+          );
+        })}
+      </Carousel>
+    </DivCarousel>
   );
 };

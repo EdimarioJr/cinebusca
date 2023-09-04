@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const Main = styled.section`
   width: 100%;
+  margin: 0 auto;
 
   h1 {
     color: white;
@@ -11,8 +12,8 @@ export const Main = styled.section`
 
   .grid-movies {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-gap: 10px;
+    grid-template-columns: repeat(5, 1fr);
+    grid-row-gap: 30px;
     transition: all 0.5s;
   }
 

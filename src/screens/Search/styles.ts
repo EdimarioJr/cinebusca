@@ -10,8 +10,8 @@ export const SearchContainer = styled.main`
 
   .grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-gap: 20px;
+    grid-template-columns: repeat(5, 1fr);
+    grid-row-gap: 20px;
   }
 
   @media (max-width: 758px) {

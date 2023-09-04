@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { LoginContainer } from "./styles";
 
 import { ContainerPages, CommonButton } from "@/styles/globals";
-import dbAPI from "@/services/dbApi";
-import auth from "@/services/auth";
+
+import { authService } from "@/services/auth";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import { Header, Footer } from "@/components";
+import { toast } from "react-toastify";
 
 // login Animation
 const loginVariants = {
@@ -18,36 +19,36 @@ const loginVariants = {
   },
 };
 
-export const Login = () => {
-  const [username, setUsername] = useState("");
+export const LoginScreen = () => {
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [signUp, setSignUp] = useState(false);
   const router = useRouter();
 
-  function handleSubmit() {
-    const name = username.trim();
-    // will only try to do the sign in/sign up if the the user fill the two inputs
-    name && password
-      ? signUp
-        ? dbAPI.post("/signup", { name, password }).then((response) => {
-            const data = response.data;
-            if (data.signup) {
-              // when the signup is successful, will login and redirect to home automatically
-              dbAPI.post("/signin", { name, password }).then((response) => {
-                const data = response.data;
-                auth.login(data.token);
-                router.push("/");
-              });
-            } else alert(data.message);
-          })
-        : dbAPI.post("/signin", { name, password }).then((response) => {
-            const data = response.data;
-            if (data.signin) {
-              auth.login(data.token);
-              router.push("/");
-            } else alert(data.message);
-          })
-      : alert("Preencha todos os campos!");
+  async function handleSubmit() {
+    if (signUp) {
+      try {
+        const { error } = await authService.signUp({ email, password });
+
+        if (error) throw new Error(String(error));
+        toast.success("Successful sign up!");
+        router.push("/");
+      } catch (err) {
+        console.log("err", err);
+        toast.error("Error on signup! Please try again later");
+      }
+    } else {
+      try {
+        const { error } = await authService.login({ email, password });
+
+        if (error) throw new Error(String(error));
+        toast.success("Successful login!");
+        router.push("/");
+      } catch (err) {
+        console.log("err");
+        toast.error("Error on login! Please try again later");
+      }
+    }
   }
 
   return (
@@ -60,13 +61,13 @@ export const Login = () => {
               <h1>{signUp ? "Sign up" : "Sign in"}</h1>
               <form>
                 <div>
-                  <p>Name:</p>
+                  <p>E-mail:</p>
                   <input
-                    type="text"
-                    name="username"
-                    placeholder="Name"
-                    onChange={(event) => setUsername(event.target.value)}
-                    value={username}
+                    type="email"
+                    name="email"
+                    placeholder="example@email.com"
+                    onChange={(event) => setEmail(event.target.value)}
+                    value={email}
                   />
                 </div>
                 <div>

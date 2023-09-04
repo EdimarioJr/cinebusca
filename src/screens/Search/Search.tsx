@@ -9,10 +9,10 @@ import { useRouter } from "next/router";
 import { Footer, Header, MovieCard } from "@/components";
 import { Movie } from "@/models";
 
-export const SearchResults = () => {
+export const SearchResultsScreen = () => {
   const [movies, setMovies] = useState([] as Movie[]);
   const [totalPages, setTotalPages] = useState(0);
-  // the actual page always begin in 1
+
   const [actualPage, setActualPage] = useState(1);
   const router = useRouter();
 
@@ -23,8 +23,8 @@ export const SearchResults = () => {
   }, [router.pathname]);
 
   useEffect(() => {
-    // getting the search query from the location and formatting
-    const query = router.query ? router.query : "";
+    const query = router.query ? router.query.search : "";
+    console.log(query);
     let isMounted = true;
     (async () => {
       await MovieData.searchMovie(query as string, actualPage).then(

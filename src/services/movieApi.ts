@@ -9,8 +9,6 @@ const movieApi = axios.create({
   },
 });
 
-console.log(process.env.MOVIE_API_KEY);
-
 class MovieService {
   async getPopularMovies(page?: number): Promise<Movie[]> {
     if (page) {
@@ -29,7 +27,7 @@ class MovieService {
   }
 
   async getMovieCast(
-    idMovie: string
+    idMovie: number
   ): Promise<{ cast: CastPerson[]; crew: Crew[] }> {
     const response = await movieApi.get(`movie/${idMovie}/credits`);
 
@@ -42,13 +40,18 @@ class MovieService {
     return response.data.results;
   }
 
-  async getMovieImages(idMovie: string): Promise<{
+  async getMovieImages(idMovie: number): Promise<{
     backdrops: MovieImage[];
     posters: MovieImage[];
     logos: MovieImage[];
   }> {
     const response = await movieApi.get(`movie/${idMovie}/images`);
-    return response.data;
+
+    return {
+      backdrops: response.data.backdrops.slice(0, 5),
+      posters: response.data.posters.slice(0, 5),
+      logos: response.data.logos.slice(0, 5),
+    };
   }
 
   async searchMovie(query: string, page: number) {

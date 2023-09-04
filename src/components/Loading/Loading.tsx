@@ -1,7 +1,6 @@
 import React from "react";
 import { Ball, LoadingContainer } from "./styles";
 
-// the Container will apply a delay ( staggerChildren) in the children animation
 const loadingContainerVariants = {
   start: {
     transition: {

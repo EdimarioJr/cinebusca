@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from "react";
 import { MovieContainer } from "./styles";
 import Link from "next/link";
@@ -17,18 +18,16 @@ export const MovieCard = ({
   idMovie,
 }: MovieCardProps) => {
   return (
-    <Link href={`/Movie/${idMovie}`} style={{ textDecoration: "none" }}>
+    <Link href={`/movie/${idMovie}`} style={{ textDecoration: "none" }}>
       <MovieContainer>
         <img
           src={
-            poster
-              ? `https://image.tmdb.org/t/p/w342/${poster}`
-              : (NoImage as unknown as string)
+            poster ? `https://image.tmdb.org/t/p/w342/${poster}` : NoImage.src
           }
           alt={title}
         />
         <div className="legend">
-          <h3>{score}</h3>
+          <h3>{score.toFixed(2)}</h3>
           <p>{title}</p>
         </div>
       </MovieContainer>

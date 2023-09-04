@@ -73,7 +73,10 @@ export const WatchlistButton = styled(CommonButton)`
   background-color: #05a6da;
 `;
 
-export const UserNav = styled(motion.nav)`
+export const UserNav = styled(motion.nav)<{
+  $watchlist?: boolean;
+  $review?: boolean;
+}>`
   width: 100%;
   display: flex;
   flex-direction: row;

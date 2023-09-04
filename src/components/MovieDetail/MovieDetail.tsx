@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from "react";
 import {
   MovieContainer,
@@ -6,11 +7,15 @@ import {
   WatchButton,
   ReviewButton,
 } from "./styles";
-import dbAPI from "@/services/dbApi";
-import auth from "@/services/auth";
 import { motion } from "framer-motion";
 import { upAnimation, opacityAnimation, CommonButton } from "@/styles/globals";
 import { ReviewInput } from "./ReviewInput";
+import { useUser } from "@supabase/auth-helpers-react";
+import { watchlistService } from "@/services";
+import { toast } from "react-toastify";
+import { SP } from "next/dist/shared/lib/utils";
+import { Spinner } from "../Spinner";
+import { Watchlist } from "@/models/watchlist";
 
 export type MovieDetailProps = {
   poster_path: string;
@@ -37,45 +42,63 @@ export const MovieDetail = ({
   release_date,
   director,
 }: MovieDetailProps) => {
-  /* 
-    flags that indicates if the movie is in the user watchlist already/
-    if the user want to write a review bout the movie
-  */
-  const [inWatchlist, setInWatchlist] = useState(false);
+  const [watchlist, setWatchlist] = useState<Watchlist | null>(null);
   const [reviewMode, setReviewMode] = useState(false);
+  const [loadingWatchlist, setLoadingWatchlist] = useState(false);
+
+  const user = useUser();
 
   useEffect(() => {
-    // everytime that the movie change the mode review is reseted
-    setReviewMode(false);
     (async () => {
-      // if the sessionStorage has a valid token
-      if (auth.isAuthenticated()) {
-        dbAPI.get("/watchlist").then((response: any) => {
-          const { watchlist } = response.data;
-          /* if DB returns a succesful watchlist operation flag  &&
-          if the movie is in watchlist */
-          if (watchlist && watchlist.includes(String(id))) {
-            setInWatchlist(true);
-          } else setInWatchlist(false);
-        });
-      }
-    })();
-  }, [id]);
+      if (user) {
+        try {
+          const watchlist = await watchlistService.getMovieWatchlist({
+            user: user.id,
+            movieId: id,
+          });
 
-  async function handleAddWatchlist() {
-    if (auth.isAuthenticated()) {
-      // if the movie is already in the watchlist, will delete
-      if (inWatchlist) {
-        await dbAPI.delete("/watchlist", { params: { idMovie: id } });
-        setInWatchlist(false);
-      } else {
-        // if has a valid ID
-        if (id) {
-          await dbAPI.post("/watchlist", { idMovie: id });
-          setInWatchlist(true);
+          setWatchlist(watchlist);
+        } catch (err) {
+          toast.error(`Error checking if it's on the watchlist: ${err}`);
         }
       }
-    } else alert("Do the login to perform this operation!");
+    })();
+  }, [id, user]);
+
+  async function handleAddWatchlist() {
+    if (user && id) {
+      setLoadingWatchlist(true);
+      try {
+        const newWatchlist = await watchlistService.addInWatchlist({
+          user: user.id,
+          movieId: id,
+        });
+
+        setWatchlist(newWatchlist);
+        toast.success(`Movie added to your watchlist!`);
+      } catch (err) {
+        toast.error(`Error adding movie on watchlist: ${err}`);
+      } finally {
+        setLoadingWatchlist(false);
+      }
+    }
+  }
+
+  async function handleDeleteFromWatchlist() {
+    if (user && id && watchlist) {
+      setLoadingWatchlist(true);
+      try {
+        await watchlistService.deleteFromWatchlist({
+          id: watchlist.id,
+        });
+        setWatchlist(null);
+        toast.success(`Movie removed from your watchlist!`);
+      } catch (err) {
+        toast.error(`Error deleting movie from watchlist: ${err}`);
+      } finally {
+        setLoadingWatchlist(false);
+      }
+    }
   }
 
   return (
@@ -115,22 +138,32 @@ export const MovieDetail = ({
                   <h1>
                     {title} <span id="director">by {director}</span>
                   </h1>
-                  {auth.isAuthenticated() ? (
+                  {user ? (
                     <nav className="rowButtons">
-                      <WatchButton onClick={handleAddWatchlist}>
-                        {inWatchlist
-                          ? "Remove from Watchlist"
-                          : "Add to your Watchlist"}
+                      <WatchButton
+                        onClick={() =>
+                          watchlist
+                            ? handleDeleteFromWatchlist()
+                            : handleAddWatchlist()
+                        }
+                      >
+                        {loadingWatchlist ? (
+                          <Spinner boxSize="1.5rem" />
+                        ) : watchlist ? (
+                          "Remove from Watchlist"
+                        ) : (
+                          "Add to your Watchlist"
+                        )}
                       </WatchButton>
                       <ReviewButton onClick={() => setReviewMode(true)}>
                         Review
                       </ReviewButton>
                     </nav>
                   ) : (
-                    ""
+                    <></>
                   )}
 
-                  <h2>{vote_average}</h2>
+                  <h2>{vote_average.toFixed(2)}</h2>
                   <p className="description">{overview}</p>
 
                   <div className="genres">

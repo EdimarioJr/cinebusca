@@ -30,12 +30,13 @@ export const Recommendations = ({
 
   return (
     <RecommendationsContainer>
-      <h1>
-        If you like <span>{movieTitle}</span>, you would like these...
-      </h1>
-      <div className="recommendation-grid">
-        {recommendations
-          ? recommendations.slice(0, 8).map((movie, index) => {
+      {recommendations.length ? (
+        <>
+          <h1>
+            If you like <span>{movieTitle}</span>, you would like these...
+          </h1>
+          <div className="recommendation-grid">
+            {recommendations.slice(0, 12).map((movie, index) => {
               const { id, original_title, vote_average, poster_path } = movie;
               return (
                 <MovieCard
@@ -46,9 +47,12 @@ export const Recommendations = ({
                   key={index}
                 />
               );
-            })
-          : ""}
-      </div>
+            })}
+          </div>
+        </>
+      ) : (
+        <></>
+      )}
     </RecommendationsContainer>
   );
 };

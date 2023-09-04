@@ -8,10 +8,9 @@ export const SearchInput = () => {
 
   function submitSearch() {
     if (search) {
-      // redirects to the search page with the query that the page will resolve
       router.push({
         pathname: "/search",
-        search: search,
+        query: { search },
       });
     } else alert("The search is empty!");
   }
@@ -24,7 +23,9 @@ export const SearchInput = () => {
         value={search}
         onChange={(event) => setSearch(event.target.value)}
       />
-      <button onClick={submitSearch}>Go!</button>
+      <button onClick={submitSearch} disabled={!search}>
+        Go!
+      </button>
     </DivSearch>
   );
 };

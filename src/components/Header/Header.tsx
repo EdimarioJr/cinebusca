@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, CommonButton } from "@/styles/globals";
 import { HeaderRow, InputsRow, UserNav } from "./styles";
 import Link from "next/link";
 import CineBuscaLogo from "../../assets/cinebusca.png";
-import auth from "@/services/auth";
+import { authService } from "@/services/auth";
 import { motion, AnimatePresence } from "framer-motion";
 import { SearchInput } from "./SearchInput";
+import Image from "next/image";
+import { useUser } from "@supabase/auth-helpers-react";
 
 export type HeaderProps = {
   watchlist?: boolean;
@@ -13,22 +15,26 @@ export type HeaderProps = {
 };
 
 export const Header = ({ watchlist, review }: HeaderProps) => {
-  const [isLogged, setIsLogged] = useState(auth.isAuthenticated());
+  const user = useUser();
 
   function handleLogout() {
-    auth.logout();
-    setIsLogged(false);
+    authService.logout();
   }
 
   return (
     <Container>
       <HeaderRow>
         <Link href="/" style={{ textDecoration: "none" }}>
-          <img src={CineBuscaLogo as unknown as string} alt="logo cinebusca" />
+          <Image
+            width={100}
+            height={100}
+            src={CineBuscaLogo as unknown as string}
+            alt="logo cinebusca"
+          />
         </Link>
         <InputsRow>
           <SearchInput />
-          {isLogged ? (
+          {user ? (
             <CommonButton onClick={handleLogout}>Logout</CommonButton>
           ) : (
             <Link href="/login" style={{ textDecoration: "none" }}>
@@ -38,7 +44,7 @@ export const Header = ({ watchlist, review }: HeaderProps) => {
         </InputsRow>
       </HeaderRow>
       <AnimatePresence>
-        {isLogged && (
+        {user && (
           <UserNav
             key="nav"
             animate={{ opacity: 1 }}
