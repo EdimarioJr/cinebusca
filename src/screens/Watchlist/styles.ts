@@ -11,8 +11,9 @@ export const WatchlistContainer = styled.main`
 
   .grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-gap: 20px;
+    grid-template-columns: repeat(5, 1fr);
+    grid-row-gap: 30px;
+    transition: all 0.5s;
   }
 
   .card {
@@ -34,9 +35,8 @@ export const WatchlistContainer = styled.main`
   }
 `;
 
-export const RemoveButton = styled(CommonButton)<{ id: number }>`
-  width: 100%;
-  margin-top: 5px;
+export const RemoveButton = styled(CommonButton)<{ id: string }>`
+  margin-top: 10px;
   background-color: #fc0349;
   border-radius: 7px;
 

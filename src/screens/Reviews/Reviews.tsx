@@ -15,37 +15,31 @@ export const ReviewsScreen = () => {
 
   useEffect(() => {
     (async () => {
-      getUserReviews();
-    })();
-  }, []);
-
-  async function getUserReviews() {
-    if (user) {
-      setIsLoading(true);
-      await reviewService
-        .getUserReviews({ userId: user.id })
-        .then((response) => {
-          const reviews = response;
-          if (reviews) {
-            setReviews(reviews);
-            setIsLoading(false);
-          }
+      if (user) {
+        setIsLoading(true);
+        const reviews = await reviewService.getUserReviews({
+          userId: user.id,
         });
-    }
-  }
+
+        if (reviews) {
+          setReviews(reviews);
+          setIsLoading(false);
+        }
+      }
+    })();
+  }, [user]);
 
   async function handleDeleteReview(id: string) {
     if (user) {
       try {
         await reviewService.deleteReview({ id });
-        getUserReviews();
+        const newReviews = [...reviews].filter((review) => review.id !== id);
+        setReviews(newReviews);
         toast.success("Review deleted!");
       } catch (err) {
         toast.error("Error deleting the review");
       }
     }
-
-    getUserReviews();
   }
 
   return (

@@ -11,8 +11,10 @@ import {
   Header,
   Loading,
   MovieCard,
+  Spinner,
 } from "@/components";
 import { Movie } from "@/models";
+import { toast } from "react-toastify";
 
 const GRID_BEGIN_PAGE = 2;
 
@@ -20,20 +22,30 @@ export function Homepage() {
   const [movies, setMovies] = useState([] as Movie[]);
   const [movieImages, setMovieImages] = useState([] as CarouselMovieImage[]);
   const [page, setPage] = useState(GRID_BEGIN_PAGE);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingMovieImages, setIsLoadingMovieImages] = useState(false);
+  const [isLoadingMovies, setIsLoadingMovies] = useState(false);
 
   useEffect(() => {
     (async () => {
-      await MovieData.getPopularMovies(page).then((response) => {
-        setMovies((oldMovies) => [...oldMovies, ...response]);
-      });
+      try {
+        setIsLoadingMovies(true);
+        const response = await MovieData.getPopularMovies(page);
+        setMovies((oldMovies) => {
+          return [...oldMovies, ...response];
+        });
+        setIsLoadingMovies(false);
+      } catch {
+        toast.error("Error loading the movies");
+        setIsLoadingMovies(false);
+      }
     })();
   }, [page]);
 
   useEffect(() => {
     (async () => {
-      await MovieData.getPopularMovies().then((response) => {
-        console.log("e", response);
+      try {
+        setIsLoadingMovieImages(true);
+        const response = await MovieData.getPopularMovies();
         const formattedImages: CarouselMovieImage[] = response.map((movie) => ({
           src: `https://image.tmdb.org/t/p/w342/${
             movie.poster_path ? movie.poster_path : movie.backdrop_path
@@ -42,15 +54,18 @@ export function Homepage() {
           link: `/movie/${movie.id}`,
         }));
         setMovieImages(formattedImages);
-        setIsLoading(false);
-      });
+        setIsLoadingMovieImages(false);
+      } catch (err) {
+        toast.error("Error loading the movies");
+        setIsLoadingMovieImages(false);
+      }
     })();
   }, []);
 
   return (
     <>
       <Header />
-      {isLoading ? (
+      {isLoadingMovieImages ? (
         <Loading />
       ) : (
         <>
@@ -85,11 +100,11 @@ export function Homepage() {
               </section>
               <LoadMore
                 onClick={() => {
-                  let newPage = page + 1;
+                  const newPage = page + 1;
                   setPage(newPage);
                 }}
               >
-                LOAD MORE!
+                {isLoadingMovies ? <Spinner /> : "Load more!"}
               </LoadMore>
             </Main>
           </Container>

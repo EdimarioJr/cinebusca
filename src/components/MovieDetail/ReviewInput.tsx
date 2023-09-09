@@ -43,12 +43,13 @@ export const ReviewInput = ({ idMovie, isReview }: ReviewInputProps) => {
     if (user) {
       setLoading(true);
       try {
-        await reviewService.createReview({
+        const newReview = await reviewService.createReview({
           user: user.id,
           movieId: idMovie,
           review: reviewText,
           date: new Date().toISOString(),
         });
+        setReviewApi(newReview);
         toast.success("Success on creating the review!");
       } catch {
         toast.error("Creating Review error!");

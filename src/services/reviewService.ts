@@ -27,7 +27,7 @@ class ReviewService {
       .eq("user", userId);
 
     if (error) throw new Error(error.message);
-    console.log("a", data);
+
     return data;
   }
 
@@ -58,12 +58,20 @@ class ReviewService {
     return data.length ? (data[0] as Review) : null;
   }
 
-  async createReview({ user, movieId, review, date }: CreateReview) {
-    const { error } = await supabase
+  async createReview({
+    user,
+    movieId,
+    review,
+    date,
+  }: CreateReview): Promise<Review> {
+    const { data, error } = await supabase
       .from("review")
-      .insert({ movieId, user, review, date });
+      .insert({ movieId, user, review, date })
+      .select();
 
     if (error) throw new Error(error.message);
+
+    return data[0] as unknown as Review;
   }
 
   async editReview({ id, review, date }: UpdateReview) {

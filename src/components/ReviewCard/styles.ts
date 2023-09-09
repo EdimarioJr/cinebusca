@@ -16,9 +16,12 @@ export const ReviewContainer = styled(motion.section)`
   .movieInfo {
     overflow: auto;
     color: white;
-    padding-right: 15px;
-    padding-left: 10px;
+    padding: 0 15px;
+    padding-bottom: 10px;
     background-color: #383d48;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 
     h3 {
       margin-top: 20px;
@@ -27,10 +30,11 @@ export const ReviewContainer = styled(motion.section)`
 
     h4 {
       font-weight: 300;
+      margin-bottom: 20px;
     }
 
     p {
-      height: calc(100% - 130px);
+      flex: 1;
       font-weight: 500;
       overflow: auto;
       margin-bottom: 10px;

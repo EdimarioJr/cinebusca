@@ -1,36 +1,40 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, MouseEvent } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
-import { authService } from "@/services/auth";
-import dbAPI from "@/services/dbApi";
+
 import MovieData from "@/services/movieApi";
 
 import { ContainerPages, opacityAnimation } from "@/styles/globals";
 import { Footer, Header, Loading, MovieCard } from "@/components";
-import { Movie } from "@/models";
+import { MovieDetails } from "@/models";
 import { WatchlistContainer, RemoveButton } from "./styles";
 import { useUser } from "@supabase/auth-helpers-react";
 import { watchlistService } from "@/services";
+import { toast } from "react-toastify";
+
+type MovieDetailsWatchlist = MovieDetails & { idWatchlist: string };
 
 export function WatchlistScreen() {
-  const [movies, setMovies] = useState([] as Movie[]);
+  const [movies, setMovies] = useState([] as MovieDetailsWatchlist[]);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const user = useUser();
 
-  async function handleRemove(event: any) {
+  async function handleRemove(idWatchlist: string) {
     if (user) {
-      const idMovie = event.target.id;
-      const response = await dbAPI.delete("/watchlist", {
-        params: { idMovie },
-      });
-      if (response.data.watchlist) {
-        // if the delete op was successful, it will update the local movies watchlist state
-        const newMovies = [] as Movie[];
-        movies.forEach((movie) => {
-          if (movie) if (movie.id !== Number(idMovie)) newMovies.push(movie);
+      try {
+        await watchlistService.deleteFromWatchlist({
+          id: idWatchlist,
         });
+
+        const newMovies = movies.filter(
+          (movie) => movie.idWatchlist !== idWatchlist
+        );
+
         setMovies(newMovies);
+        toast.success("Movie removed from watchlist");
+      } catch {
+        toast.error("Error removing from watchlist");
       }
     }
   }
@@ -39,26 +43,37 @@ export function WatchlistScreen() {
     (async () => {
       if (user) {
         setIsLoading(true);
-        watchlistService
-          .getWatchlist({ userId: user.id })
-          .then(async (response) => {
-            const watchlist = response;
-            if (watchlist) {
-              if (watchlist.length > 0) {
-                // getting each movie info from the movie api
-                const moviesWatchlist = await Promise.all(
-                  watchlist.map(async (current) => {
-                    if (current) {
-                      const aux = await MovieData.getMovie(current.movieId);
-                      return aux;
-                    }
-                  })
-                );
-                setMovies(moviesWatchlist as any);
-              }
-              setIsLoading(false);
-            }
+        try {
+          const watchlist = await watchlistService.getWatchlist({
+            userId: user.id,
           });
+
+          if (watchlist.length > 0) {
+            const moviesWatchlist = await Promise.allSettled(
+              watchlist.map(async (current) => {
+                if (current) {
+                  const aux = await MovieData.getMovie(current.movieId);
+                  return { idWatchlist: current.id, ...aux };
+                }
+              })
+            );
+
+            setMovies(
+              moviesWatchlist
+                .filter((promise) => promise.status === "fulfilled")
+                .map(
+                  (promise) =>
+                    (promise as PromiseFulfilledResult<MovieDetailsWatchlist>)
+                      .value
+                )
+            );
+
+            setIsLoading(false);
+          }
+        } catch {
+          toast.error("Error fetching the watchlist");
+          setIsLoading(false);
+        }
       }
     })();
   }, [router, user]);
@@ -87,8 +102,11 @@ export function WatchlistScreen() {
                       score={movie.vote_average}
                       poster={movie.poster_path}
                     />
-                    <RemoveButton id={movie.id} onClick={handleRemove}>
-                      Remove from watchlist
+                    <RemoveButton
+                      id={movie.idWatchlist}
+                      onClick={() => handleRemove(movie.idWatchlist)}
+                    >
+                      Remove
                     </RemoveButton>
                   </motion.div>
                 ))}
