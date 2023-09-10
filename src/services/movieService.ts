@@ -1,11 +1,8 @@
 import { CastPerson, Crew, MovieDetails, MovieImage } from "@/models";
 import { Movie } from "@/models/movie";
-import { isRejectedWithValue } from "@reduxjs/toolkit";
-import type { MiddlewareAPI, Middleware } from "@reduxjs/toolkit";
 
 import { createApi, fetchBaseQuery, retry } from "@reduxjs/toolkit/query/react";
 import { CarouselMovieImage } from "@/components";
-import { toast } from "react-toastify";
 
 export type MovieImagesResponse = {
   backdrops: MovieImage[];
