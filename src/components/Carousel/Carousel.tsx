@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { DivCarousel } from "./styles";
 import Carousel from "nuka-carousel";
 import Link from "next/link";
-import MovieData from "../../services/movieApi";
+import MovieData from "../../services/movieService";
 import { Loading } from "..";
 import { Movie, MovieImage } from "@/models";
 import { ImageResponse } from "next/server";

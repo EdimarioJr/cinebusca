@@ -4,9 +4,11 @@ export type Review = {
   date: string;
   movieId: number;
   user: string;
+  moviePoster: string;
+  movieTitle: string;
 };
 
-export type CreateReview = Pick<Review, "review" | "movieId" | "user" | "date">;
+export type CreateReview = Omit<Review, "id">;
 
 export type DeleteReview = Pick<Review, "id">;
 

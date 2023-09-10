@@ -3,7 +3,7 @@ import { LoginContainer } from "./styles";
 
 import { ContainerPages, CommonButton } from "@/styles/globals";
 
-import { authService } from "@/services/auth";
+import { authService } from "@/services";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import { Header, Footer } from "@/components";

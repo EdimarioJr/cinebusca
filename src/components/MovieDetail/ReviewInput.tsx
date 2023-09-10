@@ -1,78 +1,79 @@
 import React, { useState, useEffect } from "react";
-
 import { ReviewContainer, AddReview, CancelReview } from "./styles";
-import { useRouter } from "next/router";
 import { useUser } from "@supabase/auth-helpers-react";
 import { toast } from "react-toastify";
-import { reviewService } from "@/services";
-import { Review } from "@/models/review";
-import { Loading, Spinner } from "..";
+import {
+  reviewService,
+  useCreateReviewMutation,
+  useEditReviewMutation,
+  useGetMovieReviewQuery,
+} from "@/services";
+import { Spinner } from "..";
 
 export type ReviewInputProps = {
   idMovie: number;
   isReview: (value: boolean) => void;
+  moviePoster: string;
+  movieTitle: string;
 };
 
-export const ReviewInput = ({ idMovie, isReview }: ReviewInputProps) => {
+export const ReviewInput = ({
+  idMovie,
+  isReview,
+  moviePoster,
+  movieTitle,
+}: ReviewInputProps) => {
   const [reviewText, setReviewText] = useState("");
-  const [reviewApi, setReviewApi] = useState<Review | null>(null);
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
+
   const user = useUser();
 
+  const { data: reviewApi } = useGetMovieReviewQuery({
+    movieId: idMovie,
+    userId: user?.id ?? "",
+  });
+
+  const [createReview, { isLoading: isLoadingCreateReview }] =
+    useCreateReviewMutation();
+
+  const [editReview, { isLoading: isLoadingEditReview }] =
+    useEditReviewMutation();
+
   useEffect(() => {
-    (async () => {
-      if (user) {
-        try {
-          const reviewApi = await reviewService.getMovieReview({
-            userId: user.id,
-            movieId: idMovie,
-          });
-          if (reviewApi) {
-            setReviewText(reviewApi.review);
-            setReviewApi(reviewApi);
-          }
-        } catch (err) {
-          toast.error(`Error fetching the review: ${err} `);
-        }
-      }
-    })();
-  }, [idMovie, router, user]);
+    if (reviewApi) {
+      setReviewText(reviewApi.review);
+    }
+  }, [reviewApi]);
 
   async function handleCreateReview() {
     if (user) {
-      setLoading(true);
       try {
-        const newReview = await reviewService.createReview({
+        await createReview({
           user: user.id,
           movieId: idMovie,
           review: reviewText,
+          moviePoster,
+          movieTitle,
           date: new Date().toISOString(),
-        });
-        setReviewApi(newReview);
+        }).unwrap();
+
         toast.success("Success on creating the review!");
       } catch {
         toast.error("Creating Review error!");
-      } finally {
-        setLoading(false);
       }
     }
   }
 
   async function handleEditReview() {
     if (user && reviewApi) {
-      setLoading(true);
       try {
-        await reviewService.editReview({
+        await editReview({
           id: reviewApi.id,
           review: reviewText,
           date: new Date().toISOString(),
-        });
+        }).unwrap();
         toast.success("Success on editing the review!");
       } catch {
         toast.error("Editing Review error!");
-      } finally {
-        setLoading(false);
       }
     }
   }
@@ -95,7 +96,7 @@ export const ReviewInput = ({ idMovie, isReview }: ReviewInputProps) => {
             reviewApi ? handleEditReview() : handleCreateReview()
           }
         >
-          {loading ? (
+          {isLoadingCreateReview || isLoadingEditReview ? (
             <Spinner boxSize="1.5rem" />
           ) : reviewApi ? (
             "Edit review"

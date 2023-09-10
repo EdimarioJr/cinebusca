@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Container, CommonButton } from "@/styles/globals";
 import { HeaderRow, InputsRow, UserNav } from "./styles";
 import Link from "next/link";
 import CineBuscaLogo from "../../assets/cinebusca.png";
-import { authService } from "@/services/auth";
+import { authService } from "@/services";
 import { motion, AnimatePresence } from "framer-motion";
 import { SearchInput } from "./SearchInput";
 import Image from "next/image";

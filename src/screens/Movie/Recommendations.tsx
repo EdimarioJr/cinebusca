@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
-import MovieData from "../../services/movieApi";
+import React from "react";
+import { useGetMovieRecommendationsQuery } from "../../services/movieService";
 import { RecommendationsContainer } from "./styles";
 import { MovieCard } from "@/components";
-import { Movie } from "@/models";
 
 export type RecommendationsProps = {
   idMovie: number;
@@ -13,24 +12,11 @@ export const Recommendations = ({
   idMovie,
   movieTitle,
 }: RecommendationsProps) => {
-  const [recommendations, setRecommendations] = useState([] as Movie[]);
-
-  useEffect(() => {
-    let isMounted = true;
-    (async () => {
-      await MovieData.getMovieRecommendations(idMovie).then((response) => {
-        if (isMounted) setRecommendations(response);
-      });
-    })();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [idMovie]);
+  const { data: recommendations } = useGetMovieRecommendationsQuery(idMovie);
 
   return (
     <RecommendationsContainer>
-      {recommendations.length ? (
+      {recommendations?.length ? (
         <>
           <h1>
             If you like <span>{movieTitle}</span>, you would like these...

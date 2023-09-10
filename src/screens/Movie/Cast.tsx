@@ -1,9 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { CastContainer, CastCards } from "./styles";
 import NoImage from "@/assets/no-image.jpg";
-import MovieData from "@/services/movieApi";
-import { CastPerson } from "@/models";
+import { useGetMovieCastQuery } from "@/services";
 
 export type CastProps = {
   idMovie: number;
@@ -11,26 +10,16 @@ export type CastProps = {
 };
 
 export const Cast = ({ idMovie, putDirector }: CastProps) => {
-  const [cast, setCast] = useState([] as CastPerson[]);
+  const { data } = useGetMovieCastQuery(idMovie);
 
   useEffect(() => {
-    let isMounted = true;
-    (async () => {
-      await MovieData.getMovieCast(idMovie).then((response) => {
-        if (isMounted) {
-          setCast(response.cast);
-
-          response.crew.forEach((current) => {
-            if (current.job === "Director") putDirector(current.name);
-          });
-        }
+    if (data)
+      data?.crew.forEach((current) => {
+        if (current.job === "Director") putDirector(current.name);
       });
-    })();
+  }, [idMovie, putDirector, data]);
 
-    return () => {
-      isMounted = false;
-    };
-  }, [idMovie, putDirector]);
+  const cast = data?.cast ?? [];
 
   return (
     <CastContainer>

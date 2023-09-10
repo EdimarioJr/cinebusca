@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { ContainerPages, LoadMore, opacityAnimation } from "@/styles/globals";
 
 import { SearchContainer } from "./styles";
-import MovieData from "@/services/movieApi";
+import { useLazySearchMovieQuery } from "@/services";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import { Footer, Header, MovieCard } from "@/components";
@@ -16,36 +16,35 @@ export const SearchResultsScreen = () => {
   const [actualPage, setActualPage] = useState(1);
   const router = useRouter();
 
+  const [trigger] = useLazySearchMovieQuery();
+
   useEffect(() => {
-    // reset the states after a new search
+    console.log("ai");
     setActualPage(1);
-    setMovies([]);
-  }, [router.pathname]);
+  }, [router.query.search]);
 
   useEffect(() => {
-    const query = router.query ? router.query.search : "";
-    console.log(query);
-    let isMounted = true;
-    (async () => {
-      await MovieData.searchMovie(query as string, actualPage).then(
-        (response) => {
-          if (isMounted) {
-            // same logic behind the Homepage pagination
-            if (actualPage === 1) {
-              setTotalPages(response.total_pages);
-              setMovies(response.results);
-            } else {
-              setMovies((oldMovies) => [...oldMovies, ...response.results]);
-            }
-          }
-        }
-      );
-    })();
+    const getSearchedMovies = async () => {
+      const response = await trigger({
+        query: (router.query?.search as string) ?? "",
+        page: actualPage,
+      });
 
-    return () => {
-      isMounted = false;
+      if (response.data) {
+        if (actualPage === 1) {
+          setTotalPages(response.data.total_pages);
+          setMovies(response.data.results);
+        } else {
+          setMovies((oldMovies) => [
+            ...oldMovies,
+            ...(response?.data?.results ?? []),
+          ]);
+        }
+      }
     };
-  }, [router.query, actualPage]);
+
+    getSearchedMovies();
+  }, [actualPage, router.query.search, trigger]);
 
   return (
     <>
@@ -79,7 +78,7 @@ export const SearchResultsScreen = () => {
         </SearchContainer>
 
         {actualPage >= totalPages ? (
-          ""
+          <></>
         ) : (
           <LoadMore onClick={() => setActualPage(actualPage + 1)}>
             Load More Search Results

@@ -1,42 +1,35 @@
-import React, { useState, useEffect } from "react";
-import MovieData from "@/services/movieApi";
+import React from "react";
 
 import { CommonButton } from "@/styles/globals";
 import { ReviewContainer } from "./styles";
 
 export type ReviewCardProps = {
-  idMovie: number;
   id: string;
   review: string;
   deleteReview: (id: string) => void;
   date: string;
+  movieTitle: string;
+  moviePoster: string;
 };
 
 export const ReviewCard = ({
-  idMovie,
   date,
   review,
+  movieTitle,
+  moviePoster,
   id,
   deleteReview,
 }: ReviewCardProps) => {
-  const [movie, setMovie] = useState<any>(null);
-
-  useEffect(() => {
-    (async () => {
-      await MovieData.getMovie(idMovie).then((response) => setMovie(response));
-    })();
-  }, [idMovie]);
-
   return (
     <>
-      {movie && (
+      {movieTitle && (
         <ReviewContainer>
           <img
-            src={`https://image.tmdb.org/t/p/w185/${movie.poster_path}`}
+            src={`https://image.tmdb.org/t/p/w185/${moviePoster}`}
             alt="movie poster"
           />
           <div className="movieInfo">
-            <h3>{movie.original_title}</h3>
+            <h3>{movieTitle}</h3>
             <h4>{new Date(date).toLocaleDateString("pt-BR")}</h4>
             <p>{review}</p>
             <CommonButton onClick={() => deleteReview(id)}>

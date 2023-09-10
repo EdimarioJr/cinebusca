@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import MovieData from "@/services/movieApi";
+import { useGetMovieImagesQuery, useGetMovieQuery } from "@/services";
 import { Gallery } from "./styles";
 import { ContainerPages } from "@/styles/globals";
 import {
-  CarouselMovieImage,
   CineCarousel,
   Footer,
   Header,
@@ -12,42 +11,29 @@ import {
 } from "@/components";
 import { Cast } from "./Cast";
 import { Recommendations } from "./Recommendations";
-import { MovieDetails } from "@/models";
 
 export type MovieProps = {
   id: number;
 };
 
 export const MovieScreen = (props: MovieProps) => {
-  const [movie, setMovie] = useState<MovieDetails | null>(null);
-  const [movieImages, setMovieImages] = useState([] as CarouselMovieImage[]);
   const [director, setDirector] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+
   const [windowWidth, setWindowWidth] = useState(0);
   const idMovie = props.id;
 
-  useEffect(() => {
-    (async () => {
-      setIsLoading(true);
-      try {
-        const [movie, images] = await Promise.all([
-          MovieData.getMovie(idMovie),
-          MovieData.getMovieImages(idMovie),
-        ]);
-        setMovie(movie);
-        const formattedImages: CarouselMovieImage[] = images.backdrops.map(
-          (image) => ({
-            src: `https://image.tmdb.org/t/p/original/${image.file_path}`,
-            alt: image.file_path,
-          })
-        );
-        setMovieImages(formattedImages);
-      } catch {
-        setIsLoading(false);
-      }
-      setIsLoading(false);
-    })();
-  }, [idMovie]);
+  const { data: movie, isLoading: isLoadingMovie } = useGetMovieQuery(idMovie, {
+    skip: !idMovie,
+  });
+
+  const { data: movieImages, isLoading: isLoadingMovieImages } =
+    useGetMovieImagesQuery(idMovie, { skip: !idMovie });
+
+  const formattedImages =
+    movieImages?.backdrops.map((image) => ({
+      src: `https://image.tmdb.org/t/p/original/${image.file_path}`,
+      alt: image.file_path,
+    })) ?? [];
 
   useEffect(() => {
     if (typeof window !== undefined) {
@@ -68,15 +54,15 @@ export const MovieScreen = (props: MovieProps) => {
     <>
       <Header />
       <ContainerPages>
-        {!isLoading ? (
+        {!isLoadingMovie && !isLoadingMovieImages ? (
           movie && (
             <>
               <MovieDetail {...{ director, ...movie }} />
               <Cast putDirector={setDirector} idMovie={idMovie} />
-              {windowWidth >= 768 && movieImages.length > 0 && (
+              {windowWidth >= 768 && formattedImages.length > 0 && (
                 <Gallery>
                   <CineCarousel
-                    images={movieImages}
+                    images={formattedImages}
                     defaultNumberOfSlides={1}
                   />
                 </Gallery>

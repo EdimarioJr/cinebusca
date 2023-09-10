@@ -12,7 +12,7 @@ export const SearchInput = () => {
         pathname: "/search",
         query: { search },
       });
-    } else alert("The search is empty!");
+    }
   }
 
   return (

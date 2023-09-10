@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   MovieContainer,
   BackgroundFilter,
@@ -11,11 +11,14 @@ import { motion } from "framer-motion";
 import { upAnimation, opacityAnimation, CommonButton } from "@/styles/globals";
 import { ReviewInput } from "./ReviewInput";
 import { useUser } from "@supabase/auth-helpers-react";
-import { watchlistService } from "@/services";
+import {
+  useAddInWatchlistMutation,
+  useDeleteFromWatchlistMutation,
+  useMovieExistsInWatchlistQuery,
+} from "@/services";
 import { toast } from "react-toastify";
-import { SP } from "next/dist/shared/lib/utils";
+
 import { Spinner } from "../Spinner";
-import { Watchlist } from "@/models/watchlist";
 
 export type MovieDetailProps = {
   poster_path: string;
@@ -42,61 +45,50 @@ export const MovieDetail = ({
   release_date,
   director,
 }: MovieDetailProps) => {
-  const [watchlist, setWatchlist] = useState<Watchlist | null>(null);
   const [reviewMode, setReviewMode] = useState(false);
-  const [loadingWatchlist, setLoadingWatchlist] = useState(false);
 
+  const [addInWatchlist, { isLoading: isLoadingAdd }] =
+    useAddInWatchlistMutation();
+
+  const [deleteFromWatchlist, { isLoading: isLoadingDelete }] =
+    useDeleteFromWatchlistMutation();
   const user = useUser();
 
-  useEffect(() => {
-    (async () => {
-      if (user) {
-        try {
-          const watchlist = await watchlistService.getMovieWatchlist({
-            user: user.id,
-            movieId: id,
-          });
+  const isLoadingWatchlist = isLoadingAdd || isLoadingDelete;
 
-          setWatchlist(watchlist);
-        } catch (err) {
-          toast.error(`Error checking if it's on the watchlist: ${err}`);
-        }
-      }
-    })();
-  }, [id, user]);
+  const { data: watchlistId } = useMovieExistsInWatchlistQuery({
+    movieId: id,
+    user: user?.id ?? "",
+  });
 
   async function handleAddWatchlist() {
     if (user && id) {
-      setLoadingWatchlist(true);
       try {
-        const newWatchlist = await watchlistService.addInWatchlist({
+        await addInWatchlist({
           user: user.id,
           movieId: id,
-        });
+          moviePoster: poster_path,
+          movieTitle: title,
+          movieScore: vote_average,
+        }).unwrap();
 
-        setWatchlist(newWatchlist);
         toast.success(`Movie added to your watchlist!`);
       } catch (err) {
         toast.error(`Error adding movie on watchlist: ${err}`);
-      } finally {
-        setLoadingWatchlist(false);
       }
     }
   }
 
   async function handleDeleteFromWatchlist() {
-    if (user && id && watchlist) {
-      setLoadingWatchlist(true);
+    if (user && id && watchlistId) {
       try {
-        await watchlistService.deleteFromWatchlist({
-          id: watchlist.id,
-        });
-        setWatchlist(null);
+        await deleteFromWatchlist({
+          id: watchlistId,
+        }).unwrap();
+
         toast.success(`Movie removed from your watchlist!`);
       } catch (err) {
         toast.error(`Error deleting movie from watchlist: ${err}`);
-      } finally {
-        setLoadingWatchlist(false);
       }
     }
   }
@@ -125,7 +117,12 @@ export const MovieDetail = ({
                 <h1>
                   {title} <span id="director">by {director}</span>
                 </h1>
-                <ReviewInput idMovie={id} isReview={setReviewMode} />
+                <ReviewInput
+                  idMovie={id}
+                  isReview={setReviewMode}
+                  moviePoster={poster_path}
+                  movieTitle={title}
+                />
               </motion.section>
             ) : (
               <>
@@ -142,14 +139,14 @@ export const MovieDetail = ({
                     <nav className="rowButtons">
                       <WatchButton
                         onClick={() =>
-                          watchlist
+                          watchlistId
                             ? handleDeleteFromWatchlist()
                             : handleAddWatchlist()
                         }
                       >
-                        {loadingWatchlist ? (
+                        {isLoadingWatchlist ? (
                           <Spinner boxSize="1.5rem" />
-                        ) : watchlist ? (
+                        ) : watchlistId ? (
                           "Remove from Watchlist"
                         ) : (
                           "Add to your Watchlist"
@@ -179,7 +176,7 @@ export const MovieDetail = ({
                 <div className="footer">
                   <aside>
                     <p>Budget:</p>
-                    <p>{budget}</p>
+                    <p>{budget.toLocaleString("pt-BR", { currency: "BRL" })}</p>
                   </aside>
                   <aside>
                     <p>Duration:</p>

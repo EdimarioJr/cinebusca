@@ -16,65 +16,83 @@ export type InWatchlistParams = BaseWatchlistOperationParams;
 
 export type GetMovieWatchlist = { user: string; movieId: number };
 
-class WatchlistService {
-  async getWatchlist({
-    userId,
-  }: GetWatchlistParams): Promise<Watchlist[] | []> {
-    const { data, error } = await supabase
-      .from("watchlist")
-      .select("*")
-      .eq("user", userId);
+import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 
-    if (error) throw new Error(error.message);
+export const watchlistService = createApi({
+  reducerPath: "watchlistService",
+  baseQuery: fakeBaseQuery(),
+  tagTypes: ["Watchlist"],
+  endpoints: (builder) => ({
+    getWatchlist: builder.query<Watchlist[] | [], GetWatchlistParams>({
+      queryFn: async ({ userId }) => {
+        const { data, error } = await supabase
+          .from("watchlist")
+          .select("*")
+          .eq("user", userId);
 
-    return data;
-  }
+        if (error) return { error };
 
-  async getMovieWatchlist({
-    user,
-    movieId,
-  }: GetMovieWatchlist): Promise<Watchlist | null> {
-    const { data, error } = await supabase
-      .from("watchlist")
-      .select("*")
-      .eq("user", user)
-      .eq("movieId", movieId);
+        return { data };
+      },
+      providesTags: [{ type: "Watchlist", id: "LIST" }],
+    }),
+    movieExistsInWatchlist: builder.query<string, GetMovieWatchlist>({
+      queryFn: async ({ user, movieId }) => {
+        const { data, error } = await supabase
+          .from("watchlist")
+          .select("id")
+          .eq("user", user)
+          .eq("movieId", movieId);
 
-    if (error) throw new Error(error.message);
+        if (error) return { error };
 
-    return data.length ? data[0] : null;
-  }
+        return { data: data[0]?.id ?? "" };
+      },
+      providesTags: [{ type: "Watchlist", id: "CHECK" }],
+    }),
+    addInWatchlist: builder.mutation<Watchlist, CreateWatchlist>({
+      queryFn: async ({
+        movieId,
+        user,
+        moviePoster,
+        movieTitle,
+        movieScore,
+      }: CreateWatchlist) => {
+        const { error, data } = await supabase
+          .from("watchlist")
+          .insert({ movieId, user: user, moviePoster, movieTitle, movieScore })
+          .select("*");
 
-  async hasInWatchlist({
-    userId,
-    movieId,
-  }: InWatchlistParams): Promise<boolean> {
-    const { data, error } = await supabase
-      .from("watchlist")
-      .select("*")
-      .eq("user", userId)
-      .eq("movieId", movieId);
+        if (error) return { error };
 
-    if (error) throw new Error(error.message);
+        return { data: data[0] };
+      },
+      invalidatesTags: [
+        { type: "Watchlist", id: "LIST" },
+        { type: "Watchlist", id: "CHECK" },
+      ],
+    }),
+    deleteFromWatchlist: builder.mutation<boolean, DeleteWatchlist>({
+      queryFn: async ({ id }: DeleteWatchlist) => {
+        const { error } = await supabase
+          .from("watchlist")
+          .delete()
+          .eq("id", id);
+        if (error) return { error };
 
-    return Boolean(data?.length);
-  }
+        return { data: true };
+      },
+      invalidatesTags: [
+        { type: "Watchlist", id: "LIST" },
+        { type: "Watchlist", id: "CHECK" },
+      ],
+    }),
+  }),
+});
 
-  async addInWatchlist({ user, movieId }: CreateWatchlist): Promise<Watchlist> {
-    const { error, data } = await supabase
-      .from("watchlist")
-      .insert({ movieId, user: user })
-      .select();
-
-    if (error) throw new Error(error.message);
-
-    return data[0];
-  }
-
-  async deleteFromWatchlist({ id }: DeleteWatchlist) {
-    const { error } = await supabase.from("watchlist").delete().eq("id", id);
-    if (error) throw new Error(error.message);
-  }
-}
-
-export const watchlistService = new WatchlistService();
+export const {
+  useGetWatchlistQuery,
+  useAddInWatchlistMutation,
+  useDeleteFromWatchlistMutation,
+  useMovieExistsInWatchlistQuery,
+} = watchlistService;

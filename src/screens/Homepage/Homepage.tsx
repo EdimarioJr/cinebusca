@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Main } from "./styles";
 import { Container, opacityAnimation, LoadMore } from "@/styles/globals";
-import MovieData from "@/services/movieApi";
+import {
+  useGetPopularMovieImagesQuery,
+  useGetPopularMoviesQuery,
+} from "@/services";
 
 import { motion } from "framer-motion";
 import {
-  CarouselMovieImage,
   CineCarousel,
   Footer,
   Header,
@@ -14,53 +16,21 @@ import {
   Spinner,
 } from "@/components";
 import { Movie } from "@/models";
-import { toast } from "react-toastify";
 
 const GRID_BEGIN_PAGE = 2;
 
 export function Homepage() {
   const [movies, setMovies] = useState([] as Movie[]);
-  const [movieImages, setMovieImages] = useState([] as CarouselMovieImage[]);
   const [page, setPage] = useState(GRID_BEGIN_PAGE);
-  const [isLoadingMovieImages, setIsLoadingMovieImages] = useState(false);
-  const [isLoadingMovies, setIsLoadingMovies] = useState(false);
+
+  const { data: moviesFromApi, isLoading: isLoadingMovies } =
+    useGetPopularMoviesQuery(page);
+  const { data: movieImages, isLoading: isLoadingMovieImages } =
+    useGetPopularMovieImagesQuery();
 
   useEffect(() => {
-    (async () => {
-      try {
-        setIsLoadingMovies(true);
-        const response = await MovieData.getPopularMovies(page);
-        setMovies((oldMovies) => {
-          return [...oldMovies, ...response];
-        });
-        setIsLoadingMovies(false);
-      } catch {
-        toast.error("Error loading the movies");
-        setIsLoadingMovies(false);
-      }
-    })();
-  }, [page]);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        setIsLoadingMovieImages(true);
-        const response = await MovieData.getPopularMovies();
-        const formattedImages: CarouselMovieImage[] = response.map((movie) => ({
-          src: `https://image.tmdb.org/t/p/w342/${
-            movie.poster_path ? movie.poster_path : movie.backdrop_path
-          }`,
-          alt: movie.original_title,
-          link: `/movie/${movie.id}`,
-        }));
-        setMovieImages(formattedImages);
-        setIsLoadingMovieImages(false);
-      } catch (err) {
-        toast.error("Error loading the movies");
-        setIsLoadingMovieImages(false);
-      }
-    })();
-  }, []);
+    if (moviesFromApi) setMovies((old) => [...old, ...moviesFromApi]);
+  }, [moviesFromApi]);
 
   return (
     <>
@@ -74,7 +44,7 @@ export function Homepage() {
             initial="initial"
             variants={opacityAnimation}
           >
-            <CineCarousel images={movieImages} />
+            <CineCarousel images={movieImages ?? []} />
           </motion.div>
           <Container>
             <Main>
