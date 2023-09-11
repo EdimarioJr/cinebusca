@@ -1,36 +1,34 @@
-import React, { useState, useEffect } from "react";
-import { ReviewContainer, AddReview, CancelReview } from "./styles";
+import { useState, useEffect } from "react";
+
 import { useUser } from "@supabase/auth-helpers-react";
 import { toast } from "react-toastify";
 import {
-  reviewService,
   useCreateReviewMutation,
   useEditReviewMutation,
   useGetMovieReviewQuery,
 } from "@/services";
-import { Spinner } from "..";
 
-export type ReviewInputProps = {
+export type UseMovieReviewParams = {
   idMovie: number;
-  isReview: (value: boolean) => void;
   moviePoster: string;
   movieTitle: string;
 };
 
-export const ReviewInput = ({
+export const useMovieReview = ({
   idMovie,
-  isReview,
   moviePoster,
   movieTitle,
-}: ReviewInputProps) => {
+}: UseMovieReviewParams) => {
+  const user = useUser();
   const [reviewText, setReviewText] = useState("");
 
-  const user = useUser();
-
-  const { data: reviewApi } = useGetMovieReviewQuery({
-    movieId: idMovie,
-    userId: user?.id ?? "",
-  });
+  const { data: reviewApi } = useGetMovieReviewQuery(
+    {
+      movieId: idMovie,
+      userId: user?.id ?? "",
+    },
+    { skip: !user?.id }
+  );
 
   const [createReview, { isLoading: isLoadingCreateReview }] =
     useCreateReviewMutation();
@@ -79,33 +77,17 @@ export const ReviewInput = ({
   }
 
   function handleCancelReview() {
-    isReview(false);
     setReviewText("");
   }
 
-  return (
-    <ReviewContainer>
-      <textarea
-        placeholder="Add a review..."
-        onChange={(event) => setReviewText(event.target.value)}
-        value={reviewText}
-      ></textarea>
-      <div className="rowButtons">
-        <AddReview
-          onClick={() =>
-            reviewApi ? handleEditReview() : handleCreateReview()
-          }
-        >
-          {isLoadingCreateReview || isLoadingEditReview ? (
-            <Spinner boxSize="1.5rem" />
-          ) : reviewApi ? (
-            "Edit review"
-          ) : (
-            "Create review"
-          )}
-        </AddReview>
-        <CancelReview onClick={handleCancelReview}>Cancel</CancelReview>
-      </div>
-    </ReviewContainer>
-  );
+  return {
+    handleEditReview,
+    handleCancelReview,
+    handleCreateReview,
+    isLoadingCreateReview,
+    isLoadingEditReview,
+    reviewText,
+    setReviewText,
+    reviewApi,
+  };
 };

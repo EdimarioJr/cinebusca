@@ -1,1 +1,1 @@
-export * from "./MovieDetail";
+export * from "../../screens/Movie/components/MovieDetail/MovieDetail";

@@ -10,9 +10,12 @@ import { ReviewsContainer } from "./styles";
 export const ReviewsScreen = () => {
   const user = useUser();
 
-  const { data: reviews, isLoading } = useGetReviewsQuery({
-    userId: user?.id ?? "",
-  });
+  const { data: reviews, isLoading } = useGetReviewsQuery(
+    {
+      userId: user?.id ?? "",
+    },
+    { skip: !user }
+  );
   const [deleteReview] = useDeleteReviewMutation();
 
   async function handleDeleteReview(id: string) {

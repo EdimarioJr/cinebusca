@@ -18,7 +18,8 @@ import {
 } from "@/services";
 import { toast } from "react-toastify";
 
-import { Spinner } from "../Spinner";
+import { Spinner } from "../../../../components/Spinner";
+import { useMovieReview, useWatchlist } from "@/hooks";
 
 export type MovieDetailProps = {
   poster_path: string;
@@ -47,51 +48,34 @@ export const MovieDetail = ({
 }: MovieDetailProps) => {
   const [reviewMode, setReviewMode] = useState(false);
 
-  const [addInWatchlist, { isLoading: isLoadingAdd }] =
-    useAddInWatchlistMutation();
-
-  const [deleteFromWatchlist, { isLoading: isLoadingDelete }] =
-    useDeleteFromWatchlistMutation();
   const user = useUser();
 
-  const isLoadingWatchlist = isLoadingAdd || isLoadingDelete;
-
-  const { data: watchlistId } = useMovieExistsInWatchlistQuery({
-    movieId: id,
-    user: user?.id ?? "",
+  const {
+    handleCancelReview,
+    handleEditReview,
+    handleCreateReview,
+    reviewText,
+    setReviewText,
+    isLoadingCreateReview,
+    isLoadingEditReview,
+    reviewApi,
+  } = useMovieReview({
+    idMovie: id,
+    moviePoster: poster_path,
+    movieTitle: title,
   });
 
-  async function handleAddWatchlist() {
-    if (user && id) {
-      try {
-        await addInWatchlist({
-          user: user.id,
-          movieId: id,
-          moviePoster: poster_path,
-          movieTitle: title,
-          movieScore: vote_average,
-        }).unwrap();
-
-        toast.success(`Movie added to your watchlist!`);
-      } catch (err) {
-        toast.error(`Error adding movie on watchlist: ${err}`);
-      }
-    }
-  }
-
-  async function handleDeleteFromWatchlist() {
-    if (user && id && watchlistId) {
-      try {
-        await deleteFromWatchlist({
-          id: watchlistId,
-        }).unwrap();
-
-        toast.success(`Movie removed from your watchlist!`);
-      } catch (err) {
-        toast.error(`Error deleting movie from watchlist: ${err}`);
-      }
-    }
-  }
+  const {
+    handleAddWatchlist,
+    handleDeleteFromWatchlist,
+    isLoadingWatchlist,
+    watchlistId,
+  } = useWatchlist({
+    movieId: id,
+    moviePoster: poster_path,
+    movieTitle: title,
+    movieScore: vote_average,
+  });
 
   return (
     <>
@@ -118,10 +102,13 @@ export const MovieDetail = ({
                   {title} <span id="director">by {director}</span>
                 </h1>
                 <ReviewInput
-                  idMovie={id}
-                  isReview={setReviewMode}
-                  moviePoster={poster_path}
-                  movieTitle={title}
+                  reviewExists={Boolean(reviewApi?.id)}
+                  handleCancelReview={handleCancelReview}
+                  handleCreateReview={handleCreateReview}
+                  handleEditReview={handleEditReview}
+                  reviewText={reviewText}
+                  handleChangeReviewText={(value) => setReviewText(value)}
+                  isLoading={isLoadingCreateReview || isLoadingEditReview}
                 />
               </motion.section>
             ) : (

@@ -1,30 +1,32 @@
 import React, { useState, useEffect } from "react";
-import { useGetMovieImagesQuery, useGetMovieQuery } from "@/services";
+import {
+  useGetMovieCastQuery,
+  useGetMovieImagesQuery,
+  useGetMovieQuery,
+  useGetMovieRecommendationsQuery,
+} from "@/services";
 import { Gallery } from "./styles";
 import { ContainerPages } from "@/styles/globals";
-import {
-  CineCarousel,
-  Footer,
-  Header,
-  Loading,
-  MovieDetail,
-} from "@/components";
-import { Cast } from "./Cast";
-import { Recommendations } from "./Recommendations";
+import { CineCarousel, Footer, Header, Loading } from "@/components";
+import { Cast, MovieDetail, Recommendations } from "./components";
 
 export type MovieProps = {
   id: number;
 };
 
+const SCREEN_MIN_GALLERY = 768;
+
 export const MovieScreen = (props: MovieProps) => {
-  const [director, setDirector] = useState("");
+  const idMovie = props.id;
+  const { data } = useGetMovieCastQuery(idMovie);
 
   const [windowWidth, setWindowWidth] = useState(0);
-  const idMovie = props.id;
 
   const { data: movie, isLoading: isLoadingMovie } = useGetMovieQuery(idMovie, {
     skip: !idMovie,
   });
+
+  const { data: recommendations } = useGetMovieRecommendationsQuery(idMovie);
 
   const { data: movieImages, isLoading: isLoadingMovieImages } =
     useGetMovieImagesQuery(idMovie, { skip: !idMovie });
@@ -50,6 +52,13 @@ export const MovieScreen = (props: MovieProps) => {
     setWindowWidth(window.innerWidth);
   }
 
+  const director =
+    data?.crew.find((current) => {
+      return current.job === "Director";
+    })?.name ?? "";
+
+  const cast = data?.cast ?? [];
+
   return (
     <>
       <Header />
@@ -58,18 +67,19 @@ export const MovieScreen = (props: MovieProps) => {
           movie && (
             <>
               <MovieDetail {...{ director, ...movie }} />
-              <Cast putDirector={setDirector} idMovie={idMovie} />
-              {windowWidth >= 768 && formattedImages.length > 0 && (
-                <Gallery>
-                  <CineCarousel
-                    images={formattedImages}
-                    defaultNumberOfSlides={1}
-                  />
-                </Gallery>
-              )}
+              <Cast cast={cast} />
+              {windowWidth >= SCREEN_MIN_GALLERY &&
+                formattedImages.length > 0 && (
+                  <Gallery>
+                    <CineCarousel
+                      images={formattedImages}
+                      defaultNumberOfSlides={1}
+                    />
+                  </Gallery>
+                )}
 
               <Recommendations
-                idMovie={idMovie}
+                recommendations={recommendations ?? []}
                 movieTitle={movie.original_title}
               />
             </>

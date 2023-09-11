@@ -1,26 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useEffect } from "react";
+import React from "react";
 import { CastContainer, CastCards } from "./styles";
 import NoImage from "@/assets/no-image.jpg";
-import { useGetMovieCastQuery } from "@/services";
+
+import { CastPerson } from "@/models";
 
 export type CastProps = {
-  idMovie: number;
-  putDirector: (name: string) => void;
+  cast: CastPerson[];
 };
 
-export const Cast = ({ idMovie, putDirector }: CastProps) => {
-  const { data } = useGetMovieCastQuery(idMovie);
-
-  useEffect(() => {
-    if (data)
-      data?.crew.forEach((current) => {
-        if (current.job === "Director") putDirector(current.name);
-      });
-  }, [idMovie, putDirector, data]);
-
-  const cast = data?.cast ?? [];
-
+export const Cast = ({ cast }: CastProps) => {
   return (
     <CastContainer>
       <h1>Cast</h1>

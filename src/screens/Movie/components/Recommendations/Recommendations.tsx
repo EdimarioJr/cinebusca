@@ -1,19 +1,17 @@
 import React from "react";
-import { useGetMovieRecommendationsQuery } from "../../services/movieService";
 import { RecommendationsContainer } from "./styles";
 import { MovieCard } from "@/components";
+import { Movie } from "@/models";
 
 export type RecommendationsProps = {
-  idMovie: number;
   movieTitle: string;
+  recommendations: Movie[];
 };
 
 export const Recommendations = ({
-  idMovie,
+  recommendations,
   movieTitle,
 }: RecommendationsProps) => {
-  const { data: recommendations } = useGetMovieRecommendationsQuery(idMovie);
-
   return (
     <RecommendationsContainer>
       {recommendations?.length ? (
