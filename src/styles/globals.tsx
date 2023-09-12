@@ -19,8 +19,6 @@ export const GlobalStyle = createGlobalStyle`
     font-size: 16px;
     height: 100%;
     min-height: 100%;
-
-    
   }
 
   @media(max-width: 475px){

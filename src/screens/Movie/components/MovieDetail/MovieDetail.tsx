@@ -11,15 +11,9 @@ import { motion } from "framer-motion";
 import { upAnimation, opacityAnimation, CommonButton } from "@/styles/globals";
 import { ReviewInput } from "./ReviewInput";
 import { useUser } from "@supabase/auth-helpers-react";
-import {
-  useAddInWatchlistMutation,
-  useDeleteFromWatchlistMutation,
-  useMovieExistsInWatchlistQuery,
-} from "@/services";
-import { toast } from "react-toastify";
 
 import { Spinner } from "../../../../components/Spinner";
-import { useMovieReview, useWatchlist } from "@/hooks";
+import { useMovieReview, useMovieWatchlist } from "@/hooks";
 
 export type MovieDetailProps = {
   poster_path: string;
@@ -70,7 +64,7 @@ export const MovieDetail = ({
     handleDeleteFromWatchlist,
     isLoadingWatchlist,
     watchlistId,
-  } = useWatchlist({
+  } = useMovieWatchlist({
     movieId: id,
     moviePoster: poster_path,
     movieTitle: title,

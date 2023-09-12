@@ -2,32 +2,12 @@ import React from "react";
 import { ContainerPages, opacityAnimation } from "@/styles/globals";
 
 import { Footer, Header, Loading, ReviewCard } from "@/components";
-import { useUser } from "@supabase/auth-helpers-react";
-import { useDeleteReviewMutation, useGetReviewsQuery } from "@/services";
-import { toast } from "react-toastify";
+
 import { ReviewsContainer } from "./styles";
+import { useReview } from "@/hooks";
 
 export const ReviewsScreen = () => {
-  const user = useUser();
-
-  const { data: reviews, isLoading } = useGetReviewsQuery(
-    {
-      userId: user?.id ?? "",
-    },
-    { skip: !user }
-  );
-  const [deleteReview] = useDeleteReviewMutation();
-
-  async function handleDeleteReview(id: string) {
-    if (user) {
-      try {
-        await deleteReview({ id }).unwrap();
-        toast.success("Review deleted!");
-      } catch (err) {
-        toast.error("Error deleting the review");
-      }
-    }
-  }
+  const { isLoading, reviews, handleDeleteReview } = useReview();
 
   return (
     <>

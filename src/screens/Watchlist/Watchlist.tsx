@@ -5,34 +5,10 @@ import { ContainerPages, opacityAnimation } from "@/styles/globals";
 import { Footer, Header, Loading, MovieCard } from "@/components";
 
 import { WatchlistContainer, RemoveButton } from "./styles";
-import { useUser } from "@supabase/auth-helpers-react";
-import {
-  useDeleteFromWatchlistMutation,
-  useGetWatchlistQuery,
-} from "@/services";
-import { toast } from "react-toastify";
+import { useWatchlist } from "@/hooks";
 
 export function WatchlistScreen() {
-  const user = useUser();
-
-  const { data: watchlist, isLoading: isLoadingWatchlist } =
-    useGetWatchlistQuery({ userId: user?.id ?? "" });
-
-  const [deleteWatchlist] = useDeleteFromWatchlistMutation();
-
-  async function handleRemove(idWatchlist: string) {
-    if (user) {
-      try {
-        await deleteWatchlist({
-          id: idWatchlist,
-        }).unwrap();
-
-        toast.success("Movie removed from watchlist");
-      } catch {
-        toast.error("Error removing from watchlist");
-      }
-    }
-  }
+  const { isLoadingWatchlist, watchlist, handleRemove } = useWatchlist();
 
   return (
     <>

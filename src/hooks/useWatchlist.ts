@@ -1,78 +1,30 @@
 import { useUser } from "@supabase/auth-helpers-react";
 import {
-  useAddInWatchlistMutation,
   useDeleteFromWatchlistMutation,
-  useMovieExistsInWatchlistQuery,
+  useGetWatchlistQuery,
 } from "@/services";
 import { toast } from "react-toastify";
 
-export type UseWatchlistParams = {
-  movieId: number;
-  moviePoster: string;
-  movieTitle: string;
-  movieScore: number;
-};
-
-export const useWatchlist = ({
-  movieId,
-  moviePoster,
-  movieTitle,
-  movieScore,
-}: UseWatchlistParams) => {
+export const useWatchlist = () => {
   const user = useUser();
 
-  const [addInWatchlist, { isLoading: isLoadingAdd }] =
-    useAddInWatchlistMutation();
+  const { data: watchlist, isLoading: isLoadingWatchlist } =
+    useGetWatchlistQuery({ userId: user?.id ?? "" });
 
-  const [deleteFromWatchlist, { isLoading: isLoadingDelete }] =
-    useDeleteFromWatchlistMutation();
+  const [deleteWatchlist] = useDeleteFromWatchlistMutation();
 
-  const isLoadingWatchlist = isLoadingAdd || isLoadingDelete;
-
-  const { data: watchlistId } = useMovieExistsInWatchlistQuery(
-    {
-      movieId,
-      user: user?.id ?? "",
-    },
-    { skip: !user }
-  );
-
-  async function handleAddWatchlist() {
-    if (user && movieId) {
+  async function handleRemove(idWatchlist: string) {
+    if (user) {
       try {
-        await addInWatchlist({
-          user: user.id,
-          movieId: movieId,
-          moviePoster,
-          movieTitle,
-          movieScore,
+        await deleteWatchlist({
+          id: idWatchlist,
         }).unwrap();
 
-        toast.success(`Movie added to your watchlist!`);
-      } catch (err) {
-        toast.error(`Error adding movie on watchlist: ${err}`);
+        toast.success("Movie removed from watchlist");
+      } catch {
+        toast.error("Error removing from watchlist");
       }
     }
   }
-
-  async function handleDeleteFromWatchlist() {
-    if (user && movieId && watchlistId) {
-      try {
-        await deleteFromWatchlist({
-          id: watchlistId,
-        }).unwrap();
-
-        toast.success(`Movie removed from your watchlist!`);
-      } catch (err) {
-        toast.error(`Error deleting movie from watchlist: ${err}`);
-      }
-    }
-  }
-
-  return {
-    handleDeleteFromWatchlist,
-    handleAddWatchlist,
-    isLoadingWatchlist,
-    watchlistId,
-  };
+  return { handleRemove, watchlist, isLoadingWatchlist };
 };

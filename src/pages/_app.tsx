@@ -8,6 +8,14 @@ import "react-toastify/dist/ReactToastify.css";
 import { supabase } from "@/config";
 import { store } from "@/store/store";
 import { Provider } from "react-redux";
+import { ThemeProvider } from "styled-components";
+
+const theme = {
+  colors: {
+    primary: "#107ee5",
+    secondary: "#20242b",
+  },
+};
 
 export default function App({
   Component,
@@ -25,6 +33,7 @@ export default function App({
       >
         <GlobalStyle />
         <Component {...pageProps} />
+
         <ToastContainer theme="dark" position="top-left" />
       </SessionContextProvider>
     </Provider>
