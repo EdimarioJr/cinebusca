@@ -28,6 +28,11 @@ export type MovieDetailProps = {
   id: number;
 };
 
+const dolar = Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+});
+
 export const MovieDetail = ({
   id,
   poster_path,
@@ -157,7 +162,7 @@ export const MovieDetail = ({
                 <div className="footer">
                   <aside>
                     <p>Budget:</p>
-                    <p>{budget.toLocaleString("pt-BR", { currency: "BRL" })}</p>
+                    <p>{dolar.format(budget)}</p>
                   </aside>
                   <aside>
                     <p>Duration:</p>

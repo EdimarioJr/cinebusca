@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
 
-export const ReviewsContainer = styled(motion.main)`
+export const ReviewsContainer = styled(motion.section)`
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;

@@ -17,12 +17,12 @@ function numberOfSlides(windowWidth: number, defaultNumberOfSlides: number) {
     return defaultNumberOfSlides;
   } else {
     if (windowWidth <= 768) {
-      return 3;
+      return 2;
     }
     if (windowWidth > 768 && windowWidth <= 1152) {
-      return 4;
+      return 3;
     }
-    return 5;
+    return 4;
   }
 }
 

@@ -15,10 +15,20 @@ export const authService = {
       password,
     });
   },
-  signUp: async ({ email, password }: { email: string; password: string }) => {
-    return supabase.auth.signUp({
+  signUp: async ({
+    name,
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+    name: string;
+  }) => {
+    await supabase.auth.signUp({
       email,
       password,
     });
+
+    return supabase.from("profiles").insert({ name }).select("*");
   },
 };

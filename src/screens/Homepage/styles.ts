@@ -2,8 +2,8 @@ import styled from "styled-components";
 
 export const Main = styled.section`
   width: 100%;
-  margin: 0 auto;
-
+  display: flex;
+  flex-direction: column;
   h1 {
     color: white;
     margin: 30px 0;
@@ -11,6 +11,7 @@ export const Main = styled.section`
   }
 
   .grid-movies {
+    width: 100%;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-row-gap: 30px;

@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import { Footer, Header, MovieCard } from "@/components";
 import { Movie } from "@/models";
+import { MainLayout } from "@/layouts";
 
 export const SearchResultsScreen = () => {
   const [movies, setMovies] = useState([] as Movie[]);
@@ -19,7 +20,6 @@ export const SearchResultsScreen = () => {
   const [trigger] = useLazySearchMovieQuery();
 
   useEffect(() => {
-    console.log("ai");
     setActualPage(1);
   }, [router.query.search]);
 
@@ -47,45 +47,41 @@ export const SearchResultsScreen = () => {
   }, [actualPage, router.query.search, trigger]);
 
   return (
-    <>
-      <Header />
-      <ContainerPages>
-        <SearchContainer>
-          <h1>Search Results</h1>
-          {movies.length !== 0 ? (
-            <motion.div className="grid">
-              {movies.map((movie, index) => {
-                return (
-                  <motion.div
-                    variants={opacityAnimation}
-                    initial="initial"
-                    animate="final"
-                    key={index}
-                  >
-                    <MovieCard
-                      idMovie={movie.id}
-                      poster={movie.poster_path}
-                      title={movie.original_title}
-                      score={movie.vote_average}
-                    />
-                  </motion.div>
-                );
-              })}
-            </motion.div>
-          ) : (
-            <h1>No Movies Found!</h1>
-          )}
-        </SearchContainer>
-
-        {actualPage >= totalPages ? (
-          <></>
+    <MainLayout>
+      <SearchContainer>
+        <h1>Search Results</h1>
+        {movies.length !== 0 ? (
+          <motion.div className="grid">
+            {movies.map((movie, index) => {
+              return (
+                <motion.div
+                  variants={opacityAnimation}
+                  initial="initial"
+                  animate="final"
+                  key={index}
+                >
+                  <MovieCard
+                    idMovie={movie.id}
+                    poster={movie.poster_path}
+                    title={movie.original_title}
+                    score={movie.vote_average}
+                  />
+                </motion.div>
+              );
+            })}
+          </motion.div>
         ) : (
-          <LoadMore onClick={() => setActualPage(actualPage + 1)}>
-            Load More Search Results
-          </LoadMore>
+          <h1>No Movies Found!</h1>
         )}
-      </ContainerPages>
-      <Footer />
-    </>
+      </SearchContainer>
+
+      {actualPage >= totalPages ? (
+        <></>
+      ) : (
+        <LoadMore onClick={() => setActualPage(actualPage + 1)}>
+          Load More Search Results
+        </LoadMore>
+      )}
+    </MainLayout>
   );
 };

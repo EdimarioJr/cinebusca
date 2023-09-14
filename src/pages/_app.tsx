@@ -10,6 +10,11 @@ import { store } from "@/store/store";
 import { Provider } from "react-redux";
 import { ThemeProvider } from "styled-components";
 
+import { Raleway } from "next/font/google";
+
+// If loading a variable font, you don't need to specify the font weight
+const raleway = Raleway({ subsets: ["latin"] });
+
 const theme = {
   colors: {
     primary: "#107ee5",
@@ -31,6 +36,11 @@ export default function App({
         supabaseClient={supabaseClient}
         initialSession={pageProps.initialSession}
       >
+        <style jsx global>{`
+          :root {
+            --raleway: ${raleway.style.fontFamily};
+          }
+        `}</style>
         <GlobalStyle />
         <Component {...pageProps} />
 

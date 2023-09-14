@@ -63,15 +63,19 @@ export const MovieInfo = styled.div`
     position: relative;
     margin: 20px 30px;
     height: 465px;
+    display: flex;
+    flex-direction: column;
     text-shadow: 1px 1px rgba(0, 0, 0, 0.5), -1px 1px rgba(0, 0, 0, 0.5),
       1px -1px rgba(0, 0, 0, 0.5), -1px -1px rgba(0, 0, 0, 0.5);
     flex: 1;
+
     .description {
       height: 240px;
       line-height: 30px;
       text-overflow: ellipsis;
       overflow: auto;
       font-size: 24px;
+      flex: 1;
     }
 
     .genres {

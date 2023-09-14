@@ -5,6 +5,7 @@ import { ContainerPages } from "@/styles/globals";
 import { CineCarousel, Footer, Header, Loading } from "@/components";
 import { Cast, MovieDetail, Recommendations } from "./components";
 import { useMovieDetail, useWindowWidth } from "@/hooks";
+import { MainLayout } from "@/layouts";
 
 export type MovieProps = {
   id: number;
@@ -28,35 +29,31 @@ export const MovieScreen = (props: MovieProps) => {
   } = useMovieDetail({ idMovie });
 
   return (
-    <>
-      <Header />
-      <ContainerPages>
-        {!isLoadingMovie && !isLoadingMovieImages ? (
-          movie && (
-            <>
-              <MovieDetail {...{ director, ...movie }} />
-              <Cast cast={cast} />
-              {windowWidth >= SCREEN_MIN_GALLERY &&
-                formattedImages.length > 0 && (
-                  <Gallery>
-                    <CineCarousel
-                      images={formattedImages}
-                      defaultNumberOfSlides={1}
-                    />
-                  </Gallery>
-                )}
+    <MainLayout>
+      {!isLoadingMovie && !isLoadingMovieImages ? (
+        movie && (
+          <>
+            <MovieDetail {...{ director, ...movie }} />
+            <Cast cast={cast} />
+            {windowWidth >= SCREEN_MIN_GALLERY &&
+              formattedImages.length > 0 && (
+                <Gallery>
+                  <CineCarousel
+                    images={formattedImages}
+                    defaultNumberOfSlides={1}
+                  />
+                </Gallery>
+              )}
 
-              <Recommendations
-                recommendations={recommendations ?? []}
-                movieTitle={movie.original_title}
-              />
-            </>
-          )
-        ) : (
-          <Loading />
-        )}
-      </ContainerPages>
-      <Footer />
-    </>
+            <Recommendations
+              recommendations={recommendations ?? []}
+              movieTitle={movie.original_title}
+            />
+          </>
+        )
+      ) : (
+        <Loading />
+      )}
+    </MainLayout>
   );
 };

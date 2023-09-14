@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
-export const LoginContainer = styled.main`
+export const AuthContainer = styled.main`
   width: 100%;
-  height: 500px;
+  min-height: 500px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -11,6 +11,7 @@ export const LoginContainer = styled.main`
   .card {
     color: white;
     height: 600px;
+    border-radius: 0.4rem;
     background-color: #383d48;
     display: flex;
     flex-direction: column;
@@ -22,10 +23,6 @@ export const LoginContainer = styled.main`
       padding: 0px 30px;
     }
 
-    div {
-      margin-bottom: 20px;
-    }
-
     h1 {
       margin-bottom: 40px;
     }
@@ -33,21 +30,31 @@ export const LoginContainer = styled.main`
     form {
       margin-bottom: 30px;
       width: 70%;
+
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
     }
 
     input {
-      width: 100%;
-      padding: 10px 0;
-      padding-left: 10px;
+      margin-top: 0.5rem;
+    }
+    button {
     }
 
-    p {
-      margin-top: 25px;
-    }
-    span {
+    span.option {
       color: #107ee5;
       margin-left: 10px;
       cursor: pointer;
+    }
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+
+    button {
+      align-self: center;
     }
   }
 

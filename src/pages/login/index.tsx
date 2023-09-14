@@ -1,8 +1,8 @@
-import { LoginScreen } from "@/screens";
+import { AuthScreen } from "@/screens";
 import React from "react";
 
 const Login = () => {
-  return <LoginScreen />;
+  return <AuthScreen />;
 };
 
 export default Login;

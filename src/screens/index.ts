@@ -1,5 +1,5 @@
 export * from "./Homepage";
-export * from "./Login";
+export * from "./Auth";
 export * from "./Movie";
 export * from "./Reviews";
 export * from "./Search";

@@ -1,11 +1,13 @@
 import styled from "styled-components";
 import { CommonButton } from "@/styles/globals";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 export const DivSearch = styled.div`
-  width: 60%;
-  height: 35px;
-  background-color: #107ee5;
+  width: 23rem;
+  height: 2.5rem;
+  display: flex;
+  gap: 1rem;
 
   input {
     height: 100%;
@@ -14,6 +16,7 @@ export const DivSearch = styled.div`
     padding: 10px;
     color: black;
     border: none;
+    border-radius: 0.3rem;
   }
 
   button {
@@ -21,8 +24,10 @@ export const DivSearch = styled.div`
     border: none;
     cursor: pointer;
     color: white;
-    background-color: inherit;
+    height: 100%;
     font-weight: 700;
+    background-color: #107ee5;
+    border-radius: 0.4rem;
   }
 
   @media (max-width: 475px) {
@@ -61,7 +66,6 @@ export const InputsRow = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-evenly;
-  width: 60%;
 
   @media (max-width: 475px) {
     width: 95%;
@@ -73,35 +77,22 @@ export const WatchlistButton = styled(CommonButton)`
   background-color: #05a6da;
 `;
 
-export const UserNav = styled(motion.nav)<{
-  $watchlist?: boolean;
-  $review?: boolean;
-}>`
+export const HeaderLink = styled(Link)<{ isSelected?: boolean }>`
+  color: white;
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+  &:hover {
+    color: #107ee5;
+  }
+
+  color: ${({ isSelected }) => (isSelected ? "#107ee5" : "")};
+`;
+
+export const UserNav = styled(motion.nav)`
   width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
-  align-self: center;
-  padding: 10px;
-
-  h3 {
-    color: white;
-    border-bottom: 2px solid #107ee5;
-    padding: 10px;
-    cursor: pointer;
-  }
-
-  h3:hover {
-    background-color: #107ee5;
-    transition: all 1s;
-  }
-
-  #watch {
-    background-color: ${({ $watchlist }) => ($watchlist ? "#107ee5" : "")};
-  }
-
-  #review {
-    background-color: ${({ $review }) => ($review ? "#107ee5" : "")};
-  }
+  gap: 1rem;
 `;

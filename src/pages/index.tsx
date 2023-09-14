@@ -10,9 +10,8 @@ export default function Home() {
 }
 
 export const getServerSideProps = async (ctx: any) => {
-  // Create authenticated Supabase Client
   const supabase = createPagesServerClient(ctx);
-  // Check if we have a session
+
   const {
     data: { session },
   } = await supabase.auth.getSession();
