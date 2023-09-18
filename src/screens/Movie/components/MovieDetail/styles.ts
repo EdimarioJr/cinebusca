@@ -171,44 +171,12 @@ export const MovieInfo = styled.div`
 `;
 
 export const WatchButton = styled(CommonButton)`
-  width: 180px;
+  width: 13rem;
   color: black;
   background-color: #02bea7;
   margin-right: 15px;
 `;
 
 export const ReviewButton = styled(CommonButton)`
-  width: 180px;
-`;
-
-export const AddReview = styled(CommonButton)`
-  background-color: #2caf1e;
-  margin-right: 10px;
-`;
-export const CancelReview = styled(CommonButton)`
-  background-color: #fc0349;
-`;
-
-export const ReviewContainer = styled.section`
-  margin: 20px 30px;
-  position: relative;
-  z-index: 2;
-
-  textarea {
-    border: 1px solid #888;
-    background-color: #20242b;
-    color: white;
-    font-size: 16px;
-    padding: 10px;
-    overflow: auto;
-    resize: none;
-    width: 100%;
-    height: 350px;
-    margin-bottom: 15px;
-    font-family: "Poppins", sans-serif;
-  }
-
-  @media (max-width: 500px) {
-    margin: 20px 5px;
-  }
+  width: 13rem;
 `;

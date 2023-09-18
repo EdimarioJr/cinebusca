@@ -1,9 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useState, useEffect } from "react";
-import { DivCarousel } from "./styles";
+import React from "react";
+import { CaroulselButton, DivCarousel } from "./styles";
 import Carousel from "nuka-carousel";
 import Link from "next/link";
 import { useWindowWidth } from "@/hooks";
+import { GrNext } from "react-icons/gr";
+import { GrPrevious } from "react-icons/gr";
 
 export type CarouselMovieImage = { alt: string; src: string; link?: string };
 
@@ -38,6 +40,22 @@ export const CineCarousel = ({
         vertical={true}
         slidesToShow={numberOfSlides(windowWidth, defaultNumberOfSlides)}
         swiping={true}
+        renderCenterLeftControls={({ previousSlide }) => (
+          <CaroulselButton
+            onClick={previousSlide}
+            style={{ position: "relative", left: "-20px" }}
+          >
+            <GrPrevious />
+          </CaroulselButton>
+        )}
+        renderCenterRightControls={({ nextSlide }) => (
+          <CaroulselButton
+            onClick={nextSlide}
+            style={{ position: "relative", right: "-20px" }}
+          >
+            <GrNext />
+          </CaroulselButton>
+        )}
         defaultControlsConfig={{
           pagingDotsStyle: {
             fill: "white",

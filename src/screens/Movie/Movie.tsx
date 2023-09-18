@@ -1,8 +1,14 @@
 import React from "react";
 
-import { Gallery } from "./styles";
-import { ContainerPages } from "@/styles/globals";
-import { CineCarousel, Footer, Header, Loading } from "@/components";
+import { ActionsContainer, Gallery } from "./styles";
+import { CommonButton, ContainerPages, FlexRowBetween } from "@/styles/globals";
+import {
+  CineCarousel,
+  Footer,
+  Header,
+  Loading,
+  ReviewModal,
+} from "@/components";
 import { Cast, MovieDetail, Recommendations } from "./components";
 import { useMovieDetail, useWindowWidth } from "@/hooks";
 import { MainLayout } from "@/layouts";
@@ -34,6 +40,7 @@ export const MovieScreen = (props: MovieProps) => {
         movie && (
           <>
             <MovieDetail {...{ director, ...movie }} />
+
             <Cast cast={cast} />
             {windowWidth >= SCREEN_MIN_GALLERY &&
               formattedImages.length > 0 && (

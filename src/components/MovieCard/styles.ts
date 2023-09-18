@@ -12,8 +12,9 @@ export const MovieContainer = styled.div`
     border: 1px solid #107ee5;
     background-color: #107ee5;
     position: relative;
-    top: -20px;
-    transition: all 0.5s;
+    transform: scale3d(1.1, 1.1, 0.3);
+    transition: all 0.2s;
+    transition-timing-function: linear;
   }
 
   img {

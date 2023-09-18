@@ -1,7 +1,7 @@
 import React from "react";
 import { ReviewContainer, AddReview, CancelReview } from "./styles";
 
-import { Spinner } from "../../../../components";
+import { Spinner } from "@/components";
 
 export type ReviewInputProps = {
   reviewExists: boolean;

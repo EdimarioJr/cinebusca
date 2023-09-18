@@ -1,6 +1,5 @@
 import styled, { createGlobalStyle } from "styled-components";
 import { motion } from "framer-motion";
-import { Styled } from "styled-components/dist/constructors/constructWithOptions";
 
 export const GlobalStyle = createGlobalStyle`
   * {

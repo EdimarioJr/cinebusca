@@ -92,7 +92,12 @@ export const Login = ({ setIsSigningUp }: LoginProps) => {
               className="signButton"
               type="submit"
               disabled={isLoading || !isValid}
-              style={{ display: "grid", placeContent: "center" }}
+              style={{
+                display: "grid",
+                placeContent: "center",
+                width: "10rem",
+                marginTop: "1rem",
+              }}
             >
               {isLoading ? <Spinner boxSize="1.5rem" /> : "Sign in"}
             </CommonButton>

@@ -6,3 +6,4 @@ export * from "./MovieCard";
 export * from "./ReviewCard";
 export * from "./Spinner";
 export * from "./FormField";
+export * from "./ReviewModal";

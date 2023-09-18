@@ -25,3 +25,16 @@ export const DivCarousel = styled.div`
     }
   }
 `;
+
+export const CaroulselButton = styled.button`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #107ee5;
+  color: white;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+`;

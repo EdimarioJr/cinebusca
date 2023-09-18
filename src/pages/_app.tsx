@@ -11,6 +11,8 @@ import { Provider } from "react-redux";
 import { ThemeProvider } from "styled-components";
 
 import { Raleway } from "next/font/google";
+import { ModalProvider } from "styled-react-modal";
+import { FadingBackground } from "@/components";
 
 // If loading a variable font, you don't need to specify the font weight
 const raleway = Raleway({ subsets: ["latin"] });
@@ -41,9 +43,10 @@ export default function App({
             --raleway: ${raleway.style.fontFamily};
           }
         `}</style>
-        <GlobalStyle />
-        <Component {...pageProps} />
-
+        <ModalProvider backgroundComponent={FadingBackground}>
+          <GlobalStyle />
+          <Component {...pageProps} />
+        </ModalProvider>
         <ToastContainer theme="dark" position="top-left" />
       </SessionContextProvider>
     </Provider>

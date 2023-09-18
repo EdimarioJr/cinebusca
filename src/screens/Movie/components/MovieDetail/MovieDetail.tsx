@@ -9,11 +9,12 @@ import {
 } from "./styles";
 import { motion } from "framer-motion";
 import { upAnimation, opacityAnimation, CommonButton } from "@/styles/globals";
-import { ReviewInput } from "./ReviewInput";
+import { ReviewInput } from "../../../../components/ReviewInput/ReviewInput";
 import { useUser } from "@supabase/auth-helpers-react";
 
 import { Spinner } from "../../../../components/Spinner";
 import { useMovieReview, useMovieWatchlist } from "@/hooks";
+import { ReviewModal } from "@/components";
 
 export type MovieDetailProps = {
   poster_path: string;
@@ -45,24 +46,7 @@ export const MovieDetail = ({
   release_date,
   director,
 }: MovieDetailProps) => {
-  const [reviewMode, setReviewMode] = useState(false);
-
   const user = useUser();
-
-  const {
-    handleCancelReview,
-    handleEditReview,
-    handleCreateReview,
-    reviewText,
-    setReviewText,
-    isLoadingCreateReview,
-    isLoadingEditReview,
-    reviewApi,
-  } = useMovieReview({
-    idMovie: id,
-    moviePoster: poster_path,
-    movieTitle: title,
-  });
 
   const {
     handleAddWatchlist,
@@ -90,91 +74,73 @@ export const MovieDetail = ({
             <BackgroundFilter
               back={`https://image.tmdb.org/t/p/w185/${poster_path}`}
             />
-            {reviewMode ? (
-              <motion.section
-                className="info"
-                variants={upAnimation}
-                initial="initial"
-                animate="final"
-              >
-                <h1>
-                  {title} <span id="director">by {director}</span>
-                </h1>
-                <ReviewInput
-                  reviewExists={Boolean(reviewApi?.id)}
-                  handleCancelReview={handleCancelReview}
-                  handleCreateReview={handleCreateReview}
-                  handleEditReview={handleEditReview}
-                  reviewText={reviewText}
-                  handleChangeReviewText={(value) => setReviewText(value)}
-                  isLoading={isLoadingCreateReview || isLoadingEditReview}
-                />
-              </motion.section>
-            ) : (
-              <>
-                <motion.section
-                  className="info"
-                  variants={upAnimation}
-                  initial="initial"
-                  animate="final"
-                >
-                  <h1>
-                    {title} <span id="director">by {director}</span>
-                  </h1>
-                  {user ? (
-                    <nav className="rowButtons">
-                      <WatchButton
-                        onClick={() =>
-                          watchlistId
-                            ? handleDeleteFromWatchlist()
-                            : handleAddWatchlist()
-                        }
-                      >
-                        {isLoadingWatchlist ? (
-                          <Spinner boxSize="1.5rem" />
-                        ) : watchlistId ? (
-                          "Remove from Watchlist"
-                        ) : (
-                          "Add to your Watchlist"
-                        )}
-                      </WatchButton>
-                      <ReviewButton onClick={() => setReviewMode(true)}>
-                        Review
-                      </ReviewButton>
-                    </nav>
-                  ) : (
-                    <></>
-                  )}
 
-                  <h2>{vote_average.toFixed(2)}</h2>
-                  <p className="description">{overview}</p>
+            <motion.section
+              className="info"
+              variants={upAnimation}
+              initial="initial"
+              animate="final"
+            >
+              <h1>
+                {title} <span id="director">by {director}</span>
+              </h1>
+              {user ? (
+                <nav className="rowButtons">
+                  <WatchButton
+                    onClick={() =>
+                      watchlistId
+                        ? handleDeleteFromWatchlist()
+                        : handleAddWatchlist()
+                    }
+                  >
+                    {isLoadingWatchlist ? (
+                      <Spinner boxSize="1.5rem" />
+                    ) : watchlistId ? (
+                      "Remove from Watchlist"
+                    ) : (
+                      "Add to your Watchlist"
+                    )}
+                  </WatchButton>
+                  <ReviewModal
+                    modalButton={({ toggleModal }) => (
+                      <ReviewButton onClick={toggleModal}>Review</ReviewButton>
+                    )}
+                    id={id}
+                    poster_path={poster_path}
+                    title={title}
+                  />
+                </nav>
+              ) : (
+                <></>
+              )}
 
-                  <div className="genres">
-                    <p>Genres:</p>
+              <h2>{vote_average.toFixed(2)}</h2>
+              <p className="description">{overview}</p>
 
-                    {genres.map((genre, index) => (
-                      <CommonButton key={index} className="genre-button">
-                        {genre.name}
-                      </CommonButton>
-                    ))}
-                  </div>
-                </motion.section>
-                <div className="footer">
-                  <aside>
-                    <p>Budget:</p>
-                    <p>{dolar.format(budget)}</p>
-                  </aside>
-                  <aside>
-                    <p>Duration:</p>
-                    <p>{runtime} min</p>
-                  </aside>
-                  <aside>
-                    <p>Release date:</p>
-                    <p>{release_date}</p>
-                  </aside>
-                </div>
-              </>
-            )}
+              <div className="genres">
+                <p>Genres:</p>
+
+                {genres.map((genre, index) => (
+                  <CommonButton key={index} className="genre-button">
+                    {genre.name}
+                  </CommonButton>
+                ))}
+              </div>
+            </motion.section>
+            <div className="footer">
+              <aside>
+                <p>Budget:</p>
+                <p>{dolar.format(budget)}</p>
+              </aside>
+              <aside>
+                <p>Duration:</p>
+                <p>{runtime} min</p>
+              </aside>
+              <aside>
+                <p>Release date:</p>
+                <p>{release_date}</p>
+              </aside>
+            </div>
           </MovieInfo>
         </MovieContainer>
       </motion.div>
