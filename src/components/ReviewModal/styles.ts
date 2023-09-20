@@ -17,5 +17,10 @@ export const StyledModal = Modal.styled`
   h3 {
     color: #107ee5;
   }
+
+  .header-row {
+    display: flex;
+    justify-content: space-between;
+  }
   
   `;

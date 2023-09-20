@@ -21,6 +21,11 @@ export const GlobalStyle = createGlobalStyle`
     min-height: 100%;
   }
 
+  textarea {
+    font-family: var(--raleway), sans-serif;
+    font-size: 16px;
+  }
+
   @media(max-width: 475px){
     body{
       font-size: 12px;

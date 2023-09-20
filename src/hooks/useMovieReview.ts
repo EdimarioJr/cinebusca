@@ -7,7 +7,6 @@ import {
   useEditReviewMutation,
   useGetMovieReviewQuery,
 } from "@/services";
-import { RiContactsBookLine } from "react-icons/ri";
 
 export type UseMovieReviewParams = {
   idMovie: number;

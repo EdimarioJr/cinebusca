@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 export const ReviewContainer = styled(motion.section)`
   width: 100%;
-  height: 300px;
+  height: 350px;
   display: grid;
   grid-template-columns: 1fr 2fr;
   grid-gap: 10px;
@@ -38,6 +38,13 @@ export const ReviewContainer = styled(motion.section)`
       font-weight: 500;
       overflow: auto;
       margin-bottom: 10px;
+    }
+
+    .actions {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
     }
   }
 

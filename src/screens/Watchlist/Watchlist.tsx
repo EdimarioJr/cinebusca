@@ -1,8 +1,8 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-import { ContainerPages, opacityAnimation } from "@/styles/globals";
-import { Footer, Header, Loading, MovieCard } from "@/components";
+import { opacityAnimation } from "@/styles/globals";
+import { Loading, MovieCard } from "@/components";
 
 import { WatchlistContainer, RemoveButton } from "./styles";
 import { useWatchlist } from "@/hooks";

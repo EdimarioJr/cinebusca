@@ -25,6 +25,7 @@ export const ReviewsScreen = () => {
                   id={review.id}
                   movieTitle={review.movieTitle}
                   moviePoster={review.moviePoster}
+                  movieId={review.movieId}
                   review={review.review}
                   date={String(review.date)}
                   deleteReview={handleDeleteReview}

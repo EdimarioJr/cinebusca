@@ -3,6 +3,8 @@ import { StyledModal } from "./styles";
 import { MovieDetails } from "@/models";
 import { ReviewInput } from "@/components/ReviewInput";
 import { useMovieReview } from "@/hooks";
+import { CommonButton } from "@/styles/globals";
+import { AiOutlineClose } from "react-icons/ai";
 
 export type ReviewModalProps = {
   modalButton: ({ toggleModal }: { toggleModal: () => void }) => ReactNode;
@@ -61,12 +63,17 @@ export const ReviewModal = ({
         isOpen={isOpen}
         afterOpen={afterOpen}
         beforeClose={beforeClose}
-        onBackgroundClick={toggleModal}
         onEscapeKeydown={toggleModal}
         opacity={opacity}
         backgroundProps={{ opacity }}
       >
-        <h3>Review</h3>
+        <div className="header-row">
+          <h3>Review</h3>
+          <CommonButton onClick={toggleModal}>
+            <AiOutlineClose />
+          </CommonButton>
+        </div>
+
         <h2>{title}</h2>
 
         <ReviewInput
