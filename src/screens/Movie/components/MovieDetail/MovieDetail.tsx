@@ -46,6 +46,7 @@ export const MovieDetail = ({
   release_date,
   director,
 }: MovieDetailProps) => {
+  const [isOpen, setIsOpen] = useState(false);
   const user = useUser();
 
   const {
@@ -101,10 +102,12 @@ export const MovieDetail = ({
                       "Add to your Watchlist"
                     )}
                   </WatchButton>
+                  <ReviewButton onClick={() => setIsOpen(true)}>
+                    Review
+                  </ReviewButton>
                   <ReviewModal
-                    modalButton={({ toggleModal }) => (
-                      <ReviewButton onClick={toggleModal}>Review</ReviewButton>
-                    )}
+                    isOpen={isOpen}
+                    setIsOpen={setIsOpen}
                     id={id}
                     poster_path={poster_path}
                     title={title}

@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from "react";
+import React, { Dispatch, ReactNode, SetStateAction, useState } from "react";
 import { StyledModal } from "./styles";
 import { MovieDetails } from "@/models";
 import { ReviewInput } from "@/components/ReviewInput";
@@ -7,19 +7,20 @@ import { CommonButton } from "@/styles/globals";
 import { AiOutlineClose } from "react-icons/ai";
 
 export type ReviewModalProps = {
-  modalButton: ({ toggleModal }: { toggleModal: () => void }) => ReactNode;
   id: MovieDetails["id"];
   poster_path: MovieDetails["poster_path"];
   title: MovieDetails["title"];
+  isOpen: boolean;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
 };
 
 export const ReviewModal = ({
-  modalButton,
   id,
   poster_path,
   title,
+  isOpen,
+  setIsOpen,
 }: ReviewModalProps) => {
-  const [isOpen, setIsOpen] = useState(false);
   const [opacity, setOpacity] = useState(0);
 
   const {
@@ -58,7 +59,6 @@ export const ReviewModal = ({
 
   return (
     <div>
-      {modalButton({ toggleModal })}
       <StyledModal
         isOpen={isOpen}
         afterOpen={afterOpen}

@@ -8,6 +8,7 @@ export type ReviewCardProps = {
   id: string;
   review: string;
   deleteReview: (id: string) => void;
+  handleEditReview: (id: string) => void;
   date: string;
   movieTitle: string;
   moviePoster: string;
@@ -22,6 +23,7 @@ export const ReviewCard = ({
   id,
   movieId,
   deleteReview,
+  handleEditReview,
 }: ReviewCardProps) => {
   return (
     <>
@@ -53,14 +55,9 @@ export const ReviewCard = ({
               >
                 Delete review
               </CommonButton>
-              <ReviewModal
-                modalButton={({ toggleModal }) => (
-                  <CommonButton onClick={toggleModal}>Edit Review</CommonButton>
-                )}
-                id={movieId}
-                poster_path={moviePoster}
-                title={movieTitle}
-              />
+              <CommonButton onClick={() => handleEditReview(id)}>
+                Edit Review
+              </CommonButton>
             </div>
           </div>
         </ReviewContainer>
