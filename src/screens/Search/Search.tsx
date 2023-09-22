@@ -1,55 +1,72 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
-import { ContainerPages, LoadMore, opacityAnimation } from "@/styles/globals";
+import { GridCenter, LoadMore, opacityAnimation } from "@/styles/globals";
 
-import { SearchContainer } from "./styles";
+import { SearchContainer, SearchInput, SearchInputContainer } from "./styles";
 import { useLazySearchMovieQuery } from "@/services";
 import { motion } from "framer-motion";
-import { useRouter } from "next/router";
-import { Footer, Header, MovieCard } from "@/components";
+import { MovieCard } from "@/components";
 import { Movie } from "@/models";
 import { MainLayout } from "@/layouts";
+import { debounce } from "@/utils";
 
 export const SearchResultsScreen = () => {
   const [movies, setMovies] = useState([] as Movie[]);
   const [totalPages, setTotalPages] = useState(0);
 
   const [actualPage, setActualPage] = useState(1);
-  const router = useRouter();
+  const [search, setSearch] = useState("");
 
   const [trigger] = useLazySearchMovieQuery();
 
+  const getSearchedMovies = async (search: string, actualPage: number) => {
+    const response = await trigger({
+      query: search ?? "",
+      page: actualPage,
+    });
+
+    if (response.data) {
+      if (actualPage === 1) {
+        setTotalPages(response.data.total_pages);
+        setMovies(response.data.results);
+      } else {
+        setMovies((oldMovies) => [
+          ...oldMovies,
+          ...(response?.data?.results ?? []),
+        ]);
+      }
+    }
+  };
+
   useEffect(() => {
     setActualPage(1);
-  }, [router.query.search]);
+  }, [search]);
 
   useEffect(() => {
-    const getSearchedMovies = async () => {
-      const response = await trigger({
-        query: (router.query?.search as string) ?? "",
-        page: actualPage,
-      });
+    getSearchedMovies(search, actualPage);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [actualPage]);
 
-      if (response.data) {
-        if (actualPage === 1) {
-          setTotalPages(response.data.total_pages);
-          setMovies(response.data.results);
-        } else {
-          setMovies((oldMovies) => [
-            ...oldMovies,
-            ...(response?.data?.results ?? []),
-          ]);
-        }
-      }
-    };
-
-    getSearchedMovies();
-  }, [actualPage, router.query.search, trigger]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const debouncedSearchMovies = useCallback(
+    debounce(getSearchedMovies, 500),
+    []
+  );
 
   return (
     <MainLayout>
       <SearchContainer>
-        <h1>Search Results</h1>
+        <SearchInputContainer>
+          <SearchInput
+            placeholder="Search..."
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              debouncedSearchMovies(e.target.value, 1);
+            }}
+          />
+        </SearchInputContainer>
+
         {movies.length !== 0 ? (
           <motion.div className="grid">
             {movies.map((movie, index) => {
@@ -71,7 +88,11 @@ export const SearchResultsScreen = () => {
             })}
           </motion.div>
         ) : (
-          <h1>No Movies Found!</h1>
+          search && (
+            <GridCenter>
+              <h1>No Movies Found!</h1>
+            </GridCenter>
+          )
         )}
       </SearchContainer>
 

@@ -21,6 +21,10 @@ export const GlobalStyle = createGlobalStyle`
     min-height: 100%;
   }
 
+  input {
+    font-family: var(--raleway), sans-serif;
+  }
+
   textarea {
     font-family: var(--raleway), sans-serif;
     font-size: 16px;
@@ -75,6 +79,13 @@ export const FlexRowBetween = styled(motion.div)`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+`;
+
+export const GridCenter = styled.div`
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-content: center;
 `;
 
 export const CommonButton = styled.button`

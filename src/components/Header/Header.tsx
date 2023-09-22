@@ -5,7 +5,7 @@ import Link from "next/link";
 import CineBuscaLogo from "../../assets/cinebusca.png";
 import { authService } from "@/services";
 import { motion } from "framer-motion";
-import { SearchInput } from "./SearchInput";
+import { SearchButton } from "./SearchButton";
 import Image from "next/image";
 import { RiLogoutCircleRLine } from "react-icons/ri";
 import { useUser } from "@supabase/auth-helpers-react";
@@ -33,10 +33,10 @@ export const Header = ({ page }: HeaderProps) => {
               alt="logo cinebusca"
             />
           </Link>
-          <SearchInput />
         </Flex>
 
         <InputsRow>
+          <SearchButton />
           {user ? (
             <UserNav key="nav" animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               <HeaderLink
