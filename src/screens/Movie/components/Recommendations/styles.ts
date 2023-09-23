@@ -2,23 +2,23 @@ import { styled } from "styled-components";
 
 export const RecommendationsContainer = styled.section`
   width: 100%;
-  margin: 30px 0;
+  margin: 1.875rem 0;
 
   h1 {
-    margin-bottom: 20px;
+    margin-bottom: 1.25rem;
     color: white;
   }
 
   span {
-    color: #107ee5;
+    color: ${(props) => props.theme.colors.primary};
   }
 
   .recommendation-grid {
     display: grid;
     width: 80%;
-    margin: 30px auto;
+    margin: 1.875rem auto;
     grid-template-columns: repeat(4, 1fr);
-    grid-row-gap: 30px;
+    grid-row-gap: 1.875rem;
   }
 
   @media (max-width: 739px) {

@@ -42,14 +42,14 @@ export const Header = ({ page }: HeaderProps) => {
               <HeaderLink
                 href="/watchlist"
                 style={{ textDecoration: "none" }}
-                isSelected={page === "watchlist"}
+                $isSelected={page === "watchlist"}
               >
                 <motion.h3 id="watch">Watchlist</motion.h3>
               </HeaderLink>
               <HeaderLink
                 href="/reviews"
                 style={{ textDecoration: "none" }}
-                isSelected={page === "review"}
+                $isSelected={page === "review"}
               >
                 <motion.h3 id="review">Reviews</motion.h3>
               </HeaderLink>

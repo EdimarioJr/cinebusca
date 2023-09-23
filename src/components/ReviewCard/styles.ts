@@ -3,10 +3,10 @@ import { motion } from "framer-motion";
 
 export const ReviewContainer = styled(motion.section)`
   width: 100%;
-  height: 350px;
+  height: 21.875rem;
   display: grid;
   grid-template-columns: 1fr 2fr;
-  grid-gap: 10px;
+  grid-gap: 0.625rem;
 
   img {
     height: inherit;
@@ -16,28 +16,28 @@ export const ReviewContainer = styled(motion.section)`
   .movieInfo {
     overflow: auto;
     color: white;
-    padding: 0 15px;
-    padding-bottom: 10px;
+    padding: 0 1rem;
+    padding-bottom: 0.625rem;
     background-color: #383d48;
     display: flex;
     flex-direction: column;
     height: 100%;
 
     h3 {
-      margin-top: 20px;
+      margin-top: 1.2rem;
       margin-bottom: 5px;
     }
 
     h4 {
       font-weight: 300;
-      margin-bottom: 20px;
+      margin-bottom: 1.2rem;
     }
 
     p {
       flex: 1;
       font-weight: 500;
       overflow: auto;
-      margin-bottom: 10px;
+      margin-bottom: 0.625rem;
     }
 
     .actions {

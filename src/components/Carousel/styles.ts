@@ -27,12 +27,12 @@ export const DivCarousel = styled.div`
 `;
 
 export const CaroulselButton = styled.button`
-  width: 40px;
-  height: 40px;
+  width: 2.5rem;
+  height: 2.5rem;
   border-radius: 50%;
-  background-color: #107ee5;
+  background-color: ${(props) => props.theme.colors.primary};
   color: white;
-  font-size: 1rem;
+  font-size: ${(props) => props.theme.fontSizes.md};
   border: none;
   cursor: pointer;
   display: grid;

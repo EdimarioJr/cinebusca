@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 
 export const HeaderRow = styled.header`
-  margin: 10px 0;
+  margin: 0.625rem 0;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -12,15 +12,15 @@ export const HeaderRow = styled.header`
   width: 100%;
 
   img {
-    width: 100px;
+    width: 6.25rem;
   }
 
   @media (max-width: 414px) {
     flex-direction: column;
 
     img {
-      width: 85px;
-      margin-bottom: 10px;
+      width: 5.32rem;
+      margin-bottom: 0.625rem;
     }
   }
 `;
@@ -38,19 +38,20 @@ export const InputsRow = styled.div`
 
 export const WatchlistButton = styled(CommonButton)`
   color: black;
-  background-color: #05a6da;
+  background-color: ${(props) => props.theme.colors.quaternary};
 `;
 
-export const HeaderLink = styled(Link)<{ isSelected?: boolean }>`
+export const HeaderLink = styled(Link)<{ $isSelected?: boolean }>`
   color: white;
-  padding: 10px;
+  padding: 0.625rem;
   cursor: pointer;
   transition: all 0.3s;
   &:hover {
-    color: #107ee5;
+    color: ${(props) => props.theme.colors.primary};
   }
 
-  color: ${({ isSelected }) => (isSelected ? "#107ee5" : "")};
+  color: ${({ $isSelected, ...props }) =>
+    $isSelected ? props.theme.colors.primary : ""};
 `;
 
 export const UserNav = styled(motion.nav)`

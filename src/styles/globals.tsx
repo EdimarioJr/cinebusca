@@ -14,9 +14,9 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    background-color: #20242b;
+    background-color: ${(props) => props.theme.colors.secondary};
     font-family: var(--raleway), sans-serif;
-    font-size: 16px;
+    font-size: ${(props) => props.theme.fontSizes.md};
     height: 100%;
     min-height: 100%;
   }
@@ -27,12 +27,12 @@ export const GlobalStyle = createGlobalStyle`
 
   textarea {
     font-family: var(--raleway), sans-serif;
-    font-size: 16px;
+    font-size: ${(props) => props.theme.fontSizes.md};
   }
 
   @media(max-width: 475px){
     body{
-      font-size: 12px;
+      font-size: ${(props) => props.theme.fontSizes.xs};
     }
       
     }
@@ -46,12 +46,12 @@ export const GlobalStyle = createGlobalStyle`
 
   ::-webkit-scrollbar-track {
     border:solid 1px transparent;
-    border-radius: 2.4rem;
+    border-radius: ${(props) => props.theme.fontSizes.lg};
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: #107ee5;
-    border-radius: 2.4rem;
+    background-color: ${(props) => props.theme.colors.primary};
+    border-radius: ${(props) => props.theme.fontSizes.lg};
   }
 `;
 
@@ -93,49 +93,49 @@ export const CommonButton = styled.button`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  background-color: #107ee5;
-  padding: 0 30px;
-  color: white;
+  background-color: ${(props) => props.theme.colors.primary};
+  padding: 0 1.875rem;
+  color: ${(props) => props.theme.colors.white};
   font-weight: 700;
-  height: 35px;
+  height: 2.1875rem;
   border: none;
   cursor: pointer;
-  border-radius: 0.4rem;
+  border-radius: ${(props) => props.theme.borderRadius.md};
   transition: all 0.5s;
 
   @media (max-width: 475px) {
-    height: 30px;
-    padding: 0 10px;
+    height: 1.875rem;
+    padding: 0 0.625rem;
   }
 
   &:disabled {
     background-color: gray;
-    color: white;
+    color: ${(props) => props.theme.colors.white};
   }
 `;
 
 export const Input = styled.input`
   width: 100%;
-  padding: 10px;
-  color: white;
-  background: #20242b;
+  padding: 0.6125rem;
+  color: ${(props) => props.theme.colors.white};
+  background: ${(props) => props.theme.colors.secondary};
   border: none;
   border-radius: 0.2rem;
   min-height: 2.5rem;
-  font-size: 1rem;
+  font-size: ${(props) => props.theme.fontSizes.md};
   font-weight: 100;
 `;
 
 export const LoadMore = styled(CommonButton)`
   width: 100%;
-  margin: 30px 0;
-  padding: 30px 0;
+  margin: 1.875rem 0;
+  padding: 1.875rem 0;
   font-weight: 700;
-  font-size: 24px;
+  font-size: ${(props) => props.theme.fontSizes.xl};
 
   @media (max-width: 475px) {
-    font-size: 18px;
-    padding: 20px 0;
+    font-size: 1.125rem;
+    padding: 1.25rem 0;
   }
 `;
 

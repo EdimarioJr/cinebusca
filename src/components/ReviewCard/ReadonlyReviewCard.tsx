@@ -1,27 +1,20 @@
 import React from "react";
 
-import { CommonButton } from "@/styles/globals";
 import { ReviewContainer } from "./styles";
 
-export type ReviewCardProps = {
-  id: string;
+export type ReadonlyReviewCardProps = {
   review: string;
-  deleteReview: (id: string) => void;
-  handleEditReview: (id: string) => void;
-  date: string;
   movieTitle: string;
   moviePoster: string;
+  date: Date;
 };
 
-export const ReviewCard = ({
-  date,
+export const ReadonlyReviewCard = ({
   review,
   movieTitle,
   moviePoster,
-  id,
-  deleteReview,
-  handleEditReview,
-}: ReviewCardProps) => {
+  date,
+}: ReadonlyReviewCardProps) => {
   return (
     <ReviewContainer>
       <img
@@ -43,17 +36,6 @@ export const ReviewCard = ({
             marginBottom: "2rem",
           }}
         ></textarea>
-        <div className="actions">
-          <CommonButton
-            onClick={() => deleteReview(id)}
-            style={{ backgroundColor: "#fc0349" }}
-          >
-            Delete review
-          </CommonButton>
-          <CommonButton onClick={() => handleEditReview(id)}>
-            Edit Review
-          </CommonButton>
-        </div>
       </div>
     </ReviewContainer>
   );

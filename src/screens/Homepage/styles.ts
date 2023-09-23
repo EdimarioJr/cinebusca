@@ -6,27 +6,27 @@ export const Main = styled.section`
   flex-direction: column;
   h1 {
     color: white;
-    margin: 30px 0;
-    font-size: 36px;
+    margin: 1.875rem 0;
+    font-size: ${(props) => props.theme.fontSizes.xxxl};
   }
 
   .grid-movies {
     width: 100%;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    grid-row-gap: 30px;
+    grid-row-gap: 1.875rem;
     transition: all 0.5s;
   }
 
   @media (max-width: 735px) {
     .grid-movies {
       grid-template-columns: repeat(2, 1fr);
-      grid-gap: 5px;
+      grid-gap: 0.3125rem;
     }
 
     h1 {
-      font-size: 30px;
-      margin: 20px 0;
+      font-size: 1.875rem;
+      margin: 1.25rem 0;
     }
   }
 

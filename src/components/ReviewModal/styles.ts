@@ -7,15 +7,15 @@ export const StyledModal = Modal.styled`
   flex-direction: column;
   gap: 1rem;
 
-  background-color: #383d48;
+  background-color:  ${({ ...props }) => props.theme.colors.terciary};
   color: white;
   padding: 2rem;
-  border-radius: .4rem;
+  border-radius: ${({ ...props }) => props.theme.borderRadius.md};
   opacity: ${(props: { opacity: number }) => props.opacity};
   transition : all 0.3s ease-in-out;
   
   h3 {
-    color: #107ee5;
+    color: ${({ ...props }) => props.theme.colors.primary};
   }
 
   .header-row {

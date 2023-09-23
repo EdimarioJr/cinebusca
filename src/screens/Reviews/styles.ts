@@ -5,7 +5,7 @@ export const ReviewsContainer = styled(motion.section)`
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-gap: 20px;
+  grid-gap: 1.25rem;
   color: white;
 
   @media (max-width: 900px) {

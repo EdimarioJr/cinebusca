@@ -3,6 +3,8 @@ import React from "react";
 import { MovieContainer } from "./styles";
 import Link from "next/link";
 import NoImage from "@/assets/no-image.jpg";
+import { AiFillStar } from "react-icons/ai";
+import { Flex } from "@/styles/globals";
 
 export type MovieCardProps = {
   title: string;
@@ -27,7 +29,11 @@ export const MovieCard = ({
           alt={title}
         />
         <div className="legend">
-          <h3>{score.toFixed(2)}</h3>
+          <Flex style={{ gap: ".5rem" }}>
+            <AiFillStar />
+            <h3>{score.toFixed(2)}</h3>
+          </Flex>
+
           <p>{title}</p>
         </div>
       </MovieContainer>

@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const AuthContainer = styled.main`
   width: 100%;
-  min-height: 500px;
+  min-height: 31.25rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -10,25 +10,25 @@ export const AuthContainer = styled.main`
 
   .card {
     color: white;
-    height: 600px;
+    height: 37.5rem;
     border-radius: 0.4rem;
-    background-color: #383d48;
+    background-color: ${(props) => props.theme.colors.terciary};
     display: flex;
     flex-direction: column;
-    width: 500px;
+    width: 31.25rem;
     align-items: center;
     justify-content: center;
 
     .signButton {
-      padding: 0px 30px;
+      padding: 0px 1.875rem;
     }
 
     h1 {
-      margin-bottom: 40px;
+      margin-bottom: 2.5rem;
     }
 
     form {
-      margin-bottom: 30px;
+      margin-bottom: 1.875rem;
       width: 70%;
 
       display: flex;
@@ -43,8 +43,8 @@ export const AuthContainer = styled.main`
     }
 
     span.option {
-      color: #107ee5;
-      margin-left: 10px;
+      color: ${(props) => props.theme.colors.primary};
+      margin-left: 0.625rem;
       cursor: pointer;
     }
   }
@@ -60,22 +60,22 @@ export const AuthContainer = styled.main`
 
   @media (max-width: 475px) {
     .card {
-      width: 350px;
-      height: 400px;
+      width: 21.875rem;
+      height: 25rem;
 
       form {
         width: 80%;
       }
 
       .signButton {
-        padding: 0px 20px;
+        padding: 0px 1.25rem;
       }
     }
   }
 
   @media (min-width: 476px) and (max-width: 538px) {
     .card {
-      width: 420px;
+      width: 26.25rem;
     }
   }
 `;

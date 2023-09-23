@@ -13,16 +13,10 @@ import { ThemeProvider } from "styled-components";
 import { Raleway } from "next/font/google";
 import { ModalProvider } from "styled-react-modal";
 import { FadingBackground } from "@/components";
+import { theme } from "@/styles";
 
 // If loading a variable font, you don't need to specify the font weight
 const raleway = Raleway({ subsets: ["latin"] });
-
-const theme = {
-  colors: {
-    primary: "#107ee5",
-    secondary: "#20242b",
-  },
-};
 
 export default function App({
   Component,
@@ -43,10 +37,13 @@ export default function App({
             --raleway: ${raleway.style.fontFamily};
           }
         `}</style>
-        <ModalProvider backgroundComponent={FadingBackground}>
-          <GlobalStyle />
-          <Component {...pageProps} />
-        </ModalProvider>
+        <ThemeProvider theme={theme}>
+          <ModalProvider backgroundComponent={FadingBackground}>
+            <GlobalStyle />
+            <Component {...pageProps} />
+          </ModalProvider>
+        </ThemeProvider>
+
         <ToastContainer theme="dark" position="top-left" />
       </SessionContextProvider>
     </Provider>

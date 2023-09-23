@@ -3,12 +3,12 @@ import { styled } from "styled-components";
 export const CastContainer = styled.section`
   background-color: black;
   width: 100%;
-  padding: 20px;
+  padding: 1.25rem;
 
   h1 {
     color: white;
-    margin-top: 1 0px;
-    margin-bottom: 20px;
+    margin-top: 0.625rem;
+    margin-bottom: 1.25rem;
   }
 `;
 
@@ -20,16 +20,16 @@ export const CastCards = styled.div`
 
   .actorCard {
     margin-right: 30px;
-    height: 350px;
-    width: 220px;
+    height: 21.875rem;
+    width: 13.75rem;
     background-color: #c4c4c4;
-    border-radius: 10px;
+    border-radius: 0.625rem;
     position: relative;
 
     img {
-      width: 220px;
+      width: 13.75rem;
       height: 100%;
-      border-radius: 10px;
+      border-radius: 0.625rem;
       display: block;
     }
 
@@ -38,7 +38,7 @@ export const CastCards = styled.div`
       bottom: 0%;
       left: 0px;
       background-image: linear-gradient(to top, black, transparent);
-      height: 130px;
+      height: 8.125rem;
       display: grid;
       place-content: center;
       width: 100%;
@@ -46,19 +46,19 @@ export const CastCards = styled.div`
 
     p {
       color: white;
-      padding: 5px 10px;
+      padding: 0.3125rem 0.625rem;
     }
   }
 
   @media (max-width: 767px) {
     .actorCard {
-      margin-right: 20px;
-      height: 250px;
-      width: 150px;
+      margin-right: 1.25rem;
+      height: 15.625rem;
+      width: 9.375rem;
 
       img {
-        width: 150px;
-        height: 160px;
+        width: 9.375rem;
+        height: 10rem;
       }
     }
   }

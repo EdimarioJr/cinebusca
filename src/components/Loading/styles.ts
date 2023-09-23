@@ -4,10 +4,10 @@ import { motion } from "framer-motion";
 export const Ball = styled(motion.span)`
   display: block;
   background-color: white;
-  width: 20px;
-  height: 20px;
-  border-radius: 20px;
-  margin-right: 10px;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 1.25rem;
+  margin-right: 0.625rem;
 `;
 
 export const LoadingContainer = styled(motion.div)`
@@ -17,5 +17,5 @@ export const LoadingContainer = styled(motion.div)`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  margin: 20px 0;
+  margin: 1.25rem 0;
 `;

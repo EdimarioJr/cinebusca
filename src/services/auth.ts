@@ -24,11 +24,14 @@ export const authService = {
     password: string;
     name: string;
   }) => {
-    await supabase.auth.signUp({
+    const response = await supabase.auth.signUp({
       email,
       password,
     });
 
-    return supabase.from("profiles").insert({ name }).select("*");
+    const userId = response?.data?.user?.id;
+
+    if (!userId) throw new Error("Error creating the user!");
+    return supabase.from("profiles").insert({ name, id: userId }).select("*");
   },
 };

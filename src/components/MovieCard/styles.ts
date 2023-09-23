@@ -3,14 +3,19 @@ import styled from "styled-components";
 export const MovieContainer = styled.div`
   background-color: #383d48;
   color: white;
-  width: 275px;
-  height: 460px;
-  border-radius: 7px;
+  width: 17.2rem;
+  height: 28.75rem;
+  border-radius: ${(props) => props.theme.borderRadius.md};
   cursor: pointer;
 
+  svg {
+    color: ${(props) => props.theme.colors.yellow};
+  }
+
   &:hover {
-    border: 1px solid #107ee5;
-    background-color: #107ee5;
+    border: 1px solid;
+    border-color: ${(props) => props.theme.colors.primary};
+    background-color: ${(props) => props.theme.colors.primary};
     position: relative;
     transform: scale3d(1.1, 1.1, 0.3);
     transition: all 0.2s;
@@ -20,14 +25,14 @@ export const MovieContainer = styled.div`
   img {
     height: 80%;
     width: 100%;
-    border-radius: 7px;
+    border-radius: ${(props) => props.theme.borderRadius.md};
   }
 
   .legend {
     width: 100%;
-    padding: 10px 0;
-    padding-left: 15px;
-    padding-right: 10px;
+    padding: 0.625rem 0;
+    padding-left: 1rem;
+    padding-right: 0.625rem;
 
     p {
       text-overflow: ellipsis;
@@ -37,17 +42,17 @@ export const MovieContainer = styled.div`
   }
 
   @media (max-width: 475px) {
-    width: 165px;
-    height: 330px;
+    width: 10.4rem;
+    height: 20.625rem;
   }
 
   @media (min-width: 476px) and (max-width: 1109px) {
-    width: 230px;
-    height: 450px;
+    width: 14.375rem;
+    height: 28.125rem;
   }
 
   @media (min-width: 1110px) and (max-width: 1320px) {
-    width: 260px;
-    height: 450px;
+    width: 16.25rem;
+    height: 28.125rem;
   }
 `;

@@ -3,9 +3,9 @@ import { StyledSpinnerCircle, StyledSpinnerContainer } from "./styles";
 
 export const Spinner = ({ boxSize = "3rem" }: { boxSize?: string }) => {
   return (
-    <StyledSpinnerContainer boxSize={boxSize}>
+    <StyledSpinnerContainer $boxSize={boxSize}>
       <StyledSpinnerCircle
-        boxSize={boxSize}
+        $boxSize={boxSize}
         animate={{ rotate: 360 }}
         transition={{
           ease: "linear",

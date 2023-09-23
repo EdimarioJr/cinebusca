@@ -1,20 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Main } from "./styles";
-import { Container, opacityAnimation, LoadMore } from "@/styles/globals";
+import { opacityAnimation, LoadMore } from "@/styles/globals";
 import {
   useGetPopularMovieImagesQuery,
   useGetPopularMoviesQuery,
 } from "@/services";
 
 import { motion } from "framer-motion";
-import {
-  CineCarousel,
-  Footer,
-  Header,
-  Loading,
-  MovieCard,
-  Spinner,
-} from "@/components";
+import { CineCarousel, Loading, MovieCard, Spinner } from "@/components";
 import { Movie } from "@/models";
 import { MainLayout } from "@/layouts";
 
@@ -26,12 +19,14 @@ export function Homepage() {
 
   const { data: moviesFromApi, isLoading: isLoadingMovies } =
     useGetPopularMoviesQuery(page);
+
   const { data: movieImages, isLoading: isLoadingMovieImages } =
     useGetPopularMovieImagesQuery();
 
   useEffect(() => {
-    if (moviesFromApi) setMovies((old) => [...old, ...moviesFromApi]);
-  }, [moviesFromApi]);
+    if (moviesFromApi?.length) setMovies((old) => [...old, ...moviesFromApi]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(moviesFromApi)]);
 
   return (
     <MainLayout>

@@ -28,7 +28,7 @@ export const SearchContainer = styled.main`
 
 export const SearchInputContainer = styled.div`
   width: 100%;
-  background-color: #383d48;
+  background-color: ${(props) => props.theme.colors.terciary};
   height: 10rem;
   padding: 3rem;
   margin-bottom: 3rem;
@@ -36,10 +36,11 @@ export const SearchInputContainer = styled.div`
 
 export const SearchInput = styled.input`
   border: none;
-  border-bottom: 2px solid #20242b;
-  font-size: 1.8rem;
+  border-bottom: 2px solid;
+  border-color: ${(props) => props.theme.colors.secondary};
+  font-size: ${(props) => props.theme.fontSizes.xxl};
   padding: 0.8rem;
-  color: white;
+  color: ${(props) => props.theme.colors.white};
   width: 100%;
   border-top-right-radius: 0.4rem;
   border-top-left-radius: 0.4rem;
@@ -47,7 +48,7 @@ export const SearchInput = styled.input`
   transition: border 0.3s;
 
   &:focus {
-    border-color: #107ee5;
+    border-color: ${(props) => props.theme.colors.primary};
   }
 
   &:focus-visible {

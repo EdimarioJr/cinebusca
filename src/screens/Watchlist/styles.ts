@@ -7,13 +7,13 @@ export const WatchlistContainer = styled(motion.section)`
 
   h1 {
     color: white;
-    margin-bottom: 30px;
+    margin-bottom: 1.875rem;
   }
 
   .grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    grid-row-gap: 30px;
+    grid-row-gap: 1.875rem;
     transition: all 0.5s;
   }
 
@@ -26,7 +26,7 @@ export const WatchlistContainer = styled(motion.section)`
   @media (max-width: 758px) {
     .grid {
       grid-template-columns: repeat(2, 1fr);
-      grid-gap: 10px;
+      grid-gap: 0.6125rem;
     }
   }
   @media (min-width: 759px) and (max-width: 1013px) {
@@ -37,19 +37,19 @@ export const WatchlistContainer = styled(motion.section)`
 `;
 
 export const RemoveButton = styled(CommonButton)<{ id: string }>`
-  margin-top: 10px;
-  background-color: #fc0349;
-  border-radius: 7px;
+  margin-top: 0.6125rem;
+  background-color: ${(props) => props.theme.colors.danger};
+  border-radius: ${(props) => props.theme.borderRadius.md};
 
   @media (max-width: 475px) {
-    width: 165px;
+    width: 10.3125rem;
   }
 
   @media (min-width: 476px) and (max-width: 1109px) {
-    width: 230px;
+    width: 14.375rem;
   }
 
   @media (min-width: 1110px) and (max-width: 1320px) {
-    width: 260px;
+    width: 16.25rem;
   }
 `;

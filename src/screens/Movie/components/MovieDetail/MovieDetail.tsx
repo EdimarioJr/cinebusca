@@ -73,7 +73,7 @@ export const MovieDetail = ({
 
           <MovieInfo>
             <BackgroundFilter
-              back={`https://image.tmdb.org/t/p/w185/${poster_path}`}
+              $back={`https://image.tmdb.org/t/p/w185/${poster_path}`}
             />
 
             <motion.section

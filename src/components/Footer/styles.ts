@@ -1,17 +1,17 @@
 import styled from "styled-components";
 
 export const FooterContainer = styled.section`
-  height: 130px;
+  height: 8.125rem;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  margin-top: 30px;
-  background-color: #383d48;
+  margin-top: 1.875rem;
+  background-color: ${(props) => props.theme.colors.terciary};
 
   p {
     color: white;
-    margin-right: 30px;
+    margin-right: 1.875rem;
   }
 
   a {
@@ -22,7 +22,7 @@ export const FooterContainer = styled.section`
   }
 
   img {
-    width: 100px;
-    height: 100px;
+    width: 6.25rem;
+    height: 6.25rem;
   }
 `;
