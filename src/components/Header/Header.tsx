@@ -1,14 +1,17 @@
-import React from "react";
-import { Container, CommonButton, Flex } from "@/styles/globals";
-import { HeaderLink, HeaderRow, InputsRow, UserNav } from "./styles";
-import Link from "next/link";
-import CineBuscaLogo from "../../assets/cinebusca.png";
-import { authService } from "@/services";
-import { motion } from "framer-motion";
-import { SearchButton } from "./SearchButton";
-import Image from "next/image";
-import { RiLogoutCircleRLine } from "react-icons/ri";
 import { useUser } from "@supabase/auth-helpers-react";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
+import { RiLogoutCircleRLine } from "react-icons/ri";
+
+import { authService } from "@/services";
+import { Container, CommonButton, Flex } from "@/styles/globals";
+
+import CineBuscaLogo from "../../assets/cinebusca.png";
+
+import { SearchButton } from "./SearchButton";
+import { HeaderLink, HeaderRow, InputsRow, UserNav } from "./styles";
 
 export type HeaderProps = {
   page?: "watchlist" | "review";

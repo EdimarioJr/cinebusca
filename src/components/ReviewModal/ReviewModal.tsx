@@ -1,10 +1,12 @@
-import React, { Dispatch, ReactNode, SetStateAction, useState } from "react";
-import { StyledModal } from "./styles";
-import { MovieDetails } from "@/models";
+import React, { Dispatch, SetStateAction, useState } from "react";
+import { AiOutlineClose } from "react-icons/ai";
+
 import { ReviewInput } from "@/components/ReviewInput";
 import { useMovieReview } from "@/hooks";
+import { MovieDetails } from "@/models";
 import { CommonButton } from "@/styles/globals";
-import { AiOutlineClose } from "react-icons/ai";
+
+import { StyledModal } from "./styles";
 
 export type ReviewModalProps = {
   id: MovieDetails["id"];

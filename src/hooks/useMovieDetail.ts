@@ -30,9 +30,7 @@ export const useMovieDetail = ({ idMovie }: UseMovieDetailParams) => {
     })) ?? [];
 
   const director =
-    movieCast?.crew.find((current) => {
-      return current.job === "Director";
-    })?.name ?? "";
+    movieCast?.crew.find((current) => current.job === "Director")?.name ?? "";
 
   const cast = movieCast?.cast ?? [];
 

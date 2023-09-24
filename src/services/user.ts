@@ -1,5 +1,6 @@
-import { supabase } from "@/config";
 import { PostgrestError } from "@supabase/supabase-js";
+
+import { supabase } from "@/config";
 
 export const userService = {
   getUsername: async ({

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+
 import { CommonButton } from "@/styles/globals";
 
 export const MovieContainer = styled.section`

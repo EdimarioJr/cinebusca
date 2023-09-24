@@ -1,8 +1,7 @@
-import { SearchResultsScreen } from "@/screens";
 import React from "react";
 
-const Search = () => {
-  return <SearchResultsScreen />;
-};
+import { SearchResultsScreen } from "@/screens";
+
+const Search = () => <SearchResultsScreen />;
 
 export default Search;

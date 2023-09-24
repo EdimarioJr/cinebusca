@@ -1,18 +1,16 @@
-import React, { SetStateAction, useState, Dispatch } from "react";
-
-import { CommonButton, Input } from "@/styles/globals";
-
-import { authService } from "@/services";
-
+import { zodResolver } from "@hookform/resolvers/zod";
+import { motion } from "framer-motion";
 import { useRouter } from "next/router";
-
+import React, { SetStateAction, useState, Dispatch } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+
 import { FormField, Spinner } from "@/components";
+import { authService } from "@/services";
+import { CommonButton, Input } from "@/styles/globals";
+
 import { AuthContainer } from "../../styles";
-import { motion } from "framer-motion";
 
 const loginVariants = {
   initial: { opacity: 0, x: -200 },
@@ -121,9 +119,9 @@ export const Register = ({ setIsSigningUp }: RegisterProps) => {
 
           <p>
             Already have an account?
-            <span onClick={() => setIsSigningUp(false)} className="option">
+            <button onClick={() => setIsSigningUp(false)} className="option">
               Sign in
-            </span>
+            </button>
           </p>
         </div>
       </AuthContainer>

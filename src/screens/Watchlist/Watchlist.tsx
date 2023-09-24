@@ -1,12 +1,12 @@
-import React from "react";
 import { motion } from "framer-motion";
+import React from "react";
 
-import { opacityAnimation } from "@/styles/globals";
 import { Loading, MovieCard } from "@/components";
-
-import { WatchlistContainer, RemoveButton } from "./styles";
 import { useWatchlist } from "@/hooks";
 import { MainLayout } from "@/layouts";
+import { opacityAnimation } from "@/styles/globals";
+
+import { WatchlistContainer, RemoveButton } from "./styles";
 
 export function WatchlistScreen() {
   const { isLoadingWatchlist, watchlist, handleRemove } = useWatchlist();

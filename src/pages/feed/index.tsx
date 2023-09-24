@@ -1,14 +1,14 @@
-import { MovieCard, ReadonlyReviewCard, ReviewCard } from "@/components";
-import { supabase } from "@/config";
-import { MainLayout } from "@/layouts";
-import { Movie } from "@/models";
-import { Review } from "@/models/review";
-import { userService } from "@/services";
-import { opacityAnimation } from "@/styles/globals";
 import { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
+
+import { MovieCard, ReadonlyReviewCard } from "@/components";
+import { supabase } from "@/config";
+import { MainLayout } from "@/layouts";
+import { Movie } from "@/models";
+import { userService } from "@/services";
+import { opacityAnimation } from "@/styles/globals";
 
 type BaseActivity = {
   moviePoster: string;

@@ -1,4 +1,5 @@
 import React from "react";
+
 import { Ball, LoadingContainer } from "./styles";
 
 const loadingContainerVariants = {
@@ -31,27 +32,16 @@ const loadingBallTransition = {
   ease: "easeInOut",
 };
 
-export const Loading = () => {
-  return (
-    <>
-      <LoadingContainer
-        initial="start"
-        animate="end"
-        variants={loadingContainerVariants}
-      >
-        <Ball
-          variants={loadingBallVariants}
-          transition={loadingBallTransition}
-        />
-        <Ball
-          variants={loadingBallVariants}
-          transition={loadingBallTransition}
-        />
-        <Ball
-          variants={loadingBallVariants}
-          transition={loadingBallTransition}
-        />
-      </LoadingContainer>
-    </>
-  );
-};
+export const Loading = () => (
+  <>
+    <LoadingContainer
+      initial="start"
+      animate="end"
+      variants={loadingContainerVariants}
+    >
+      <Ball variants={loadingBallVariants} transition={loadingBallTransition} />
+      <Ball variants={loadingBallVariants} transition={loadingBallTransition} />
+      <Ball variants={loadingBallVariants} transition={loadingBallTransition} />
+    </LoadingContainer>
+  </>
+);

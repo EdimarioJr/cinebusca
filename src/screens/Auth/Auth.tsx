@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 
 import { MainLayout } from "@/layouts";
-import { Register } from "./components/Register";
+
 import { Login } from "./components/Login";
+import { Register } from "./components/Register";
 
 export const AuthScreen = () => {
   const [isSigningUp, setIsSigningUp] = useState(false);

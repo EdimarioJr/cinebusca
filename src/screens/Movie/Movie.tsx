@@ -1,11 +1,11 @@
 import React from "react";
 
-import { Gallery } from "./styles";
-
 import { CineCarousel, Loading } from "@/components";
-import { Cast, MovieDetail, Recommendations } from "./components";
 import { useMovieDetail, useWindowWidth } from "@/hooks";
 import { MainLayout } from "@/layouts";
+
+import { Cast, MovieDetail, Recommendations } from "./components";
+import { Gallery } from "./styles";
 
 export type MovieProps = {
   id: number;

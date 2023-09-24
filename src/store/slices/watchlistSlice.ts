@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import type { RootState } from "../store";
+
 import { Watchlist } from "@/models/watchlist";
+
+import type { RootState } from "../store";
 
 interface WatchlistState {
   watchlist: Watchlist[];

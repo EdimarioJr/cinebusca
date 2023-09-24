@@ -1,11 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
-import React from "react";
-import { CaroulselButton, DivCarousel } from "./styles";
-import Carousel from "nuka-carousel";
 import Link from "next/link";
+import Carousel from "nuka-carousel";
+import React from "react";
+import { GrNext, GrPrevious } from "react-icons/gr";
+
 import { useWindowWidth } from "@/hooks";
-import { GrNext } from "react-icons/gr";
-import { GrPrevious } from "react-icons/gr";
+
+import { CaroulselButton, DivCarousel } from "./styles";
 
 export type CarouselMovieImage = { alt: string; src: string; link?: string };
 
@@ -62,8 +63,8 @@ export const CineCarousel = ({
           },
         }}
       >
-        {images.map((image, index) => {
-          return image.link ? (
+        {images.map((image, index) =>
+          image.link ? (
             <Link
               href={image.link}
               key={index}
@@ -73,8 +74,8 @@ export const CineCarousel = ({
             </Link>
           ) : (
             <img src={image.src} alt={image.alt} key={index} />
-          );
-        })}
+          )
+        )}
       </Carousel>
     </DivCarousel>
   );

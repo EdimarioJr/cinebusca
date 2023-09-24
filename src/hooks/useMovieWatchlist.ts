@@ -1,10 +1,11 @@
 import { useUser } from "@supabase/auth-helpers-react";
+import { toast } from "react-toastify";
+
 import {
   useAddInWatchlistMutation,
   useDeleteFromWatchlistMutation,
   useMovieExistsInWatchlistQuery,
 } from "@/services";
-import { toast } from "react-toastify";
 
 export type UseWatchlistParams = {
   movieId: number;

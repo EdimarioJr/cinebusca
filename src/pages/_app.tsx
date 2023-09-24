@@ -1,21 +1,22 @@
 import { GlobalStyle } from "@/styles/globals";
-import type { AppProps } from "next/app";
 
 import { Session, SessionContextProvider } from "@supabase/auth-helpers-react";
+import type { AppProps } from "next/app";
 import { useState } from "react";
-import { ToastContainer } from "react-toastify";
+
 import "react-toastify/dist/ReactToastify.css";
-import { supabase } from "@/config";
-import { store } from "@/store/store";
-import { Provider } from "react-redux";
-import { ThemeProvider } from "styled-components";
 
 import { Raleway } from "next/font/google";
+import { Provider } from "react-redux";
+import { ToastContainer } from "react-toastify";
+import { ThemeProvider } from "styled-components";
 import { ModalProvider } from "styled-react-modal";
+
 import { FadingBackground } from "@/components";
+import { supabase } from "@/config";
+import { store } from "@/store/store";
 import { theme } from "@/styles";
 
-// If loading a variable font, you don't need to specify the font weight
 const raleway = Raleway({ subsets: ["latin"] });
 
 export default function App({

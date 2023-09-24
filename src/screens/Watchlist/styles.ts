@@ -1,6 +1,7 @@
-import styled from "styled-components";
-import { CommonButton } from "@/styles/globals";
 import { motion } from "framer-motion";
+import styled from "styled-components";
+
+import { CommonButton } from "@/styles/globals";
 
 export const WatchlistContainer = styled(motion.section)`
   width: 100%;

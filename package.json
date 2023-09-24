@@ -6,21 +6,18 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint . --fix",
+    "type-check": "tsc --project tsconfig.json --pretty --noEmit",
+    "validate": "npm run type-check && npm run lint && npm run prettier --write ."
+ 
   },
   "dependencies": {
+
     "@hookform/resolvers": "^3.3.1",
     "@reduxjs/toolkit": "^1.9.5",
     "@supabase/auth-helpers-nextjs": "^0.7.4",
     "@supabase/auth-helpers-react": "^0.4.2",
     "@supabase/supabase-js": "^2.33.1",
-    "@types/axios": "^0.14.0",
-    "@types/node": "20.5.0",
-    "@types/react": "18.2.20",
-    "@types/react-dom": "18.2.7",
-    "@types/styled-components": "^5.1.26",
-    "eslint": "8.47.0",
-    "eslint-config-next": "13.4.15",
     "framer-motion": "^10.15.2",
     "next": "^13.4.19",
     "nuka-carousel": "^6.0.3",
@@ -29,15 +26,33 @@
     "react-hook-form": "^7.46.1",
     "react-icons": "^4.11.0",
     "react-redux": "^8.1.2",
-    "react-responsive-masonry": "^2.1.7",
     "react-toastify": "^9.1.3",
     "styled-components": "^6.0.7",
     "styled-react-modal": "^3.0.1",
-    "typescript": "5.1.6",
     "zod": "^3.22.2"
   },
   "devDependencies": {
-    "@types/react-responsive-masonry": "^2.1.0",
-    "@types/styled-react-modal": "^1.2.2"
+    "@next/eslint-plugin-next": "^12.1.0",
+    "typescript": "5.1.6",
+    "@types/styled-react-modal": "^1.2.2",
+    "@typescript-eslint/eslint-plugin": "^5.13.0",
+    "@typescript-eslint/parser": "^5.13.0",
+    "@types/axios": "^0.14.0",
+    "@types/node": "20.5.0",
+    "@types/react": "18.2.20",
+    "@types/react-dom": "18.2.7",
+    "@types/styled-components": "^5.1.26",
+    "eslint": "8.47.0",
+    "eslint-config-next": "13.4.15",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-import-resolver-typescript": "^3.6.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-sonarjs": "^0.20.0",
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "prettier": "^2.5.1"
   }
 }

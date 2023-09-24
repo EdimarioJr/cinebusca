@@ -1,15 +1,16 @@
+import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
-import { Main } from "./styles";
-import { opacityAnimation, LoadMore } from "@/styles/globals";
+
+import { CineCarousel, Loading, MovieCard, Spinner } from "@/components";
+import { MainLayout } from "@/layouts";
+import { Movie } from "@/models";
 import {
   useGetPopularMovieImagesQuery,
   useGetPopularMoviesQuery,
 } from "@/services";
+import { opacityAnimation, LoadMore } from "@/styles/globals";
 
-import { motion } from "framer-motion";
-import { CineCarousel, Loading, MovieCard, Spinner } from "@/components";
-import { Movie } from "@/models";
-import { MainLayout } from "@/layouts";
+import { Main } from "./styles";
 
 const GRID_BEGIN_PAGE = 2;
 
@@ -45,23 +46,21 @@ export function Homepage() {
           <Main>
             <h1>Popular Movies</h1>
             <section className="grid-movies">
-              {movies.map((movie, index) => {
-                return (
-                  <motion.div
-                    animate="final"
-                    initial="initial"
-                    variants={opacityAnimation}
-                    key={index}
-                  >
-                    <MovieCard
-                      idMovie={movie.id}
-                      title={movie.original_title}
-                      score={movie.vote_average}
-                      poster={movie.poster_path}
-                    />
-                  </motion.div>
-                );
-              })}
+              {movies.map((movie, index) => (
+                <motion.div
+                  animate="final"
+                  initial="initial"
+                  variants={opacityAnimation}
+                  key={index}
+                >
+                  <MovieCard
+                    idMovie={movie.id}
+                    title={movie.original_title}
+                    score={movie.vote_average}
+                    poster={movie.poster_path}
+                  />
+                </motion.div>
+              ))}
             </section>
             <LoadMore
               onClick={() => {

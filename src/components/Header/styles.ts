@@ -1,7 +1,8 @@
-import styled from "styled-components";
-import { CommonButton } from "@/styles/globals";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import styled from "styled-components";
+
+import { CommonButton } from "@/styles/globals";
 
 export const HeaderRow = styled.header`
   margin: 0.625rem 0;

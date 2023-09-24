@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import type { RootState } from "../store";
 
 import { Review } from "@/models/review";
+
+import type { RootState } from "../store";
 
 interface ReviewState {
   reviews: Review[];

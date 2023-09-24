@@ -39,13 +39,14 @@ export const AuthContainer = styled.main`
     input {
       margin-top: 0.5rem;
     }
-    button {
-    }
 
-    span.option {
+    .option {
       color: ${(props) => props.theme.colors.primary};
       margin-left: 0.625rem;
       cursor: pointer;
+      border: none;
+      background-color: transparent;
+      font-size: ${(props) => props.theme.fontSizes.md};
     }
   }
 

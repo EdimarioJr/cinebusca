@@ -1,13 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
-import watchlistReducer from "./slices/watchlistSlice";
-import reviewsReducer from "./slices/reviewSlice";
+import { setupListeners } from "@reduxjs/toolkit/query/react";
+
 import {
   movieService,
   reviewService,
   rtkQueryErrorLogger,
   watchlistService,
 } from "@/services";
-import { setupListeners } from "@reduxjs/toolkit/query/react";
+
+import reviewsReducer from "./slices/reviewSlice";
+import watchlistReducer from "./slices/watchlistSlice";
 
 export const store = configureStore({
   reducer: {

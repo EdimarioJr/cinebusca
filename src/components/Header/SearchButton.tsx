@@ -1,7 +1,7 @@
-import React from "react";
-
 import { useRouter } from "next/router";
+import React from "react";
 import { BsSearch } from "react-icons/bs";
+
 import { CommonButton } from "@/styles/globals";
 
 export const SearchButton = () => {

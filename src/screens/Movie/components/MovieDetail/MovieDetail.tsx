@@ -1,5 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
+import { useUser } from "@supabase/auth-helpers-react";
+import { motion } from "framer-motion";
 import React, { useState } from "react";
+
+import { ReviewModal } from "@/components";
+import { useMovieWatchlist } from "@/hooks";
+import { upAnimation, opacityAnimation, CommonButton } from "@/styles/globals";
+
+import { Spinner } from "../../../../components/Spinner";
+
 import {
   MovieContainer,
   BackgroundFilter,
@@ -7,21 +16,13 @@ import {
   WatchButton,
   ReviewButton,
 } from "./styles";
-import { motion } from "framer-motion";
-import { upAnimation, opacityAnimation, CommonButton } from "@/styles/globals";
-import { ReviewInput } from "../../../../components/ReviewInput/ReviewInput";
-import { useUser } from "@supabase/auth-helpers-react";
-
-import { Spinner } from "../../../../components/Spinner";
-import { useMovieReview, useMovieWatchlist } from "@/hooks";
-import { ReviewModal } from "@/components";
 
 export type MovieDetailProps = {
   poster_path: string;
   title: string;
   vote_average: number;
   overview: string;
-  genres: any[];
+  genres: { name: string }[];
   budget: number;
   runtime: number;
   release_date: string;

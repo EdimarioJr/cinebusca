@@ -1,14 +1,14 @@
+import { motion } from "framer-motion";
 import React, { useCallback, useEffect, useState } from "react";
 
+import { MovieCard } from "@/components";
+import { MainLayout } from "@/layouts";
+import { Movie } from "@/models";
+import { useLazySearchMovieQuery } from "@/services";
 import { GridCenter, LoadMore, opacityAnimation } from "@/styles/globals";
+import { debounce } from "@/utils";
 
 import { SearchContainer, SearchInput, SearchInputContainer } from "./styles";
-import { useLazySearchMovieQuery } from "@/services";
-import { motion } from "framer-motion";
-import { MovieCard } from "@/components";
-import { Movie } from "@/models";
-import { MainLayout } from "@/layouts";
-import { debounce } from "@/utils";
 
 export const SearchResultsScreen = () => {
   const [movies, setMovies] = useState([] as Movie[]);
@@ -69,23 +69,21 @@ export const SearchResultsScreen = () => {
 
         {movies.length !== 0 ? (
           <motion.div className="grid">
-            {movies.map((movie, index) => {
-              return (
-                <motion.div
-                  variants={opacityAnimation}
-                  initial="initial"
-                  animate="final"
-                  key={index}
-                >
-                  <MovieCard
-                    idMovie={movie.id}
-                    poster={movie.poster_path}
-                    title={movie.original_title}
-                    score={movie.vote_average}
-                  />
-                </motion.div>
-              );
-            })}
+            {movies.map((movie, index) => (
+              <motion.div
+                variants={opacityAnimation}
+                initial="initial"
+                animate="final"
+                key={index}
+              >
+                <MovieCard
+                  idMovie={movie.id}
+                  poster={movie.poster_path}
+                  title={movie.original_title}
+                  score={movie.vote_average}
+                />
+              </motion.div>
+            ))}
           </motion.div>
         ) : (
           search && (

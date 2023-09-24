@@ -1,19 +1,16 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
-import { AuthContainer } from "../../styles";
-
-import { CommonButton, Input } from "@/styles/globals";
-
-import { authService } from "@/services";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
-
-import { toast } from "react-toastify";
-import { MainLayout } from "@/layouts";
-
-import { z } from "zod";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "react-toastify";
+import { z } from "zod";
+
 import { FormField, Spinner } from "@/components";
+import { authService } from "@/services";
+import { CommonButton, Input } from "@/styles/globals";
+
+import { AuthContainer } from "../../styles";
 
 // login Animation
 const loginVariants = {
@@ -105,9 +102,9 @@ export const Login = ({ setIsSigningUp }: LoginProps) => {
 
           <p>
             Dont have an account?
-            <span onClick={() => setIsSigningUp(true)} className="option">
+            <button onClick={() => setIsSigningUp(true)} className="option">
               Sign up
-            </span>
+            </button>
           </p>
         </div>
       </AuthContainer>

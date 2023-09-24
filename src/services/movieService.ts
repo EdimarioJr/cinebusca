@@ -1,8 +1,8 @@
+import { createApi, fetchBaseQuery, retry } from "@reduxjs/toolkit/query/react";
+
+import { CarouselMovieImage } from "@/components";
 import { CastPerson, Crew, MovieDetails, MovieImage } from "@/models";
 import { Movie } from "@/models/movie";
-
-import { createApi, fetchBaseQuery, retry } from "@reduxjs/toolkit/query/react";
-import { CarouselMovieImage } from "@/components";
 
 export type MovieImagesResponse = {
   backdrops: MovieImage[];

@@ -1,7 +1,5 @@
 import { ReviewsScreen } from "@/screens";
 
-const ReviewsPage = () => {
-  return <ReviewsScreen />;
-};
+const ReviewsPage = () => <ReviewsScreen />;
 
 export default ReviewsPage;

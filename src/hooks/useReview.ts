@@ -1,6 +1,7 @@
 import { useUser } from "@supabase/auth-helpers-react";
-import { useDeleteReviewMutation, useGetReviewsQuery } from "@/services";
 import { toast } from "react-toastify";
+
+import { useDeleteReviewMutation, useGetReviewsQuery } from "@/services";
 
 export const useReview = () => {
   const user = useUser();

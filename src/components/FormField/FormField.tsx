@@ -1,4 +1,5 @@
 import React, { ReactNode } from "react";
+
 import { Container } from "./styles";
 
 export type FormFieldProps = {
@@ -11,12 +12,10 @@ export const FormField = ({
   errorMessage = "",
   label,
   children,
-}: FormFieldProps) => {
-  return (
-    <Container>
-      <label>{label}</label>
-      {children}
-      {errorMessage && <p className="error">{errorMessage}</p>}
-    </Container>
-  );
-};
+}: FormFieldProps) => (
+  <Container>
+    <label>{label}</label>
+    {children}
+    {errorMessage && <p className="error">{errorMessage}</p>}
+  </Container>
+);

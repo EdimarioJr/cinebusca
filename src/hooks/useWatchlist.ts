@@ -1,9 +1,10 @@
 import { useUser } from "@supabase/auth-helpers-react";
+import { toast } from "react-toastify";
+
 import {
   useDeleteFromWatchlistMutation,
   useGetWatchlistQuery,
 } from "@/services";
-import { toast } from "react-toastify";
 
 export const useWatchlist = () => {
   const user = useUser();

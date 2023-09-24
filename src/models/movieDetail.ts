@@ -1,7 +1,8 @@
-import { ProductionCompany } from ".";
 import { ProductionCountry } from "./country";
 import { Genre } from "./genre";
 import { Language } from "./language";
+
+import { ProductionCompany } from ".";
 
 export type MovieDetails = {
   adult: boolean;

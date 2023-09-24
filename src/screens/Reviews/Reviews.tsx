@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { opacityAnimation } from "@/styles/globals";
 
 import { Loading, ReviewCard, ReviewModal } from "@/components";
-
-import { ReviewsContainer } from "./styles";
 import { useReview } from "@/hooks";
 import { MainLayout } from "@/layouts";
 import { Review } from "@/models/review";
+import { opacityAnimation } from "@/styles/globals";
+
+import { ReviewsContainer } from "./styles";
 
 export const ReviewsScreen = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,27 +22,24 @@ export const ReviewsScreen = () => {
       >
         {!isLoading ? (
           reviews?.length !== 0 ? (
-            reviews?.map((review) => {
-              return (
-                <ReviewCard
-                  id={review.id}
-                  movieTitle={review.movieTitle}
-                  moviePoster={review.moviePoster}
-                  movieId={review.movieId}
-                  review={review.review}
-                  date={String(review.date)}
-                  deleteReview={handleDeleteReview}
-                  handleEditReview={(id) => {
-                    const review =
-                      reviews.find((review) => review.id === id) ?? null;
-                    setSelectedReview(review);
+            reviews?.map((review) => (
+              <ReviewCard
+                id={review.id}
+                movieTitle={review.movieTitle}
+                moviePoster={review.moviePoster}
+                review={review.review}
+                date={String(review.date)}
+                deleteReview={handleDeleteReview}
+                handleEditReview={(id) => {
+                  const review =
+                    reviews.find((review) => review.id === id) ?? null;
+                  setSelectedReview(review);
 
-                    if (review) setIsOpen(true);
-                  }}
-                  key={review.id}
-                />
-              );
-            })
+                  if (review) setIsOpen(true);
+                }}
+                key={review.id}
+              />
+            ))
           ) : (
             <h1>No reviews</h1>
           )

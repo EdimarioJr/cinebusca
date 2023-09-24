@@ -1,20 +1,16 @@
 import { supabase } from "@/config";
 
 export const authService = {
-  logout: async () => {
-    return supabase.auth.signOut();
-  },
-  getToken: () => {
-    return typeof window !== "undefined"
+  logout: async () => supabase.auth.signOut(),
+  getToken: () =>
+    typeof window !== "undefined"
       ? window.sessionStorage.getItem(process.env.NEXT_PUBLIC_SECRET_JWT ?? "")
-      : null;
-  },
-  login: async ({ email, password }: { email: string; password: string }) => {
-    return supabase.auth.signInWithPassword({
+      : null,
+  login: async ({ email, password }: { email: string; password: string }) =>
+    supabase.auth.signInWithPassword({
       email,
       password,
-    });
-  },
+    }),
   signUp: async ({
     name,
     email,

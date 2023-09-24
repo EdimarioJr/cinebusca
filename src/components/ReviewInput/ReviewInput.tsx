@@ -1,7 +1,8 @@
 import React from "react";
-import { ReviewContainer, AddReview, CancelReview } from "./styles";
 
 import { Spinner } from "@/components";
+
+import { ReviewContainer, AddReview, CancelReview } from "./styles";
 
 export type ReviewInputProps = {
   reviewExists: boolean;
@@ -21,30 +22,28 @@ export const ReviewInput = ({
   handleCancelReview,
   reviewText,
   handleChangeReviewText,
-}: ReviewInputProps) => {
-  return (
-    <ReviewContainer>
-      <textarea
-        placeholder="Add a review..."
-        onChange={(event) => handleChangeReviewText(event.target.value)}
-        value={reviewText}
-      ></textarea>
-      <div className="rowButtons">
-        <AddReview
-          onClick={() =>
-            reviewExists ? handleEditReview() : handleCreateReview()
-          }
-        >
-          {isLoading ? (
-            <Spinner boxSize="1.5rem" />
-          ) : reviewExists ? (
-            "Edit review"
-          ) : (
-            "Create review"
-          )}
-        </AddReview>
-        <CancelReview onClick={handleCancelReview}>Cancel</CancelReview>
-      </div>
-    </ReviewContainer>
-  );
-};
+}: ReviewInputProps) => (
+  <ReviewContainer>
+    <textarea
+      placeholder="Add a review..."
+      onChange={(event) => handleChangeReviewText(event.target.value)}
+      value={reviewText}
+    />
+    <div className="rowButtons">
+      <AddReview
+        onClick={() =>
+          reviewExists ? handleEditReview() : handleCreateReview()
+        }
+      >
+        {isLoading ? (
+          <Spinner boxSize="1.5rem" />
+        ) : reviewExists ? (
+          "Edit review"
+        ) : (
+          "Create review"
+        )}
+      </AddReview>
+      <CancelReview onClick={handleCancelReview}>Cancel</CancelReview>
+    </div>
+  </ReviewContainer>
+);

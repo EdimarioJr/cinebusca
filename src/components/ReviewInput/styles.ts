@@ -1,5 +1,6 @@
-import { CommonButton } from "@/styles/globals";
 import { styled } from "styled-components";
+
+import { CommonButton } from "@/styles/globals";
 
 export const AddReview = styled(CommonButton)`
   background-color: ${(props) => props.theme.colors.success};
