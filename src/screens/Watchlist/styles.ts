@@ -4,6 +4,14 @@ import styled from "styled-components";
 import { CommonButton } from "@/styles/globals";
 
 export const WatchlistContainer = styled(motion.section)`
+  h1 {
+    color: white;
+    font-size: ${(props) => props.theme.fontSizes.xl};
+    margin-bottom: 3rem;
+  }
+`;
+
+export const WatchlistGrid = styled(motion.section)`
   width: 100%;
 
   h1 {

@@ -6,7 +6,7 @@ import { MainLayout } from "@/layouts";
 import { Review } from "@/models/review";
 import { opacityAnimation } from "@/styles/globals";
 
-import { ReviewsContainer } from "./styles";
+import { ReviewContainer, ReviewsGrid } from "./styles";
 
 export const ReviewsScreen = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,47 +15,50 @@ export const ReviewsScreen = () => {
 
   return (
     <MainLayout page="review">
-      <ReviewsContainer
-        initial="initial"
-        animate="final"
-        variants={opacityAnimation}
-      >
-        {!isLoading ? (
-          reviews?.length !== 0 ? (
-            reviews?.map((review) => (
-              <ReviewCard
-                id={review.id}
-                movieTitle={review.movieTitle}
-                moviePoster={review.moviePoster}
-                review={review.review}
-                date={String(review.date)}
-                deleteReview={handleDeleteReview}
-                handleEditReview={(id) => {
-                  const review =
-                    reviews.find((review) => review.id === id) ?? null;
-                  setSelectedReview(review);
+      <ReviewContainer>
+        <h1>My Reviews</h1>
+        <ReviewsGrid
+          initial="initial"
+          animate="final"
+          variants={opacityAnimation}
+        >
+          {!isLoading ? (
+            reviews?.length !== 0 ? (
+              reviews?.map((review) => (
+                <ReviewCard
+                  id={review.id}
+                  movieTitle={review.movieTitle}
+                  moviePoster={review.moviePoster}
+                  review={review.review}
+                  date={String(review.date)}
+                  deleteReview={handleDeleteReview}
+                  handleEditReview={(id) => {
+                    const review =
+                      reviews.find((review) => review.id === id) ?? null;
+                    setSelectedReview(review);
 
-                  if (review) setIsOpen(true);
-                }}
-                key={review.id}
-              />
-            ))
+                    if (review) setIsOpen(true);
+                  }}
+                  key={review.id}
+                />
+              ))
+            ) : (
+              <h1>No reviews</h1>
+            )
           ) : (
-            <h1>No reviews</h1>
-          )
-        ) : (
-          <Loading />
-        )}
-        {selectedReview && (
-          <ReviewModal
-            isOpen={isOpen}
-            setIsOpen={setIsOpen}
-            id={selectedReview.movieId}
-            poster_path={selectedReview.moviePoster}
-            title={selectedReview.movieTitle}
-          />
-        )}
-      </ReviewsContainer>
+            <Loading />
+          )}
+          {selectedReview && (
+            <ReviewModal
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
+              id={selectedReview.movieId}
+              poster_path={selectedReview.moviePoster}
+              title={selectedReview.movieTitle}
+            />
+          )}
+        </ReviewsGrid>
+      </ReviewContainer>
     </MainLayout>
   );
 };

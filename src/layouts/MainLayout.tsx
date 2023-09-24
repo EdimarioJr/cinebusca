@@ -4,7 +4,7 @@ import { Footer, Header } from "@/components";
 import { ContainerPages } from "@/styles/globals";
 
 export type MainLayoutProps = {
-  page?: "review" | "watchlist";
+  page?: "review" | "watchlist" | "feed";
   children: ReactNode;
 };
 

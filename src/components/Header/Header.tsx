@@ -14,7 +14,7 @@ import { SearchButton } from "./SearchButton";
 import { HeaderLink, HeaderRow, InputsRow, UserNav } from "./styles";
 
 export type HeaderProps = {
-  page?: "watchlist" | "review";
+  page?: "watchlist" | "review" | "feed";
 };
 
 export const Header = ({ page }: HeaderProps) => {
@@ -42,6 +42,13 @@ export const Header = ({ page }: HeaderProps) => {
           <SearchButton />
           {user ? (
             <UserNav key="nav" animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+              <HeaderLink
+                href="/feed"
+                style={{ textDecoration: "none" }}
+                $isSelected={page === "feed"}
+              >
+                <motion.h3 id="watch">Feed</motion.h3>
+              </HeaderLink>
               <HeaderLink
                 href="/watchlist"
                 style={{ textDecoration: "none" }}
