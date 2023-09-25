@@ -14,7 +14,21 @@ export const UpdatesContainer = styled(motion.section)`
 
   h1 {
     color: white;
-    margin-bottom: 30px;
+    margin-bottom: 1.9rem;
+  }
+
+  .user-notification {
+    position: relative;
+  }
+
+  .username {
+    position: relative;
+    z-index: 1;
+    color: white;
+    margin-bottom: 1.9rem;
+    span {
+      color: ${(props) => props.theme.colors.primary};
+    }
   }
 
   .feed {

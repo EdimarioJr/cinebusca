@@ -98,7 +98,10 @@ export const reviewService = createApi({
 
         return { data: true };
       },
-      invalidatesTags: [{ type: "Review", id: "LIST" }],
+      invalidatesTags: [
+        { type: "Review", id: "LIST" },
+        { type: "Review", id: "CHECK" },
+      ],
     }),
   }),
 });

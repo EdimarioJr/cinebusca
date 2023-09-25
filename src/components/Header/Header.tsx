@@ -32,7 +32,7 @@ export const Header = ({ page }: HeaderProps) => {
             <Image
               width={100}
               height={100}
-              src={CineBuscaLogo as unknown as string}
+              src={CineBuscaLogo.src}
               alt="logo cinebusca"
             />
           </Link>

@@ -1,69 +1,14 @@
-import { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import { MovieCard, ReadonlyReviewCard } from "@/components";
-import { supabase } from "@/config";
 import { MainLayout } from "@/layouts";
-import { Movie } from "@/models";
-import { userService } from "@/services";
 import { opacityAnimation } from "@/styles/globals";
 import { FeedContainer, UpdatesContainer } from "./styles";
-
-type BaseActivity = {
-  moviePoster: string;
-  movieId: number;
-  movieTitle: string;
-  movieScore: number;
-  username: string;
-};
-
-type WatchlistActivity = BaseActivity & { type: "watchlist" };
-type ReviewActivity = BaseActivity & {
-  type: "review";
-  review: string;
-  date: Date;
-};
-
-export type Activity = WatchlistActivity | ReviewActivity;
+import { motion } from "framer-motion";
+import { useSubscribeToActivities } from "@/hooks";
 
 export const FeedScreen = () => {
-  const [activities, setActivities] = useState<Activity[]>([]);
-
-  useEffect(() => {
-    const channel = supabase
-      .channel("changes")
-      .on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-        },
-        async (
-          payload: RealtimePostgresChangesPayload<any & { user: string }>
-        ) => {
-          const userId = (payload.new as Movie & { user: string })?.user;
-          const movie = payload.new;
-          const type = payload.table as Activity["type"];
-
-          if (userId) {
-            const response = await userService.getUsername({ id: userId });
-
-            setActivities((old) => [
-              ...old,
-              {
-                ...movie,
-                username: "data" in response ? response.data : "--",
-                type,
-              },
-            ]);
-          }
-        }
-      )
-      .subscribe();
-    return () => {
-      channel.unsubscribe();
-    };
-  }, []);
+  const { activities } = useSubscribeToActivities();
 
   return (
     <MainLayout page="feed">
@@ -87,16 +32,32 @@ export const FeedScreen = () => {
 
               if (type === "review") {
                 return (
-                  <>
-                    <h4>{username} just reviewed this movie</h4>
-                    <ReadonlyReviewCard key={movieId} {...activity} />;
-                  </>
+                  <motion.div
+                    initial="initial"
+                    animate="final"
+                    variants={opacityAnimation}
+                    key={movieId}
+                    className="user-notification"
+                  >
+                    <h4 className="username">
+                      <span>{username}</span> just reviewed this movie
+                    </h4>
+                    <ReadonlyReviewCard {...activity} />;
+                  </motion.div>
                 );
               }
 
               return (
-                <>
-                  <h4>{username} just added this movie to his watchlist</h4>
+                <motion.div
+                  initial="initial"
+                  animate="final"
+                  variants={opacityAnimation}
+                  key={movieId}
+                >
+                  <h4 className="username">
+                    <span>{username}</span> just added this movie to his
+                    watchlist
+                  </h4>
                   <MovieCard
                     key={movieId}
                     title={movieTitle}
@@ -104,7 +65,7 @@ export const FeedScreen = () => {
                     poster={moviePoster}
                     score={movieScore}
                   />
-                </>
+                </motion.div>
               );
             })}
           </section>

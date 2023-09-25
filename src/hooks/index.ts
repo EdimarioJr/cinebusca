@@ -4,3 +4,4 @@ export * from "./useWatchlist";
 export * from "./useReview";
 export * from "./useWindowWidth";
 export * from "./useMovieDetail";
+export * from "./useSubscribeToActivities";

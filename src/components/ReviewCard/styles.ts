@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 export const ReviewContainer = styled(motion.section)`
   width: 100%;
+  max-width: 50rem;
   height: 21.875rem;
   display: grid;
   grid-template-columns: 1fr 2fr;
