@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 import type { RootState } from "../store";
-import { Activity } from "@/hooks";
+import { Activity } from "@/models";
 
 interface FeedState {
   feed: Activity[];
