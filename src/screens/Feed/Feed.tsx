@@ -21,16 +21,10 @@ export const FeedScreen = () => {
         >
           <section className="feed">
             {activities?.map((activity) => {
-              const {
-                movieId,
-                moviePoster,
-                movieScore,
-                movieTitle,
-                type,
-                username,
-              } = activity;
+              const { movieId, moviePoster, movieTitle, entity, username } =
+                activity;
 
-              if (type === "review") {
+              if (entity === "review") {
                 return (
                   <motion.div
                     initial="initial"
@@ -63,7 +57,7 @@ export const FeedScreen = () => {
                     title={movieTitle}
                     idMovie={movieId}
                     poster={moviePoster}
-                    score={movieScore}
+                    score={activity.movieScore}
                   />
                 </motion.div>
               );

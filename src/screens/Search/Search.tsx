@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { MovieCard } from "@/components";
 import { MainLayout } from "@/layouts";
 import { Movie } from "@/models";
-import { useLazySearchMovieQuery } from "@/services";
+import { useLazySearchMovieQuery } from "@/store/queries";
 import { GridCenter, LoadMore, opacityAnimation } from "@/styles/globals";
 import { debounce } from "@/utils";
 
@@ -17,10 +17,10 @@ export const SearchResultsScreen = () => {
   const [actualPage, setActualPage] = useState(1);
   const [search, setSearch] = useState("");
 
-  const [trigger] = useLazySearchMovieQuery();
+  const [searchMovie, { isLoading }] = useLazySearchMovieQuery();
 
   const getSearchedMovies = async (search: string, actualPage: number) => {
-    const response = await trigger({
+    const response = await searchMovie({
       query: search ?? "",
       page: actualPage,
     });
@@ -86,7 +86,8 @@ export const SearchResultsScreen = () => {
             ))}
           </motion.div>
         ) : (
-          search && (
+          search &&
+          !isLoading && (
             <GridCenter>
               <h1>No Movies Found!</h1>
             </GridCenter>

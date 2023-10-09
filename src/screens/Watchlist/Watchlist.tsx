@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import React from "react";
 
-import { Loading, MovieCard } from "@/components";
+import { Loading, MovieCard, Spinner } from "@/components";
 import { useWatchlist } from "@/hooks";
 import { MainLayout } from "@/layouts";
 import { opacityAnimation } from "@/styles/globals";
@@ -9,7 +9,8 @@ import { opacityAnimation } from "@/styles/globals";
 import { RemoveButton, WatchlistContainer, WatchlistGrid } from "./styles";
 
 export function WatchlistScreen() {
-  const { isLoadingWatchlist, watchlist, handleRemove } = useWatchlist();
+  const { isLoadingWatchlist, watchlist, handleRemove, isLoadingDelete } =
+    useWatchlist();
 
   return (
     <MainLayout page="watchlist">
@@ -43,7 +44,11 @@ export function WatchlistScreen() {
                       id={item.id}
                       onClick={() => handleRemove(item.id)}
                     >
-                      Remove
+                      {isLoadingDelete ? (
+                        <Spinner boxSize="1.5rem" />
+                      ) : (
+                        "Remove"
+                      )}
                     </RemoveButton>
                   </motion.div>
                 ))}

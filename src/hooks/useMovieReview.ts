@@ -6,7 +6,7 @@ import {
   useCreateReviewMutation,
   useEditReviewMutation,
   useGetMovieReviewQuery,
-} from "@/services";
+} from "@/store/queries";
 
 export type UseMovieReviewParams = {
   idMovie: number;

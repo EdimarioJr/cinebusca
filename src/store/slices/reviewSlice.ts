@@ -25,6 +25,6 @@ export const reviewSlice = createSlice({
 export const { resetReviews } = reviewSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectReview = (state: RootState) => state.reviews;
+export const selectReview = (state: RootState) => state.reviews.reviews;
 
 export default reviewSlice.reducer;

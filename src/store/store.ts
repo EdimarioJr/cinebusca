@@ -1,30 +1,27 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query/react";
 
-import {
-  movieService,
-  reviewService,
-  rtkQueryErrorLogger,
-  watchlistService,
-} from "@/services";
-
 import reviewsReducer from "./slices/reviewSlice";
 import watchlistReducer from "./slices/watchlistSlice";
+import feedReducer from "./slices/feedSlice";
+import { rtkQueryErrorLogger } from "./errorLogger";
+import { movieQueries, reviewQueries, watchlistQueries } from "./queries";
 
 export const store = configureStore({
   reducer: {
     watchlist: watchlistReducer,
     reviews: reviewsReducer,
-    [movieService.reducerPath]: movieService.reducer,
-    [watchlistService.reducerPath]: watchlistService.reducer,
-    [reviewService.reducerPath]: reviewService.reducer,
+    feed: feedReducer,
+    [movieQueries.reducerPath]: movieQueries.reducer,
+    [watchlistQueries.reducerPath]: watchlistQueries.reducer,
+    [reviewQueries.reducerPath]: reviewQueries.reducer,
   },
 
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
-      .concat(watchlistService.middleware)
-      .concat(movieService.middleware)
-      .concat(reviewService.middleware)
+      .concat(watchlistQueries.middleware)
+      .concat(movieQueries.middleware)
+      .concat(reviewQueries.middleware)
       .concat(rtkQueryErrorLogger),
 });
 

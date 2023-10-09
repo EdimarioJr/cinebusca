@@ -1,33 +1,43 @@
 import { motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { CineCarousel, Loading, MovieCard, Spinner } from "@/components";
 import { MainLayout } from "@/layouts";
 import { Movie } from "@/models";
 import {
   useGetPopularMovieImagesQuery,
-  useGetPopularMoviesQuery,
-} from "@/services";
+  useLazyGetPopularMoviesQuery,
+} from "@/store/queries";
 import { opacityAnimation, LoadMore } from "@/styles/globals";
 
 import { Main } from "./styles";
+import { toast } from "react-toastify";
 
-const GRID_BEGIN_PAGE = 2;
+export type HomepageProps = {
+  initialMovies: Movie[];
+  initialPage: number;
+};
 
-export function Homepage() {
-  const [movies, setMovies] = useState([] as Movie[]);
-  const [page, setPage] = useState(GRID_BEGIN_PAGE);
+export function Homepage({ initialMovies, initialPage }: HomepageProps) {
+  const [movies, setMovies] = useState(initialMovies);
+  const [page, setPage] = useState(initialPage);
 
-  const { data: moviesFromApi, isLoading: isLoadingMovies } =
-    useGetPopularMoviesQuery(page);
+  const [getPopularMovies, { isLoading: isLoadingMovies }] =
+    useLazyGetPopularMoviesQuery();
 
   const { data: movieImages, isLoading: isLoadingMovieImages } =
     useGetPopularMovieImagesQuery();
 
-  useEffect(() => {
-    if (moviesFromApi?.length) setMovies((old) => [...old, ...moviesFromApi]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(moviesFromApi)]);
+  const handleMoreMovies = async () => {
+    const newPage = page + 1;
+    setPage(newPage);
+    try {
+      const movies = await getPopularMovies(newPage).unwrap();
+      setMovies((oldMovies) => [...oldMovies, ...movies]);
+    } catch {
+      toast.error("Erro puxando os filmes. Tente novamente mais tarde");
+    }
+  };
 
   return (
     <MainLayout>
@@ -62,12 +72,7 @@ export function Homepage() {
                 </motion.div>
               ))}
             </section>
-            <LoadMore
-              onClick={() => {
-                const newPage = page + 1;
-                setPage(newPage);
-              }}
-            >
+            <LoadMore onClick={handleMoreMovies}>
               {isLoadingMovies ? <Spinner /> : "Load more!"}
             </LoadMore>
           </Main>

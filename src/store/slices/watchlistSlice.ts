@@ -24,7 +24,6 @@ export const watchlistSlice = createSlice({
 
 export const { resetWatchlist } = watchlistSlice.actions;
 
-// Other code such as selectors can use the imported `RootState` type
-export const selectWatchlist = (state: RootState) => state.watchlist;
+export const selectWatchlist = (state: RootState) => state.watchlist.watchlist;
 
 export default watchlistSlice.reducer;

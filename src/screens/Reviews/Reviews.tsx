@@ -11,7 +11,8 @@ import { ReviewContainer, ReviewsGrid } from "./styles";
 export const ReviewsScreen = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedReview, setSelectedReview] = useState<Review | null>(null);
-  const { isLoading, reviews, handleDeleteReview } = useReview();
+  const { isLoading, reviews, handleDeleteReview, isLoadingDelete } =
+    useReview();
 
   return (
     <MainLayout page="review">
@@ -32,6 +33,7 @@ export const ReviewsScreen = () => {
                   review={review.review}
                   date={String(review.date)}
                   deleteReview={handleDeleteReview}
+                  isLoadingDelete={isLoadingDelete}
                   handleEditReview={(id) => {
                     const review =
                       reviews.find((review) => review.id === id) ?? null;

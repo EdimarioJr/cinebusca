@@ -4,15 +4,16 @@ import { toast } from "react-toastify";
 import {
   useDeleteFromWatchlistMutation,
   useGetWatchlistQuery,
-} from "@/services";
+} from "@/store/queries";
 
 export const useWatchlist = () => {
   const user = useUser();
 
   const { data: watchlist, isLoading: isLoadingWatchlist } =
-    useGetWatchlistQuery({ userId: user?.id ?? "" });
+    useGetWatchlistQuery({ userId: user?.id ?? "" }, { skip: !user?.id });
 
-  const [deleteWatchlist] = useDeleteFromWatchlistMutation();
+  const [deleteWatchlist, { isLoading: isLoadingDelete }] =
+    useDeleteFromWatchlistMutation();
 
   async function handleRemove(idWatchlist: string) {
     if (user) {
@@ -27,5 +28,5 @@ export const useWatchlist = () => {
       }
     }
   }
-  return { handleRemove, watchlist, isLoadingWatchlist };
+  return { handleRemove, watchlist, isLoadingWatchlist, isLoadingDelete };
 };

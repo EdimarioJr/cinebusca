@@ -16,83 +16,71 @@ export type InWatchlistParams = BaseWatchlistOperationParams;
 
 export type GetMovieWatchlist = { user: string; movieId: number };
 
-import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
+class WatchlistService {
+  async getWatchlist({
+    userId,
+  }: GetWatchlistParams): Promise<Watchlist[] | []> {
+    const { data, error } = await supabase
+      .from("watchlist")
+      .select("*")
+      .eq("user", userId);
 
-export const watchlistService = createApi({
-  reducerPath: "watchlistService",
-  baseQuery: fakeBaseQuery(),
-  tagTypes: ["Watchlist"],
-  endpoints: (builder) => ({
-    getWatchlist: builder.query<Watchlist[] | [], GetWatchlistParams>({
-      queryFn: async ({ userId }) => {
-        const { data, error } = await supabase
-          .from("watchlist")
-          .select("*")
-          .eq("user", userId);
+    if (error) throw new Error(error.message);
 
-        if (error) return { error };
+    return data;
+  }
 
-        return { data };
-      },
-      providesTags: [{ type: "Watchlist", id: "LIST" }],
-    }),
-    movieExistsInWatchlist: builder.query<string, GetMovieWatchlist>({
-      queryFn: async ({ user, movieId }) => {
-        const { data, error } = await supabase
-          .from("watchlist")
-          .select("id")
-          .eq("user", user)
-          .eq("movieId", movieId);
+  async getMovieWatchlist({
+    user,
+    movieId,
+  }: GetMovieWatchlist): Promise<Watchlist | null> {
+    const { data, error } = await supabase
+      .from("watchlist")
+      .select("*")
+      .eq("user", user)
+      .eq("movieId", movieId);
 
-        if (error) return { error };
+    if (error) throw new Error(error.message);
 
-        return { data: data[0]?.id ?? "" };
-      },
-      providesTags: [{ type: "Watchlist", id: "CHECK" }],
-    }),
-    addInWatchlist: builder.mutation<Watchlist, CreateWatchlist>({
-      queryFn: async ({
-        movieId,
-        user,
-        moviePoster,
-        movieTitle,
-        movieScore,
-      }: CreateWatchlist) => {
-        const { error, data } = await supabase
-          .from("watchlist")
-          .insert({ movieId, user: user, moviePoster, movieTitle, movieScore })
-          .select("*");
+    return data.length ? data[0] : null;
+  }
 
-        if (error) return { error };
+  async movieExistsInWatchlist({
+    userId,
+    movieId,
+  }: InWatchlistParams): Promise<string> {
+    const { data, error } = await supabase
+      .from("watchlist")
+      .select("*")
+      .eq("user", userId)
+      .eq("movieId", movieId);
 
-        return { data: data[0] };
-      },
-      invalidatesTags: [
-        { type: "Watchlist", id: "LIST" },
-        { type: "Watchlist", id: "CHECK" },
-      ],
-    }),
-    deleteFromWatchlist: builder.mutation<boolean, DeleteWatchlist>({
-      queryFn: async ({ id }: DeleteWatchlist) => {
-        const { error } = await supabase
-          .from("watchlist")
-          .delete()
-          .eq("id", id);
-        if (error) return { error };
+    if (error) throw new Error(error.message);
 
-        return { data: true };
-      },
-      invalidatesTags: [
-        { type: "Watchlist", id: "LIST" },
-        { type: "Watchlist", id: "CHECK" },
-      ],
-    }),
-  }),
-});
+    return data[0]?.id ?? "";
+  }
 
-export const {
-  useGetWatchlistQuery,
-  useAddInWatchlistMutation,
-  useDeleteFromWatchlistMutation,
-  useMovieExistsInWatchlistQuery,
-} = watchlistService;
+  async addInWatchlist({
+    user,
+    movieId,
+    moviePoster,
+    movieScore,
+    movieTitle,
+  }: CreateWatchlist): Promise<Watchlist> {
+    const { error, data } = await supabase
+      .from("watchlist")
+      .insert({ movieId, user, moviePoster, movieTitle, movieScore })
+      .select("*");
+
+    if (error) throw new Error(error.message);
+
+    return data[0];
+  }
+
+  async deleteFromWatchlist({ id }: DeleteWatchlist) {
+    const { error } = await supabase.from("watchlist").delete().eq("id", id);
+    if (error) throw new Error(error.message);
+  }
+}
+
+export const watchlistService = new WatchlistService();

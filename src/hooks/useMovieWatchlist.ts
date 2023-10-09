@@ -5,7 +5,7 @@ import {
   useAddInWatchlistMutation,
   useDeleteFromWatchlistMutation,
   useMovieExistsInWatchlistQuery,
-} from "@/services";
+} from "@/store/queries";
 
 export type UseWatchlistParams = {
   movieId: number;

@@ -7,3 +7,4 @@ export * from "./company";
 export * from "./country";
 export * from "./language";
 export * from "./movieDetail";
+export * from "./activity";

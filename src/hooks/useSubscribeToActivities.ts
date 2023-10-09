@@ -1,50 +1,69 @@
 import { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 
 import { supabase } from "@/config";
-import { Movie } from "@/models";
 import { userService } from "@/services";
-
-type BaseActivity = {
-  moviePoster: string;
-  movieId: number;
-  movieTitle: string;
-  movieScore: number;
-  username: string;
-};
-
-type WatchlistActivity = BaseActivity & { type: "watchlist" };
-type ReviewActivity = BaseActivity & {
-  type: "review";
-  review: string;
-  date: Date;
-};
-
-export type Activity = WatchlistActivity | ReviewActivity;
+import { useDispatch, useSelector } from "react-redux";
+import { selectFeed, setFeed } from "@/store/slices";
+import {
+  Activity,
+  ActivityReviewFromApi,
+  ActivityWatchlistFromApi,
+  BaseActivity,
+  BaseActivityFromApi,
+  ReviewActivity,
+  WatchlistActivity,
+} from "@/models";
 
 type RealtimePayload = RealtimePostgresChangesPayload<any & { user: string }>;
 
 export const useSubscribeToActivities = () => {
-  const [activities, setActivities] = useState<Activity[]>([]);
+  const feed = useSelector(selectFeed);
+  const dispatch = useDispatch();
+  const addActivity = useCallback(
+    async (payload: RealtimePayload) => {
+      const newData = payload.new as
+        | ActivityWatchlistFromApi
+        | ActivityReviewFromApi;
 
-  const addActivity = useCallback(async (payload: RealtimePayload) => {
-    const userId = (payload.new as Movie & { user: string })?.user;
-    const movie = payload.new;
-    const type = payload.table as Activity["type"];
+      const userId = (payload.new as BaseActivityFromApi)?.user;
+      const type = payload.new.entity as Activity["entity"];
 
-    if (userId) {
-      const response = await userService.getUsername({ id: userId });
+      if (userId) {
+        const response = await userService.getUsername({ id: userId });
 
-      setActivities((old) => [
-        ...old,
-        {
-          ...movie,
+        const baseFormattedNewData = {
+          moviePoster: newData.movie_poster,
+          movieTitle: newData.movie_title,
+          movieId: newData.movie_id,
+          user: newData.user,
+          id: newData.id,
           username: "data" in response ? response.data : "--",
-          type,
-        },
-      ]);
-    }
-  }, []);
+        } as BaseActivity;
+
+        const formattedNewData =
+          type === "watchlist"
+            ? ({
+                ...baseFormattedNewData,
+                movieScore: (newData as ActivityWatchlistFromApi).movie_score,
+                entity: "watchlist",
+              } as WatchlistActivity)
+            : ({
+                ...baseFormattedNewData,
+                review: (newData as ActivityReviewFromApi).review,
+                date: (newData as ActivityReviewFromApi).date,
+                entity: "review",
+              } as ReviewActivity);
+
+        dispatch(
+          setFeed({
+            ...formattedNewData,
+          })
+        );
+      }
+    },
+    [dispatch]
+  );
 
   useEffect(() => {
     const channel = supabase
@@ -54,18 +73,7 @@ export const useSubscribeToActivities = () => {
         {
           event: "INSERT",
           schema: "public",
-          table: "watchlist",
-        },
-        async (payload: RealtimePayload) => {
-          addActivity(payload);
-        }
-      )
-      .on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "review",
+          table: "activity_log",
         },
         async (payload: RealtimePayload) => {
           addActivity(payload);
@@ -77,5 +85,5 @@ export const useSubscribeToActivities = () => {
     };
   }, [addActivity]);
 
-  return { activities };
+  return { activities: feed };
 };

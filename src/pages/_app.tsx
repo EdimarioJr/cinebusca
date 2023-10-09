@@ -5,7 +5,6 @@ import type { AppProps } from "next/app";
 import { useState } from "react";
 
 import "react-toastify/dist/ReactToastify.css";
-
 import { Raleway } from "next/font/google";
 import { Provider } from "react-redux";
 import { ToastContainer } from "react-toastify";
@@ -13,9 +12,11 @@ import { ThemeProvider } from "styled-components";
 import { ModalProvider } from "styled-react-modal";
 
 import { FadingBackground } from "@/components";
-import { supabase } from "@/config";
 import { store } from "@/store/store";
 import { theme } from "@/styles";
+import { supabase } from "@/config";
+
+import NextNProgress from "nextjs-progressbar";
 
 const raleway = Raleway({ subsets: ["latin"] });
 
@@ -41,6 +42,7 @@ export default function App({
         <ThemeProvider theme={theme}>
           <ModalProvider backgroundComponent={FadingBackground}>
             <GlobalStyle />
+            <NextNProgress color="#107ee5" />
             <Component {...pageProps} />
           </ModalProvider>
         </ThemeProvider>

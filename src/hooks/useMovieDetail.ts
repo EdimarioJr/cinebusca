@@ -1,30 +1,13 @@
-import {
-  useGetMovieCastQuery,
-  useGetMovieImagesQuery,
-  useGetMovieQuery,
-  useGetMovieRecommendationsQuery,
-} from "@/services";
+import { MovieScreenProps } from "@/screens";
 
 export type UseMovieDetailParams = {
-  idMovie: number;
+  images: MovieScreenProps["images"];
+  movieCast: MovieScreenProps["movieCast"];
 };
 
-export const useMovieDetail = ({ idMovie }: UseMovieDetailParams) => {
-  const { data: movieCast } = useGetMovieCastQuery(idMovie);
-
-  const { data: movie, isLoading: isLoadingMovie } = useGetMovieQuery(idMovie, {
-    skip: !idMovie,
-  });
-
-  const { data: recommendations } = useGetMovieRecommendationsQuery(idMovie, {
-    skip: !idMovie,
-  });
-
-  const { data: movieImages, isLoading: isLoadingMovieImages } =
-    useGetMovieImagesQuery(idMovie, { skip: !idMovie });
-
+export const useMovieDetail = ({ images, movieCast }: UseMovieDetailParams) => {
   const formattedImages =
-    movieImages?.backdrops.map((image) => ({
+    images?.backdrops.map((image) => ({
       src: `https://image.tmdb.org/t/p/original/${image.file_path}`,
       alt: image.file_path,
     })) ?? [];
@@ -35,12 +18,8 @@ export const useMovieDetail = ({ idMovie }: UseMovieDetailParams) => {
   const cast = movieCast?.cast ?? [];
 
   return {
-    cast,
+    cast: cast ?? [],
     director,
     formattedImages,
-    recommendations,
-    movie,
-    isLoadingMovie,
-    isLoadingMovieImages,
   };
 };

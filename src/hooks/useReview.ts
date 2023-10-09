@@ -1,7 +1,7 @@
 import { useUser } from "@supabase/auth-helpers-react";
 import { toast } from "react-toastify";
 
-import { useDeleteReviewMutation, useGetReviewsQuery } from "@/services";
+import { useDeleteReviewMutation, useGetReviewsQuery } from "@/store/queries";
 
 export const useReview = () => {
   const user = useUser();
@@ -12,7 +12,8 @@ export const useReview = () => {
     },
     { skip: !user }
   );
-  const [deleteReview] = useDeleteReviewMutation();
+  const [deleteReview, { isLoading: isLoadingDelete }] =
+    useDeleteReviewMutation();
 
   async function handleDeleteReview(id: string) {
     if (user) {
@@ -25,5 +26,5 @@ export const useReview = () => {
     }
   }
 
-  return { handleDeleteReview, reviews, isLoading };
+  return { handleDeleteReview, reviews, isLoading, isLoadingDelete };
 };
