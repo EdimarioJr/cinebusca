@@ -3,7 +3,6 @@ import { setupListeners } from "@reduxjs/toolkit/query/react";
 
 import reviewsReducer from "./slices/reviewSlice";
 import watchlistReducer from "./slices/watchlistSlice";
-import feedReducer from "./slices/feedSlice";
 import { rtkQueryErrorLogger } from "./errorLogger";
 import { movieQueries, reviewQueries, watchlistQueries } from "./queries";
 
@@ -11,7 +10,6 @@ export const store = configureStore({
   reducer: {
     watchlist: watchlistReducer,
     reviews: reviewsReducer,
-    feed: feedReducer,
     [movieQueries.reducerPath]: movieQueries.reducer,
     [watchlistQueries.reducerPath]: watchlistQueries.reducer,
     [reviewQueries.reducerPath]: reviewQueries.reducer,

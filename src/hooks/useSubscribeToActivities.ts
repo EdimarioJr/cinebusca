@@ -2,11 +2,10 @@ import { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
 import { useCallback, useEffect } from "react";
 
 import { supabase } from "@/config";
-import { userService } from "@/services";
-import { useDispatch, useSelector } from "react-redux";
-import { selectFeed, setFeed } from "@/store/slices";
+
 import {
   Activity,
+  ActivityFromApi,
   ActivityReviewFromApi,
   ActivityWatchlistFromApi,
   BaseActivity,
@@ -15,54 +14,60 @@ import {
   WatchlistActivity,
 } from "@/models";
 
+export type UseSubscribeToActivitiesParams = {
+  addNewActivity: (activity: Activity) => void;
+};
+
 type RealtimePayload = RealtimePostgresChangesPayload<any & { user: string }>;
 
-export const useSubscribeToActivities = () => {
-  const feed = useSelector(selectFeed);
-  const dispatch = useDispatch();
+export const formatApiActivityToCinebuscaActivity = (
+  activity: ActivityFromApi
+) => {
+  const baseFormattedNewData = {
+    moviePoster: activity.movie_poster,
+    movieTitle: activity.movie_title,
+    movieId: activity.movie_id,
+    user: activity.user,
+    id: activity.id,
+    username: activity.username,
+    createdAt: activity.created_at,
+  } as BaseActivity;
+
+  const formattedNewData =
+    activity.entity === "watchlist"
+      ? ({
+          ...baseFormattedNewData,
+          movieScore: (activity as ActivityWatchlistFromApi).movie_score,
+          entity: "watchlist",
+        } as WatchlistActivity)
+      : ({
+          ...baseFormattedNewData,
+          review: (activity as ActivityReviewFromApi).review,
+          date: (activity as ActivityReviewFromApi).date,
+          entity: "review",
+        } as ReviewActivity);
+
+  return formattedNewData;
+};
+
+export const useSubscribeToActivities = ({
+  addNewActivity,
+}: UseSubscribeToActivitiesParams) => {
   const addActivity = useCallback(
     async (payload: RealtimePayload) => {
-      const newData = payload.new as
-        | ActivityWatchlistFromApi
-        | ActivityReviewFromApi;
-
       const userId = (payload.new as BaseActivityFromApi)?.user;
-      const type = payload.new.entity as Activity["entity"];
 
       if (userId) {
-        const response = await userService.getUsername({ id: userId });
-
-        const baseFormattedNewData = {
-          moviePoster: newData.movie_poster,
-          movieTitle: newData.movie_title,
-          movieId: newData.movie_id,
-          user: newData.user,
-          id: newData.id,
-          username: "data" in response ? response.data : "--",
-        } as BaseActivity;
-
-        const formattedNewData =
-          type === "watchlist"
-            ? ({
-                ...baseFormattedNewData,
-                movieScore: (newData as ActivityWatchlistFromApi).movie_score,
-                entity: "watchlist",
-              } as WatchlistActivity)
-            : ({
-                ...baseFormattedNewData,
-                review: (newData as ActivityReviewFromApi).review,
-                date: (newData as ActivityReviewFromApi).date,
-                entity: "review",
-              } as ReviewActivity);
-
-        dispatch(
-          setFeed({
-            ...formattedNewData,
-          })
+        const formattedNewData = formatApiActivityToCinebuscaActivity(
+          payload.new
         );
+
+        addNewActivity({
+          ...formattedNewData,
+        });
       }
     },
-    [dispatch]
+    [addNewActivity]
   );
 
   useEffect(() => {
@@ -84,6 +89,4 @@ export const useSubscribeToActivities = () => {
       channel.unsubscribe();
     };
   }, [addActivity]);
-
-  return { activities: feed };
 };

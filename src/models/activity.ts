@@ -4,6 +4,8 @@ export type BaseActivityFromApi = {
   movie_id: number;
   movie_title: string;
   user: string;
+  username: string;
+  created_at: string;
 };
 
 export type ActivityWatchlistFromApi = BaseActivityFromApi & {
@@ -22,6 +24,7 @@ export type BaseActivity = {
   movieId: number;
   movieTitle: string;
   username: string;
+  createdAt: string;
 };
 
 export type WatchlistActivity = BaseActivity & {
