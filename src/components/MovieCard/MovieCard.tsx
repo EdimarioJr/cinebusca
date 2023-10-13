@@ -7,6 +7,7 @@ import NoImage from "@/assets/no-image.jpg";
 import { Flex } from "@/styles/globals";
 
 import { MovieContainer } from "./styles";
+import { movieService } from "@/services";
 
 export type MovieCardProps = {
   title: string;
@@ -24,7 +25,7 @@ export const MovieCard = ({
   <Link href={`/movie/${idMovie}`} style={{ textDecoration: "none" }}>
     <MovieContainer>
       <img
-        src={poster ? `https://image.tmdb.org/t/p/w342/${poster}` : NoImage.src}
+        src={poster ? movieService.getMovieImageUrl(poster) : NoImage.src}
         alt={title}
       />
       <div className="legend">

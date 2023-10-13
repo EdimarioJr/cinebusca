@@ -16,11 +16,11 @@ export const HeaderRow = styled.header`
     width: 6.25rem;
   }
 
-  @media (max-width: 414px) {
+  @media (max-width: 700px) {
     flex-direction: column;
 
     img {
-      width: 5.32rem;
+      width: 6rem;
       margin-bottom: 0.625rem;
     }
   }
@@ -30,6 +30,7 @@ export const InputsRow = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
   gap: 2rem;
 
   @media (max-width: 475px) {
@@ -53,6 +54,10 @@ export const HeaderLink = styled(Link)<{ $isSelected?: boolean }>`
 
   color: ${({ $isSelected, ...props }) =>
     $isSelected ? props.theme.colors.primary : ""};
+
+  @media (max-width: 500px) {
+    padding: 0rem;
+  }
 `;
 
 export const UserNav = styled(motion.nav)`
@@ -61,4 +66,8 @@ export const UserNav = styled(motion.nav)`
   flex-direction: row;
   align-items: center;
   gap: 1rem;
+
+  @media (max-width: 500px) {
+    justify-content: space-between;
+  }
 `;

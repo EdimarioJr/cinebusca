@@ -35,6 +35,10 @@ export const BackgroundFilter = styled.div<{ $back: string }>`
   opacity: 0.8;
   top: 0;
   left: 0;
+
+  @media (max-width: 1000px) {
+    height: 80%;
+  }
 `;
 
 export const MovieInfo = styled.div`

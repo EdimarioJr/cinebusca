@@ -30,8 +30,4 @@ export const ReviewContainer = styled.section`
     display: flex;
     gap: 2rem;
   }
-
-  @media (max-width: 500px) {
-    margin: 1.25rem 0.3125rem;
-  }
 `;

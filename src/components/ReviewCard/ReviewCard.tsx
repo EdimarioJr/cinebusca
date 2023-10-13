@@ -4,6 +4,7 @@ import { CommonButton } from "@/styles/globals";
 
 import { ReviewContainer } from "./styles";
 import { Spinner } from "..";
+import { movieService } from "@/services";
 
 export type ReviewCardProps = {
   id: string;
@@ -27,10 +28,7 @@ export const ReviewCard = ({
   isLoadingDelete = false,
 }: ReviewCardProps) => (
   <ReviewContainer>
-    <img
-      src={`https://image.tmdb.org/t/p/w185/${moviePoster}`}
-      alt="movie poster"
-    />
+    <img src={movieService.getMovieImageUrl(moviePoster)} alt="movie poster" />
     <div className="movieInfo">
       <h3>{movieTitle}</h3>
       <h4>{new Date(date).toLocaleDateString("pt-BR")}</h4>

@@ -61,7 +61,7 @@ export const AuthContainer = styled.main`
 
   @media (max-width: 475px) {
     .card {
-      width: 21.875rem;
+      width: 90%;
       height: 25rem;
 
       form {

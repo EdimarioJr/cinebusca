@@ -6,7 +6,6 @@ export const StyledModal = Modal.styled`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-
   background-color:  ${({ ...props }) => props.theme.colors.terciary};
   color: white;
   padding: 2rem;
@@ -22,5 +21,9 @@ export const StyledModal = Modal.styled`
     display: flex;
     justify-content: space-between;
   }
-  
-  `;
+
+  @media(max-width: 400px){
+    width: 95%;
+    padding: 1rem;
+  }
+`;

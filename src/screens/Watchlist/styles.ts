@@ -43,6 +43,12 @@ export const WatchlistGrid = styled(motion.section)`
       grid-template-columns: repeat(3, 1fr);
     }
   }
+
+  @media (min-width: 1014px) and (max-width: 1700px) {
+    .grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
 `;
 
 export const RemoveButton = styled(CommonButton)<{ id: string }>`

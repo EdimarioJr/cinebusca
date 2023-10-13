@@ -35,4 +35,10 @@ export const Main = styled.section`
       grid-template-columns: repeat(3, 1fr);
     }
   }
+
+  @media (min-width: 980px) and (max-width: 1700px) {
+    .grid-movies {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
 `;

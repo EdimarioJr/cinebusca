@@ -19,7 +19,11 @@ function numberOfSlides(windowWidth: number, defaultNumberOfSlides: number) {
   if (defaultNumberOfSlides) {
     return defaultNumberOfSlides;
   } else {
-    if (windowWidth <= 768) {
+    if (windowWidth <= 400) {
+      return 1;
+    }
+
+    if (windowWidth < 768) {
       return 2;
     }
     if (windowWidth > 768 && windowWidth <= 1152) {
@@ -44,7 +48,10 @@ export const CineCarousel = ({
         renderCenterLeftControls={({ previousSlide }) => (
           <CaroulselButton
             onClick={previousSlide}
-            style={{ position: "relative", left: "-20px" }}
+            style={{
+              position: "relative",
+              left: windowWidth < 400 ? "0" : "-20px",
+            }}
           >
             <GrPrevious />
           </CaroulselButton>
@@ -52,7 +59,10 @@ export const CineCarousel = ({
         renderCenterRightControls={({ nextSlide }) => (
           <CaroulselButton
             onClick={nextSlide}
-            style={{ position: "relative", right: "-20px" }}
+            style={{
+              position: "relative",
+              right: windowWidth < 400 ? "0" : "-20px",
+            }}
           >
             <GrNext />
           </CaroulselButton>

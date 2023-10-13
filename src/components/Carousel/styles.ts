@@ -37,4 +37,9 @@ export const CaroulselButton = styled.button`
   cursor: pointer;
   display: grid;
   place-items: center;
+
+  @media (max-width: 400px) {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
 `;

@@ -1,17 +1,17 @@
 import { useUser } from "@supabase/auth-helpers-react";
-import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { RiLogoutCircleRLine } from "react-icons/ri";
 
 import { authService } from "@/services";
-import { Container, CommonButton, Flex } from "@/styles/globals";
+import { CommonButton, Container, Flex } from "@/styles/globals";
 
 import CineBuscaLogo from "../../assets/cinebusca.png";
+import { RiLogoutCircleRLine } from "react-icons/ri";
 
-import { SearchButton } from "./SearchButton";
 import { HeaderLink, HeaderRow, InputsRow, UserNav } from "./styles";
+import { SearchButton } from "./SearchButton";
+import { motion } from "framer-motion";
 
 export type HeaderProps = {
   page?: "watchlist" | "review" | "feed";

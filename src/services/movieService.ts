@@ -55,6 +55,10 @@ class MovieService {
     );
     return response.data;
   }
+
+  getMovieImageUrl(image: string, quality = 342) {
+    return `https://image.tmdb.org/t/p/w${quality}/${image}`;
+  }
 }
 
 export const movieService = new MovieService();
