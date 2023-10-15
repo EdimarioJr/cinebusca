@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import React, { useState } from "react";
 
-import { CineCarousel, Loading, MovieCard, Spinner } from "@/components";
+import { Loading, Spinner } from "@/components";
 import { MainLayout } from "@/layouts";
 import { Movie } from "@/models";
 import {
@@ -11,7 +11,21 @@ import {
 import { opacityAnimation, LoadMore } from "@/styles/globals";
 
 import { Main } from "./styles";
-import { toast } from "react-toastify";
+import dynamic from "next/dynamic";
+
+const CineCarousel = dynamic(
+  () => import("@/components/Carousel").then((mod) => mod.CineCarousel),
+  {
+    loading: () => <Loading />,
+  }
+);
+
+const MovieCard = dynamic(
+  () => import("@/components/MovieCard").then((mod) => mod.MovieCard),
+  {
+    loading: () => <Loading />,
+  }
+);
 
 export type HomepageProps = {
   initialMovies: Movie[];
@@ -35,6 +49,8 @@ export function Homepage({ initialMovies, initialPage }: HomepageProps) {
       const movies = await getPopularMovies(newPage).unwrap();
       setMovies((oldMovies) => [...oldMovies, ...movies]);
     } catch {
+      const mod = await import("react-toastify");
+      const toast = mod.toast;
       toast.error("Erro puxando os filmes. Tente novamente mais tarde");
     }
   };
