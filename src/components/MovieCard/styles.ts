@@ -23,8 +23,8 @@ export const MovieContainer = styled.div`
   }
 
   img {
-    height: 80%;
-    width: 100%;
+    height: 23rem;
+    width: 17.2rem;
     border-radius: ${(props) => props.theme.borderRadius.md};
   }
 
@@ -44,15 +44,30 @@ export const MovieContainer = styled.div`
   @media (max-width: 475px) {
     width: 10.4rem;
     height: 20.625rem;
+
+    img {
+      height: 16.5rem;
+      width: 10.4rem;
+    }
   }
 
   @media (min-width: 476px) and (max-width: 1109px) {
     width: 14.375rem;
     height: 28.125rem;
+
+    img {
+      height: 22.5rem;
+      width: 14.745rem;
+    }
   }
 
   @media (min-width: 1110px) and (max-width: 1320px) {
     width: 16.25rem;
     height: 28.125rem;
+
+    img {
+      height: 22.5rem;
+      width: 16.25rem;
+    }
   }
 `;
