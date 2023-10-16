@@ -17,6 +17,7 @@ const CineCarousel = dynamic(
   () => import("@/components/Carousel").then((mod) => mod.CineCarousel),
   {
     loading: () => <Loading />,
+    ssr: false,
   }
 );
 
@@ -24,6 +25,7 @@ const MovieCard = dynamic(
   () => import("@/components/MovieCard").then((mod) => mod.MovieCard),
   {
     loading: () => <Loading />,
+    ssr: false,
   }
 );
 
