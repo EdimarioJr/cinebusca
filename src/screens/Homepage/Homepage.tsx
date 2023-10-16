@@ -1,6 +1,5 @@
-import { motion } from "framer-motion";
 import React, { useState } from "react";
-
+import { motion } from "framer-motion";
 import { Loading, Spinner } from "@/components";
 import { MainLayout } from "@/layouts";
 import { Movie } from "@/models";

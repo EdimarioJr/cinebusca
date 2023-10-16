@@ -34,10 +34,17 @@ export const MovieContainer = styled.div`
     padding-left: 1rem;
     padding-right: 0.625rem;
 
-    p {
+    h5 {
+      font-size: 1rem;
+    }
+
+    h3 {
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap;
+      font-weight: normal;
+      font-size: 1.1rem;
+      margin-top: 0.2rem;
     }
   }
 

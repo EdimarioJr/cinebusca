@@ -39,7 +39,7 @@ export const Header = ({ page }: HeaderProps) => {
         </Flex>
 
         <InputsRow>
-          <SearchButton />
+          <SearchButton aria-label="Search movies" />
           {user ? (
             <UserNav key="nav" animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               <HeaderLink

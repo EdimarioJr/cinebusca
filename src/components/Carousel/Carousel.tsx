@@ -47,6 +47,7 @@ export const CineCarousel = ({
         swiping={true}
         renderCenterLeftControls={({ previousSlide }) => (
           <CaroulselButton
+            aria-label="Prev slide button"
             onClick={previousSlide}
             style={{
               position: "relative",
@@ -58,6 +59,7 @@ export const CineCarousel = ({
         )}
         renderCenterRightControls={({ nextSlide }) => (
           <CaroulselButton
+            aria-label="Next slide button"
             onClick={nextSlide}
             style={{
               position: "relative",
