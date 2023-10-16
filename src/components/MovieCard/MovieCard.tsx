@@ -31,10 +31,10 @@ export const MovieCard = ({
       <div className="legend">
         <Flex style={{ gap: ".5rem" }}>
           <AiFillStar />
-          <h5>{score.toFixed(2)}</h5>
+          <p className="score">{score.toFixed(2)}</p>
         </Flex>
 
-        <h3>{title}</h3>
+        <p className="title">{title}</p>
       </div>
     </MovieContainer>
   </Link>

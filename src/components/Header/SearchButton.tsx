@@ -14,7 +14,7 @@ export const SearchButton = () => {
   }
 
   return (
-    <CommonButton onClick={goToSearch}>
+    <CommonButton onClick={goToSearch} aria-label="Search movies">
       <BsSearch fontSize="1.2rem" />
     </CommonButton>
   );
