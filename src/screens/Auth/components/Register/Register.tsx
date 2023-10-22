@@ -81,13 +81,19 @@ export const Register = ({ setIsSigningUp }: RegisterProps) => {
           <h1>Sign up</h1>
           <form onSubmit={handleSubmit(handleRegister)}>
             <FormField label="Name" errorMessage={errors.name?.message}>
-              <Input type="text" placeholder="Jane doe" {...register("name")} />
+              <Input
+                type="text"
+                placeholder="Jane doe"
+                {...register("name")}
+                data-test="name-input"
+              />
             </FormField>
             <FormField label="E-mail" errorMessage={errors.email?.message}>
               <Input
                 type="email"
                 placeholder="example@email.com"
                 {...register("email")}
+                data-test="email-input"
               />
             </FormField>
             <FormField label="Password" errorMessage={errors.password?.message}>
@@ -95,6 +101,7 @@ export const Register = ({ setIsSigningUp }: RegisterProps) => {
                 type="password"
                 placeholder="Password"
                 {...register("password")}
+                data-test="password-input"
               />
             </FormField>
             <FormField
@@ -105,6 +112,7 @@ export const Register = ({ setIsSigningUp }: RegisterProps) => {
                 type="password"
                 placeholder="Password"
                 {...register("confirmPassword")}
+                data-test="confirm-password-input"
               />
             </FormField>
 
@@ -112,6 +120,7 @@ export const Register = ({ setIsSigningUp }: RegisterProps) => {
               className="signButton"
               type="submit"
               disabled={isLoading || !isValid}
+              data-test="signup-button"
             >
               {isLoading ? <Spinner boxSize="1.5rem" /> : "Sign up"}
             </CommonButton>

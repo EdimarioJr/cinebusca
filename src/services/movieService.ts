@@ -57,8 +57,8 @@ class MovieService {
   }
 
   getMovieImageUrl(image: string, quality = 342) {
-    if (window !== undefined) {
-      const windowWidth = window.innerWidth;
+    if (typeof window !== "undefined") {
+      const windowWidth = window?.innerWidth;
       if (windowWidth < 500) {
         return `https://image.tmdb.org/t/p/w${185}/${image}`;
       }

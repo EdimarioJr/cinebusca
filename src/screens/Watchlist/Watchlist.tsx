@@ -43,6 +43,7 @@ export function WatchlistScreen() {
                     <RemoveButton
                       id={item.id}
                       onClick={() => handleRemove(item.id)}
+                      data-test="remove-watchlist-button"
                     >
                       {isLoadingDelete ? (
                         <Spinner boxSize="1.5rem" />

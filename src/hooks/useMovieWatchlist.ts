@@ -30,13 +30,14 @@ export const useMovieWatchlist = ({
 
   const isLoadingWatchlist = isLoadingAdd || isLoadingDelete;
 
-  const { data: watchlistId } = useMovieExistsInWatchlistQuery(
-    {
-      movieId,
-      user: user?.id ?? "",
-    },
-    { skip: !user }
-  );
+  const { data: watchlistId, isLoading: isLoadingCheckingWatchlist } =
+    useMovieExistsInWatchlistQuery(
+      {
+        movieId,
+        user: user?.id ?? "",
+      },
+      { skip: !user }
+    );
 
   async function handleAddWatchlist() {
     if (user && movieId) {
@@ -75,5 +76,6 @@ export const useMovieWatchlist = ({
     handleAddWatchlist,
     isLoadingWatchlist,
     watchlistId,
+    isLoadingCheckingWatchlist,
   };
 };

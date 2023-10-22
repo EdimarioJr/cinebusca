@@ -27,7 +27,7 @@ export const ReviewCard = ({
   handleEditReview,
   isLoadingDelete = false,
 }: ReviewCardProps) => (
-  <ReviewContainer>
+  <ReviewContainer data-test="review-card">
     <img src={movieService.getMovieImageUrl(moviePoster)} alt="movie poster" />
     <div className="movieInfo">
       <h3>{movieTitle}</h3>
@@ -43,15 +43,20 @@ export const ReviewCard = ({
           resize: "none",
           marginBottom: "2rem",
         }}
+        data-test="review-card-text"
       />
       <div className="actions">
         <CommonButton
           onClick={() => deleteReview(id)}
           style={{ backgroundColor: "#fc0349" }}
+          data-test="delete-review-button"
         >
           {isLoadingDelete ? <Spinner boxSize="1.5rem" /> : "Delete Review"}
         </CommonButton>
-        <CommonButton onClick={() => handleEditReview(id)}>
+        <CommonButton
+          onClick={() => handleEditReview(id)}
+          data-test="edit-review-button"
+        >
           Edit Review
         </CommonButton>
       </div>

@@ -53,6 +53,7 @@ export const Header = ({ page }: HeaderProps) => {
                 href="/watchlist"
                 style={{ textDecoration: "none" }}
                 $isSelected={page === "watchlist"}
+                data-test="watchlist-link"
               >
                 <motion.h3 id="watch">Watchlist</motion.h3>
               </HeaderLink>
@@ -60,15 +61,20 @@ export const Header = ({ page }: HeaderProps) => {
                 href="/reviews"
                 style={{ textDecoration: "none" }}
                 $isSelected={page === "review"}
+                data-test="my-reviews-link"
               >
                 <motion.h3 id="review">Reviews</motion.h3>
               </HeaderLink>
-              <CommonButton onClick={handleLogout}>
+              <CommonButton onClick={handleLogout} data-test="logout-button">
                 <RiLogoutCircleRLine fontSize="1.2rem" />
               </CommonButton>
             </UserNav>
           ) : (
-            <Link href="/login" style={{ textDecoration: "none" }}>
+            <Link
+              href="/login"
+              style={{ textDecoration: "none" }}
+              data-test="signin-link"
+            >
               <CommonButton>Sign in</CommonButton>
             </Link>
           )}

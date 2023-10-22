@@ -68,10 +68,11 @@ export const ReviewModal = ({
         onEscapeKeydown={toggleModal}
         opacity={opacity}
         backgroundProps={{ opacity }}
+        data-test="review-modal"
       >
         <div className="header-row">
           <h3>Review</h3>
-          <CommonButton onClick={toggleModal}>
+          <CommonButton onClick={toggleModal} data-test="close-modal-button">
             <AiOutlineClose />
           </CommonButton>
         </div>

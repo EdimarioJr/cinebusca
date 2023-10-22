@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint . --fix",
     "type-check": "tsc --project tsconfig.json --pretty --noEmit",
-    "validate": "npm run type-check && npm run lint && npm run prettier --write ."
+    "validate": "npm run type-check && npm run lint && npm run prettier --write .",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.1",
@@ -17,7 +19,7 @@
     "@supabase/auth-helpers-react": "^0.4.2",
     "@supabase/supabase-js": "^2.33.1",
     "framer-motion": "^10.15.2",
-    "next": "^13.4.19",
+    "next": "^13.5.6",
     "nextjs-progressbar": "^0.0.16",
     "nuka-carousel": "^6.0.3",
     "react": "18.2.0",
@@ -41,10 +43,12 @@
     "@types/styled-react-modal": "^1.2.2",
     "@typescript-eslint/eslint-plugin": "^5.13.0",
     "@typescript-eslint/parser": "^5.13.0",
+    "cypress": "^13.3.2",
     "eslint": "8.47.0",
     "eslint-config-next": "13.4.15",
     "eslint-config-prettier": "^8.5.0",
     "eslint-import-resolver-typescript": "^3.6.0",
+    "eslint-plugin-cypress": "^2.15.1",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-prettier": "^4.0.0",

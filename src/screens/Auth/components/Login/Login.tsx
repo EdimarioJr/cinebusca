@@ -75,6 +75,7 @@ export const Login = ({ setIsSigningUp }: LoginProps) => {
                 type="email"
                 placeholder="example@email.com"
                 {...register("email")}
+                data-test="email-input"
               />
             </FormField>
 
@@ -83,6 +84,7 @@ export const Login = ({ setIsSigningUp }: LoginProps) => {
                 type="password"
                 placeholder="Password"
                 {...register("password")}
+                data-test="password-input"
               />
             </FormField>
             <CommonButton
@@ -95,6 +97,7 @@ export const Login = ({ setIsSigningUp }: LoginProps) => {
                 width: "10rem",
                 marginTop: "1rem",
               }}
+              data-test="signin-button"
             >
               {isLoading ? <Spinner boxSize="1.5rem" /> : "Sign in"}
             </CommonButton>
@@ -102,7 +105,11 @@ export const Login = ({ setIsSigningUp }: LoginProps) => {
 
           <p>
             Dont have an account?
-            <button onClick={() => setIsSigningUp(true)} className="option">
+            <button
+              onClick={() => setIsSigningUp(true)}
+              className="option"
+              data-test="signup-link"
+            >
               Sign up
             </button>
           </p>

@@ -55,6 +55,7 @@ export const MovieDetail = ({
     handleDeleteFromWatchlist,
     isLoadingWatchlist,
     watchlistId,
+    isLoadingCheckingWatchlist,
   } = useMovieWatchlist({
     movieId: id,
     moviePoster: poster_path,
@@ -89,13 +90,19 @@ export const MovieDetail = ({
               {user ? (
                 <nav className="rowButtons">
                   <WatchButton
-                    onClick={() =>
-                      watchlistId
-                        ? handleDeleteFromWatchlist()
-                        : handleAddWatchlist()
-                    }
+                    onClick={() => {
+                      if (
+                        !isLoadingCheckingWatchlist ||
+                        isLoadingCheckingWatchlist
+                      )
+                        watchlistId
+                          ? handleDeleteFromWatchlist()
+                          : handleAddWatchlist();
+                    }}
+                    data-test="watchlist-button"
+                    disabled={isLoadingWatchlist || isLoadingCheckingWatchlist}
                   >
-                    {isLoadingWatchlist ? (
+                    {isLoadingWatchlist || isLoadingCheckingWatchlist ? (
                       <Spinner boxSize="1.5rem" />
                     ) : watchlistId ? (
                       "Remove from Watchlist"
@@ -103,7 +110,10 @@ export const MovieDetail = ({
                       "Add to your Watchlist"
                     )}
                   </WatchButton>
-                  <ReviewButton onClick={() => setIsOpen(true)}>
+                  <ReviewButton
+                    onClick={() => setIsOpen(true)}
+                    data-test="review-button"
+                  >
                     Review
                   </ReviewButton>
                   <ReviewModal
