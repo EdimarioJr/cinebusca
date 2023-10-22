@@ -5,8 +5,8 @@ describe("auth spec", () => {
     cy.getBySel("signin-link").click();
 
     cy.location("pathname").should("eq", "/login");
-    cy.getBySel("email-input").type(Cypress.env("test_account_email"));
-    cy.getBySel("password-input").type(Cypress.env("test_account_password"));
+    cy.getBySel("email-input").type(Cypress.env("TEST_ACCOUNT_EMAIL"));
+    cy.getBySel("password-input").type(Cypress.env("TEST_ACCOUNT_PASSWORD"));
     cy.getBySel("signin-button").click();
 
     cy.location("pathname").should("eq", "/");
@@ -20,14 +20,14 @@ describe("auth spec", () => {
     cy.getBySel("signup-link").click();
 
     cy.getBySel("name-input").type("edimario");
-    cy.getBySel("email-input").type(Cypress.env("test_account_email"));
-    cy.getBySel("password-input").type(Cypress.env("test_account_password"));
+    cy.getBySel("email-input").type(Cypress.env("TEST_ACCOUNT_EMAIL"));
+    cy.getBySel("password-input").type(Cypress.env("TEST_ACCOUNT_PASSWORD"));
     cy.getBySel("confirm-password-input").type("Password errado");
 
     cy.contains("Passwords don't match").should("be.visible");
     cy.getBySel("confirm-password-input").clear();
     cy.getBySel("confirm-password-input").type(
-      Cypress.env("test_account_password")
+      Cypress.env("TEST_ACCOUNT_PASSWORD")
     );
 
     cy.getBySel("signup-button").click();

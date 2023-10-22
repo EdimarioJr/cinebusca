@@ -1,8 +1,8 @@
 import { createPagesBrowserClient } from "@supabase/auth-helpers-nextjs";
 
 export const supabase = createPagesBrowserClient({
-  supabaseUrl: Cypress.env("supabase_url"),
-  supabaseKey: Cypress.env("supabase_anon_key"),
+  supabaseUrl: Cypress.env("SUPABASE_URL"),
+  supabaseKey: Cypress.env("SUPABASE_ANON_KEY"),
 });
 
 Cypress.Commands.add("getBySel", (selector, ...args) =>
@@ -13,8 +13,8 @@ Cypress.Commands.add("signIn", (redirectPath = "/") => {
   cy.session([], async () => {
     try {
       const response = await supabase.auth.signInWithPassword({
-        email: Cypress.env("test_account_email"),
-        password: Cypress.env("test_account_password"),
+        email: Cypress.env("TEST_ACCOUNT_EMAIL"),
+        password: Cypress.env("TEST_ACCOUNT_PASSWORD"),
       });
       if (response.error) {
         return Promise.reject(response.error.message);
