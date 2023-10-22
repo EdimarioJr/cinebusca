@@ -29,11 +29,11 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v6
         env:
-          CYPRESS_supabase_url: ${{ secrets.supabase_url}}
-          CYPRESS_supabase_anon_key: ${{ secrets.supabase_anon_key}}
-          CYPRESS_test_account_password: ${{ secrets.test_account_password}}
-          CYPRESS_test_account_email: ${{ secrets.test_account_email}}
-          CYPRESS_movie_api_url: ${{ secrets.movie_api_url}}
+          CYPRESS_supabase_url: ${{ secrets.SUPABASE_URL}}
+          CYPRESS_supabase_anon_key: ${{ secrets.SUPABASE_ANON_KEY}}
+          CYPRESS_test_account_password: ${{ secrets.TEST_ACCOUNT_PASSWORD}}
+          CYPRESS_test_account_email: ${{ secrets.TEST_ACCOUNT_EMAIL}}
+          CYPRESS_movie_api_url: ${{ secrets.MOVIE_API_URL }}
         with:
           install-command: npm install --legacy-peer-deps
           build: npm run build
