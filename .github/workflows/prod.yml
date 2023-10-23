@@ -2,11 +2,6 @@ name: Deploy prod
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-  CYPRESS_SUPABASE_URL: ${{ secrets.CYPRESS_SUPABASE_URL}}
-  CYPRESS_SUPABASE_ANON_KEY: ${{ secrets.CYPRESS_SUPABASE_ANON_KEY}}
-  CYPRESS_TEST_ACCOUNT_PASSWORD: ${{ secrets.CYPRESS_TEST_ACCOUNT_PASSWORD}}
-  CYPRESS_TEST_ACCOUNT_EMAIL: ${{ secrets.CYPRESS_TEST_ACCOUNT_EMAIL}}
-  CYPRESS_MOVIE_API_URL: ${{ secrets.CYPRESS_MOVIE_API_URL }}
 on:
   push:
     branches:
@@ -29,11 +24,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      # Install NPM dependencies, cache them correctly
-      # and run all Cypress tests
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          install-command: npm install --legacy-peer-deps
           build: npm run build
           start: npm start
+          install-command: npm install --legacy-peer-deps
+        env:
+          CYPRESS_SUPABASE_URL: ${{ secrets.CYPRESS_SUPABASE_URL }}
+          CYPRESS_SUPABASE_ANON_KEY: ${{ secrets.CYPRESS_SUPABASE_ANON_KEY }}
+          CYPRESS_TEST_ACCOUNT_PASSWORD: ${{ secrets.CYPRESS_TEST_ACCOUNT_PASSWORD }}
+          CYPRESS_TEST_ACCOUNT_EMAIL: ${{ secrets.CYPRESS_TEST_ACCOUNT_EMAIL }}
+          CYPRESS_MOVIE_API_URL: ${{ secrets.CYPRESS_MOVIE_API_URL }}
+          
