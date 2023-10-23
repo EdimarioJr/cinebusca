@@ -9,8 +9,13 @@ import { opacityAnimation } from "@/styles/globals";
 import { RemoveButton, WatchlistContainer, WatchlistGrid } from "./styles";
 
 export function WatchlistScreen() {
-  const { isLoadingWatchlist, watchlist, handleRemove, isLoadingDelete } =
-    useWatchlist();
+  const {
+    isLoadingWatchlist,
+    watchlist,
+    handleRemove,
+    isLoadingDelete,
+    idWatchlistToBeDeleted,
+  } = useWatchlist();
 
   return (
     <MainLayout page="watchlist">
@@ -45,7 +50,7 @@ export function WatchlistScreen() {
                       onClick={() => handleRemove(item.id)}
                       data-test="remove-watchlist-button"
                     >
-                      {isLoadingDelete ? (
+                      {isLoadingDelete && idWatchlistToBeDeleted === item.id ? (
                         <Spinner boxSize="1.5rem" />
                       ) : (
                         "Remove"

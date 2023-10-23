@@ -5,9 +5,12 @@ import {
   useDeleteFromWatchlistMutation,
   useGetWatchlistQuery,
 } from "@/store/queries";
+import { useState } from "react";
 
 export const useWatchlist = () => {
   const user = useUser();
+  const [idWatchlistToBeDeleted, setIdWatchlistToBeDeleted] =
+    useState<string>("");
 
   const { data: watchlist, isLoading: isLoadingWatchlist } =
     useGetWatchlistQuery({ userId: user?.id ?? "" }, { skip: !user?.id });
@@ -18,6 +21,7 @@ export const useWatchlist = () => {
   async function handleRemove(idWatchlist: string) {
     if (user) {
       try {
+        setIdWatchlistToBeDeleted(idWatchlist);
         await deleteWatchlist({
           id: idWatchlist,
         }).unwrap();
@@ -25,8 +29,16 @@ export const useWatchlist = () => {
         toast.success("Movie removed from watchlist");
       } catch {
         toast.error("Error removing from watchlist");
+      } finally {
+        setIdWatchlistToBeDeleted("");
       }
     }
   }
-  return { handleRemove, watchlist, isLoadingWatchlist, isLoadingDelete };
+  return {
+    handleRemove,
+    watchlist,
+    isLoadingWatchlist,
+    isLoadingDelete,
+    idWatchlistToBeDeleted,
+  };
 };

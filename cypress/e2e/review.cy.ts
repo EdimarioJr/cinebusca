@@ -6,11 +6,12 @@ describe("review spec", () => {
   it("Should CRUD review", () => {
     cy.visit("/movie/798286");
     cy.getBySel("review-button").click();
-    cy.getBySel("review-input").clear();
+    cy.getBySel("review-input").invoke("val", "");
     cy.getBySel("review-input").type("Filme muito louco!");
     cy.getBySel("create-review-button").click();
-
-    cy.getBySel("my-reviews-link").click({ force: true });
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(100);
+    cy.getBySel("my-reviews-link").click();
 
     cy.location("pathname").should("eq", "/reviews");
 
@@ -22,7 +23,7 @@ describe("review spec", () => {
       .find("[data-test=edit-review-button]")
       .click();
 
-    cy.getBySel("review-input").clear();
+    cy.getBySel("review-input").invoke("val", "");
     cy.getBySel("review-input").type("Filme muito louco editado!");
     cy.getBySel("create-review-button").click();
 
