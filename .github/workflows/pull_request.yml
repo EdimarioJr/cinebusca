@@ -20,7 +20,6 @@ jobs:
           NEXT_PUBLIC_SUPABASE_ANON_KEY:  ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
         with:
-          headed: true
           browser: chrome
           build: npm run build
           start: npm start
