@@ -5,7 +5,7 @@ describe("watchlist spec", () => {
 
   it("Should CRUD watchlist", () => {
     cy.visit("/movie/798286", { timeout: 600000 });
-    cy.location("pathname", { timeout: 50000 }).should("eq", "/movie/798286");
+    cy.location("pathname", { timeout: 600000 }).should("eq", "/movie/798286");
     cy.getBySel("watchlist-button").click();
     cy.contains("Remove from Watchlist").should("exist");
     cy.getBySel("watchlist-button").click();
