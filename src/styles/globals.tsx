@@ -99,7 +99,7 @@ export const CommonButton = styled.button`
   padding: 0 1.875rem;
   color: ${(props) => props.theme.colors.white};
   font-weight: 700;
-  height: 2.1875rem;
+  min-height: 2.1875rem;
   border: none;
   cursor: pointer;
   border-radius: ${(props) => props.theme.borderRadius.md};
@@ -131,7 +131,7 @@ export const Input = styled.input`
 export const LoadMore = styled(CommonButton)`
   width: 100%;
   margin: 1.875rem 0;
-  padding: 1.875rem 0;
+  height: 3.5rem;
   font-weight: 700;
   font-size: ${(props) => props.theme.fontSizes.xl};
 
