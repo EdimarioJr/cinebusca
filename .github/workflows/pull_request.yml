@@ -25,4 +25,5 @@ jobs:
           build: npm run build
           start: npm start
           install-command: npm install --legacy-peer-deps
+          wait-on: 'http://localhost:3000'
        
