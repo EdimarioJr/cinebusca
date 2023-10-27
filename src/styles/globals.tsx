@@ -131,7 +131,7 @@ export const Input = styled.input`
 export const LoadMore = styled(CommonButton)`
   width: 100%;
   margin: 1.875rem 0;
-  height: 3.5rem;
+  height: 3.51rem;
   font-weight: 700;
   font-size: ${(props) => props.theme.fontSizes.xl};
 
