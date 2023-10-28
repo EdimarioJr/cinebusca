@@ -3,20 +3,21 @@ on:
   pull_request:
     branches:
       - main
+    
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
+    env:
+      CYPRESS_SUPABASE_URL: ${{ secrets.CYPRESS_SUPABASE_URL }}
+      CYPRESS_SUPABASE_ANON_KEY: ${{ secrets.CYPRESS_SUPABASE_ANON_KEY }}
+      CYPRESS_TEST_ACCOUNT_PASSWORD: ${{ secrets.CYPRESS_TEST_ACCOUNT_PASSWORD }}
+      CYPRESS_TEST_ACCOUNT_EMAIL: ${{ secrets.CYPRESS_TEST_ACCOUNT_EMAIL }}
+      CYPRESS_MOVIE_API_URL: ${{ secrets.CYPRESS_MOVIE_API_URL }}
+      NEXT_PUBLIC_SUPABASE_ANON_KEY:  ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
     steps:
       - uses: actions/checkout@v4
       - uses: cypress-io/github-action@v6
-        env:
-          CYPRESS_SUPABASE_URL: ${{ secrets.CYPRESS_SUPABASE_URL }}
-          CYPRESS_SUPABASE_ANON_KEY: ${{ secrets.CYPRESS_SUPABASE_ANON_KEY }}
-          CYPRESS_TEST_ACCOUNT_PASSWORD: ${{ secrets.CYPRESS_TEST_ACCOUNT_PASSWORD }}
-          CYPRESS_TEST_ACCOUNT_EMAIL: ${{ secrets.CYPRESS_TEST_ACCOUNT_EMAIL }}
-          CYPRESS_MOVIE_API_URL: ${{ secrets.CYPRESS_MOVIE_API_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY:  ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
         with:
           browser: chrome
           build: npm run build
