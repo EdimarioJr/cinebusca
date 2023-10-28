@@ -26,8 +26,6 @@ jobs:
           CYPRESS_MOVIE_API_URL: ${{ secrets.CYPRESS_MOVIE_API_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY:  ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          DEBUG: '@cypress/github-action'
-        uses: 
         with:
           browser: chrome
           build: npm run build
