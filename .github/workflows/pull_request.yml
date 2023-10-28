@@ -11,6 +11,13 @@ jobs:
         uses: actions/checkout@v4
       - name: Cypress run
         uses: cypress-io/github-action@v6
+        - uses: actions/upload-artifact@v3
+        # add the line below to store screenshots only on failures
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+          if-no-files-found: ignore # 'warn' or 'error' are also available, defaults to `warn`
         env:
           CYPRESS_SUPABASE_URL: ${{ secrets.CYPRESS_SUPABASE_URL }}
           CYPRESS_SUPABASE_ANON_KEY: ${{ secrets.CYPRESS_SUPABASE_ANON_KEY }}
@@ -20,6 +27,7 @@ jobs:
           NEXT_PUBLIC_SUPABASE_ANON_KEY:  ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           DEBUG: '@cypress/github-action'
+        uses: 
         with:
           browser: chrome
           build: npm run build
