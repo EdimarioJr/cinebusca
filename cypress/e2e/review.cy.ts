@@ -1,10 +1,10 @@
 describe("review spec", () => {
   before(() => {
-    cy.signIn();
+    cy.signIn("/movie/798286");
   });
 
   it("Should CRUD review", () => {
-    cy.visit("/movie/798286");
+    cy.location("pathname").should("eq", "/movie/798286");
     cy.getBySel("review-button").click();
     cy.getBySel("review-input").invoke("val", "");
     cy.getBySel("review-input").type("Filme muito louco!");
